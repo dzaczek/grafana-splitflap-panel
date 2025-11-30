@@ -17,6 +17,39 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
             ]
         }
     })
+    .addRadio({
+        path: 'displayContent',
+        name: 'Main Content',
+        description: 'What to display inside the flip cards',
+        defaultValue: 'value',
+        settings: {
+            options: [
+                { value: 'value', label: 'Value Only' },
+                { value: 'name', label: 'Name Only' },
+                { value: 'name_value', label: 'Name + Value' },
+                { value: 'value_name', label: 'Value + Name' },
+            ]
+        }
+    })
+    .addSelect({
+        path: 'valueAggregation',
+        name: 'Value Aggregation',
+        description: 'How to reduce multiple values in a series to a single number',
+        defaultValue: 'last',
+        settings: {
+            options: [
+                { value: 'last', label: 'Last (Default)' },
+                { value: 'lastNotNull', label: 'Last (Not Null)' },
+                { value: 'first', label: 'First' },
+                { value: 'firstNotNull', label: 'First (Not Null)' },
+                { value: 'min', label: 'Min' },
+                { value: 'max', label: 'Max' },
+                { value: 'mean', label: 'Mean (Average)' },
+                { value: 'sum', label: 'Sum' },
+                { value: 'count', label: 'Count' },
+            ]
+        }
+    })
     .addBooleanSwitch({
         path: 'showSeparators',
         name: 'Show Separators',

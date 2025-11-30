@@ -25,5 +25,7 @@ export interface FlipOptions {
   
   // UKŁAD (Kluczowe dla Twojego problemu)
   layoutDirection: 'vertical' | 'horizontal';
-  showSeparators: boolean;  
+  showSeparators: boolean;
+  displayContent: 'value' | 'name' | 'name_value' | 'value_name';
+  valueAggregation: 'last' | 'lastNotNull' | 'first' | 'firstNotNull' | 'min' | 'max' | 'mean' | 'sum' | 'count';
 }

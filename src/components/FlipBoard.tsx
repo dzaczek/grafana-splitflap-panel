@@ -202,6 +202,32 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
 };
 
 
+// helper to reduce values
+function reduceValues(values: any, aggregation: string): any {
+    if (!values || values.length === 0) return null;
+    
+    // convert vector to array
+    const arr = Array.from(values);
+    const validNumbers = arr.filter((v: any) => typeof v === 'number' && !isNaN(v)) as number[];
+
+    switch (aggregation) {
+        case 'first': return arr[0];
+        case 'firstNotNull': return arr.find((v: any) => v !== null && v !== undefined);
+        case 'lastNotNull': 
+            for (let i = arr.length - 1; i >= 0; i--) {
+                if (arr[i] !== null && arr[i] !== undefined) return arr[i];
+            }
+            return null;
+        case 'min': return validNumbers.length ? Math.min(...validNumbers) : null;
+        case 'max': return validNumbers.length ? Math.max(...validNumbers) : null;
+        case 'sum': return validNumbers.reduce((a, b) => a + b, 0);
+        case 'mean': return validNumbers.length ? validNumbers.reduce((a, b) => a + b, 0) / validNumbers.length : null;
+        case 'count': return arr.length;
+        case 'last':
+        default: return arr[arr.length - 1];
+    }
+}
+
 // main panel component
 interface Props extends PanelProps<FlipOptions> {}
 
@@ -229,16 +255,48 @@ export const FlipBoard: React.FC<Props> = ({ options, data, width, height }) => 
             overflow: 'hidden'
         }}>
             {seriesList.map((series, i) => {
-                const field = series.fields.find(f => f.type === 'number') || series.fields[0];
-                const rawValue = field.values.get(field.values.length - 1);
+                // find appropriate field to display
+                // prefer number, then string, but avoid 'time' fields unless nothing else exists
+                const field = series.fields.find(f => f.type === 'number') 
+                           || series.fields.find(f => f.type === 'string')
+                           || series.fields.find(f => f.type !== 'time') 
+                           || series.fields[0];
+                           
+                // reduce values based on selected aggregation
+                const rawValue = reduceValues(field.values, options.valueAggregation);
                 
                 const displayName = getFieldDisplayName(field, series, data.series);
                 
-                // show --- if no value
-                const valueToSend = (rawValue !== null && rawValue !== undefined) ? rawValue : "---";
+                // calculate base value
+                let baseValue = (rawValue !== null && rawValue !== undefined) ? rawValue : "---";
+                
+                // format number if needed before combining with string
+                let displayBaseValue = baseValue;
+                if (typeof baseValue === 'number') {
+                    const decimals = options.rounding !== undefined ? options.rounding : 1;
+                    displayBaseValue = baseValue.toFixed(decimals);
+                }
+
+                // determine what to display based on options
+                let valueToSend = baseValue;
+                const displayMode = options.displayContent || 'value';
+
+                if (displayMode === 'value') {
+                    // pass raw number to let engine handle animation logic better if possible,
+                    // though for combined strings we must pass string
+                    valueToSend = baseValue; 
+                } else if (displayMode === 'name') {
+                    valueToSend = displayName;
+                } else if (displayMode === 'name_value') {
+                    // add extra spaces to visually separate text ending with digit from the value
+                    valueToSend = `${displayName}   ${displayBaseValue}`;
+                } else if (displayMode === 'value_name') {
+                    valueToSend = `${displayBaseValue}   ${displayName}`;
+                }
+
                 const unitToSend = options.customUnit || field.config.unit || '';
 
-                const displayValue = field.display ? field.display(valueToSend) : { color: undefined };
+                const displayValue = field.display ? field.display(baseValue) : { color: undefined };
                 let itemBg = 'transparent';
                 if (options.thresholdTarget === 'panel' && displayValue.color) {
                     itemBg = displayValue.color;

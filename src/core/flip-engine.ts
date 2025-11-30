@@ -24,7 +24,21 @@ export class FlipSensorCard extends HTMLElement {
 
   // drum sequence for flip animation, order matters for smooth transitions
   // removed letters since unit is rendered outside flip area
-  private drumChars = [' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ',', ':', '%', '°', '-', '/'];
+  // main full drum with everything
+  private drumChars = [
+    ' ', 
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 
+    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+    '.', ',', ':', '%', '°', '-', '/'
+  ];
+
+  // optimized drum for numeric-only transitions
+  private drumCharsNumeric = [
+    ' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 
+    '.', ',', ':', '%', '°', '-', '/'
+  ];
+
   private normalSpeed = 0.6;
   private spinSpeed = 0.12;
   
@@ -396,11 +410,12 @@ export class FlipSensorCard extends HTMLElement {
         .flip-unit[data-effect="matrix"] {
             position: relative;
             overflow: hidden;
-            background-color: #020b02 !important;
-            color: #9eff79;
+            /* background and color controlled by js variables for thresholds */
             text-shadow: 0 0 6px rgba(0, 255, 65, 0.9);
             border-color: rgba(0, 255, 65, 0.4);
         }
+        /* override js color if not overridden by threshold (handled via vars, but text-shadow needs text color) */
+        
         .flip-unit[data-effect="matrix"]::before {
             content: "ｱｲｳｴｵｶｷｸｹｺﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝ01LpxZ#$%={}<>?!/\\+-";
             position: absolute;
@@ -631,42 +646,81 @@ export class FlipSensorCard extends HTMLElement {
   }
 
   private async spinDigit(element: HTMLElement, startChar: string, endChar: string, index: number) {
-    if (!this.isConnected) return;
+    // check if card is still in DOM
+    if (!element.isConnected) return;
+    
     let current = startChar;
     let safety = 0;
     
-    let startIndex = this.drumChars.indexOf(startChar);
-    let endIndex = this.drumChars.indexOf(endChar);
+    // choose optimized drum if both chars are numeric
+    let activeDrum = this.drumChars;
+    if (this.drumCharsNumeric.includes(startChar) && this.drumCharsNumeric.includes(endChar)) {
+        activeDrum = this.drumCharsNumeric;
+    }
+
+    let startIndex = activeDrum.indexOf(startChar);
+    let endIndex = activeDrum.indexOf(endChar);
+    
+    // fallback to full drum if somehow not found (shouldn't happen due to check above)
+    if (startIndex === -1 || endIndex === -1) {
+        activeDrum = this.drumChars;
+        startIndex = activeDrum.indexOf(startChar);
+        endIndex = activeDrum.indexOf(endChar);
+    }
+
     if (startIndex === -1) startIndex = 0;
     if (endIndex === -1) endIndex = 0;
     
     let distance = endIndex - startIndex;
-    if (distance < 0) distance += this.drumChars.length;
+    if (distance < 0) distance += activeDrum.length;
     
-    const useSpeed = (distance === 1) ? this.normalSpeed : this.spinSpeed;
+    const isFullDrum = (activeDrum === this.drumChars);
+    const stepsTotal = distance;
+    let stepsTaken = 0;
 
-    if (!this.drumChars.includes(endChar)) {
+    if (!activeDrum.includes(endChar)) {
         this.updateStatic(element, endChar);
         this.currentDisplayValue[index] = endChar;
         return;
     }
 
-    while (current !== endChar && safety < 30) {
-      if (!this.isConnected) break; // stop if detached
+    while (current !== endChar && safety < 60) {
+      if (!element.isConnected) break; // stop if card removed
 
-      let idx = this.drumChars.indexOf(current);
-      let nextIdx = (idx + 1) % this.drumChars.length;
-      let nextChar = this.drumChars[nextIdx];
-      await this.flipOnce(element, current, nextChar, useSpeed);
+      // dynamic speed calculation for full drum (easing)
+      let currentSpeed = this.spinSpeed;
+      
+      if (isFullDrum && stepsTotal > 9) {
+          // normalized progress from 0 to 1
+          const progress = stepsTaken / stepsTotal;
+          
+          // parabola-like easing: slower at edges (0.0 and 1.0), fast in middle (0.5)
+          // multiplier: 1.0 at edges, down to ~0.2 in middle (5x faster)
+          const easeMultiplier = 1.0 - 0.8 * Math.sin(progress * Math.PI);
+          
+          // clamp max speed so it's not instant
+          currentSpeed = Math.max(0.02, this.spinSpeed * easeMultiplier);
+      }
+      
+      // force normal speed for single step
+      if (stepsTotal === 1) currentSpeed = this.normalSpeed;
+
+      let idx = activeDrum.indexOf(current);
+      let nextIdx = (idx + 1) % activeDrum.length;
+      let nextChar = activeDrum[nextIdx];
+      
+      await this.flipOnce(element, current, nextChar, currentSpeed);
+      
       current = nextChar;
       this.currentDisplayValue[index] = current;
       safety++;
+      stepsTaken++;
     }
   }
 
   private flipOnce(element: HTMLElement, oldChar: string, newChar: string, duration: number) {
     return new Promise<void>(resolve => {
-        if (!this.isConnected) { resolve(); return; }
+        if (!element.isConnected) { resolve(); return; }
 
         const top = element.querySelector('.top');
         const bottom = element.querySelector('.bottom');
@@ -685,6 +739,7 @@ export class FlipSensorCard extends HTMLElement {
         element.classList.add('flipping');
 
         setTimeout(() => {
+            if (!element.isConnected) { resolve(); return; }
             bottom.setAttribute('data-val', newChar);
             flapFront.setAttribute('data-val', newChar);
             element.classList.remove('flipping');
