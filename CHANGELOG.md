@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.28-beta.18 (2025-11-30)
+
+### Maintenance
+- Added `--rootUrls` flag to `yarn sign` command as a fallback for JSON configuration.
+
 ## 1.1.28-beta.17 (2025-11-30)
 
 ### Maintenance
