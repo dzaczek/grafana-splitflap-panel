@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.28-beta.15 (2025-11-30)
+
+### Maintenance
+- Added debug step to CI to verify `plugin.json` content.
+
 ## 1.1.28-beta.14 (2025-11-30)
 
 ### Maintenance
