@@ -23,13 +23,6 @@ jobs:
       - name: Build frontend
         run: yarn build
 
-      - name: Force inject rootUrls (Safety check)
-        run: |
-          sudo apt-get install -y jq
-          tmp=$(mktemp)
-          jq '.rootUrls = ["http://localhost:3000"]' dist/plugin.json > "$tmp" && mv "$tmp" dist/plugin.json
-          cat dist/plugin.json
-
       - name: Sign plugin
         run: yarn sign
         env:

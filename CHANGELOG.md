@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.28-beta.19 (2025-11-30)
+
+### Maintenance
+- Removed `rootUrls` from `plugin.json` to satisfy plugin validator (using command line flag for signing instead).
+- Cleaned up build workflow.
+
 ## 1.1.28-beta.18 (2025-11-30)
 
 ### Maintenance
