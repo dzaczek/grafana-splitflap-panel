@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.28-beta.10 (2025-11-30)
+
+### Maintenance
+- Fixed yarn registry configuration to resolve installation issues in CI.
+- Updated workflow configurations.
+
 ## 1.0.0 (2025-11-30)
 
 ### Features
@@ -18,4 +24,3 @@
 - **Spacing**: Added proper spacing for "Name + Value" display mode.
 - **Memory**: Added cleanup logic to stop animations when panel is unmounted.
 - **Timestamp**: Fixed logic to prioritize value fields over time fields.
-

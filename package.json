@@ -1,6 +1,6 @@
 {
   "name": "splitflap",
-  "version": "1.1.28-beta.9",
+  "version": "1.1.28-beta.10",
   "scripts": {
     "build": "webpack -c ./.config/webpack/webpack.config.ts --env production",
     "dev": "webpack -w -c ./.config/webpack/webpack.config.ts --env development",
@@ -70,8 +70,8 @@
     "@grafana/data": "^12.3.0",
     "@grafana/i18n": "^12.3.0",
     "@grafana/runtime": "^12.3.0",
-    "@grafana/ui": "^12.3.0",
     "@grafana/schema": "^12.3.0",
+    "@grafana/ui": "^12.3.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0"
   }
