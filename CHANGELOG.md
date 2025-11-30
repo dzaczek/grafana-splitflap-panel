@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.28-beta.12 (2025-11-30)
+
+### Maintenance
+- Re-trigger release build with correct secrets configuration.
+
 ## 1.1.28-beta.11 (2025-11-30)
 
 ### Maintenance
