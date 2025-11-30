@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.28-beta.16 (2025-11-30)
+
+### Maintenance
+- Switched to manual build workflow in GitHub Actions to debug signing issues.
+
 ## 1.1.28-beta.15 (2025-11-30)
 
 ### Maintenance

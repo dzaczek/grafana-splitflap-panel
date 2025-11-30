@@ -10,8 +10,50 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check src/plugin.json content
-        run: cat src/plugin.json
-      - uses: grafana/plugin-actions/build-plugin@build-plugin/v1.0.2
+      
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
         with:
-            policy_token: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --ignore-engines
+
+      - name: Build frontend
+        run: yarn build
+
+      - name: Debug dist/plugin.json (Before Sign)
+        run: cat dist/plugin.json
+
+      - name: Sign plugin
+        run: yarn sign
+        env:
+          GRAFANA_ACCESS_POLICY_TOKEN: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
+
+      - name: Get plugin metadata
+        id: metadata
+        run: |
+          sudo apt-get install -y jq
+          export GRAFANA_PLUGIN_ID=$(jq -r .id dist/plugin.json)
+          export GRAFANA_PLUGIN_VERSION=$(jq -r .version dist/plugin.json)
+          export GRAFANA_PLUGIN_TYPE=$(jq -r .type dist/plugin.json)
+          export GRAFANA_PLUGIN_ARTIFACT=${GRAFANA_PLUGIN_ID}-${GRAFANA_PLUGIN_VERSION}.zip
+          export GRAFANA_PLUGIN_ARTIFACT_CHECKSUM=${GRAFANA_PLUGIN_ARTIFACT}.md5
+          
+          echo "plugin-id=${GRAFANA_PLUGIN_ID}" >> $GITHUB_OUTPUT
+          echo "plugin-version=${GRAFANA_PLUGIN_VERSION}" >> $GITHUB_OUTPUT
+          echo "plugin-type=${GRAFANA_PLUGIN_TYPE}" >> $GITHUB_OUTPUT
+          echo "archive=${GRAFANA_PLUGIN_ARTIFACT}" >> $GITHUB_OUTPUT
+          echo "archive-checksum=${GRAFANA_PLUGIN_ARTIFACT_CHECKSUM}" >> $GITHUB_OUTPUT
+
+      - name: Package plugin
+        id: package-plugin
+        uses: grafana/plugin-actions/package-plugin@v1
+        with:
+          policy_token: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: "**/*.zip"
