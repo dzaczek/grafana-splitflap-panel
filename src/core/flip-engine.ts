@@ -685,7 +685,7 @@ export class FlipSensorCard extends HTMLElement {
     }
 
     while (current !== endChar && safety < 60) {
-      if (!element.isConnected) break; // stop if card removed
+      if (!element.isConnected) { break; } // stop if card removed
 
       // dynamic speed calculation for full drum (easing)
       let currentSpeed = this.spinSpeed;
