@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.28-beta.23 (2025-11-30)
+
+### Maintenance
+- Added manual MD5 checksum generation step to release workflow.
+
 ## 1.1.28-beta.22 (2025-11-30)
 
 ### Maintenance

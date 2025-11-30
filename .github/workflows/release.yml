@@ -52,6 +52,12 @@ jobs:
         with:
           policy_token: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
 
+      - name: Generate checksum
+        run: |
+          for file in *.zip; do
+            md5sum "$file" > "${file}.md5"
+          done
+
       - name: List files (Debug)
         run: ls -la
 
