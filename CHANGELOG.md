@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.28-beta.20 (2025-11-30)
+
+### Maintenance
+- Added `id-token: write` and `attestations: write` permissions to workflow for build provenance attestation.
+
 ## 1.1.28-beta.19 (2025-11-30)
 
 ### Maintenance
