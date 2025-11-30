@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.28-beta.13 (2025-11-30)
+
+### Maintenance
+- Added `rootUrls` to `plugin.json` to fix signing error for private plugin token.
+
 ## 1.1.28-beta.12 (2025-11-30)
 
 ### Maintenance
