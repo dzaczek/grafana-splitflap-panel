@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.28-beta.22 (2025-11-30)
+
+### Maintenance
+- Corrected artifact path pattern for GitHub Release upload (checking root directory instead of `dist/`).
+
 ## 1.1.28-beta.21 (2025-11-30)
 
 ### Maintenance

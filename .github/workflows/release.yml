@@ -52,12 +52,15 @@ jobs:
         with:
           policy_token: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
 
+      - name: List files (Debug)
+        run: ls -la
+
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
           artifactErrorsFailBuild: true
-          artifacts: 'dist/*.zip,dist/*.md5'
+          artifacts: '*.zip,*.md5'
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Attest build provenance
