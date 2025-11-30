@@ -21,11 +21,13 @@ jobs:
           persist-credentials: false
 
       - uses: grafana/plugin-actions/build-plugin@build-plugin/v1.0.2
-        with:
-          # Plugin signing enabled via Access Policy Token
-          # (For more info: https://grafana.com/developers/plugin-tools/publish-a-plugin/sign-a-plugin#generate-an-access-policy-token)
-          policy_token: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
-          # Note: GRAFANA_API_KEY is deprecated, use policy_token instead
+        # Uncomment to enable plugin signing
+        # (For more info on how to generate the access policy token see https://grafana.com/developers/plugin-tools/publish-a-plugin/sign-a-plugin#generate-an-access-policy-token)
+        #with:
+        # Make sure to save the token in your repository secrets
+        #policy_token: $
+        # Usage of GRAFANA_API_KEY is deprecated, prefer `policy_token` option above
+        #grafana_token: $
 
       - name: Attest build provenance
         uses: actions/attest-build-provenance@v1
