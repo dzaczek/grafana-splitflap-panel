@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.28-beta.21 (2025-11-30)
+
+### Maintenance
+- Added GitHub Release step to upload plugin artifacts (.zip and .md5) to the release page.
+
 ## 1.1.28-beta.20 (2025-11-30)
 
 ### Maintenance
