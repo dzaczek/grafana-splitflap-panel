@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.28-beta.17 (2025-11-30)
+
+### Maintenance
+- Fixed GitHub Action path for `package-plugin`.
+- Added forced injection of `rootUrls` into `dist/plugin.json` before signing to ensure field presence.
+
 ## 1.1.28-beta.16 (2025-11-30)
 
 ### Maintenance
