@@ -1,0 +1,290 @@
+import React, { useRef, useEffect } from 'react';
+import { PanelProps, getFieldDisplayName } from '@grafana/data';
+import { FlipOptions } from '../types';
+import '../core/flip-engine';
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'flip-sensor-card': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+    }
+  }
+}
+
+// single flip item component
+interface ItemProps {
+    width: number;
+    height: number;
+    options: FlipOptions;
+    value: any;
+    unit: string;
+    name: string;
+    thresholdColor?: string;
+}
+
+const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, name, thresholdColor }) => {
+    const flipRef = useRef<any>(null);
+
+    // format value same way as engine does
+    // need displayed text length not raw number
+    let formattedValueStr = "";
+    if (typeof value === 'number') {
+        const decimals = options.rounding !== undefined ? options.rounding : 1;
+        formattedValueStr = value.toFixed(decimals);
+    } else if (value !== null && value !== undefined) {
+        formattedValueStr = String(value);
+    } else {
+        formattedValueStr = "---";
+    }
+
+    // auto fit scaling
+    useEffect(() => {
+        if (width <= 0 || height <= 0) return;
+
+        if (flipRef.current) {
+            let finalSize = options.cardSize;
+
+            if (options.autoSize) {
+                // safety padding inside container
+                const PADDING = 16; 
+                // gap between name, flip, unit elements
+                const LAYOUT_GAP = 12;
+
+                let availWidth = width - PADDING;
+                let availHeight = height - PADDING;
+
+                // subtract space for unit
+                if (options.showUnit && unit) {
+                    const unitSize = (options.unitFontSize || 24);
+                    // left/right takes width
+                    if (options.unitPos === 'left' || options.unitPos === 'right') {
+                        availWidth -= (unitSize + LAYOUT_GAP); 
+                    } 
+                    // top/bottom takes height
+                    else {
+                        availHeight -= (unitSize + LAYOUT_GAP);
+                    }
+                }
+
+                // subtract space for name
+                if (options.showName && name) {
+                    const nameSize = (options.nameFontSize || 18);
+                    if (options.namePos === 'left' || options.namePos === 'right') {
+                        availWidth -= (nameSize + LAYOUT_GAP);
+                    } else {
+                        availHeight -= (nameSize + LAYOUT_GAP);
+                    }
+                }
+
+                // calculate card size
+                // how many cards we need
+                const realDigitCount = Math.max(options.digitCount, formattedValueStr.length);
+                const gapBetweenCards = (options.gap !== undefined ? options.gap : 2);
+                
+                // card aspect ratio
+                const CARD_ASPECT_RATIO = 0.70; 
+
+                // total width taken by gaps
+                const totalGapWidth = Math.max(0, (realDigitCount - 1) * gapBetweenCards);
+                
+                // max width per card
+                const maxCardWidth = Math.max(0, availWidth - totalGapWidth) / realDigitCount;
+                
+                // convert to height since cardSize is height
+                const sizeBasedOnWidth = maxCardWidth / CARD_ASPECT_RATIO;
+                
+                // check height constraint
+                const sizeBasedOnHeight = Math.max(0, availHeight);
+
+                // pick smaller dimension to fit both axes
+                finalSize = Math.floor(Math.min(sizeBasedOnWidth, sizeBasedOnHeight));
+                
+                // absolute minimum so it doesn't disappear
+                if (finalSize < 10) finalSize = 10;
+            }
+
+            // send calculated size to engine
+            // unitPos is none since we render unit in react
+            const config = { ...options, cardSize: finalSize, unitPos: 'none' };
+            
+            requestAnimationFrame(() => {
+                if (flipRef.current && flipRef.current.setConfig) {
+                    flipRef.current.setConfig(config);
+                }
+            });
+        }
+    }, [options, width, height, formattedValueStr.length]); // refresh when text length changes
+
+    // send value to engine
+    useEffect(() => {
+        if (flipRef.current) {
+            const overrides: any = {};
+            if (options.thresholdTarget === 'text' && thresholdColor) overrides.overrideText = thresholdColor;
+            if (options.thresholdTarget === 'tile' && thresholdColor) overrides.overrideTile = thresholdColor;
+
+            if (flipRef.current.updateColors) flipRef.current.updateColors(overrides);
+            
+            if (flipRef.current.setValue) {
+                requestAnimationFrame(() => {
+                    // send raw value, engine will format/round it
+                    if (flipRef.current) flipRef.current.setValue(value, '');
+                });
+            }
+        }
+    }, [value, options.thresholdTarget, thresholdColor, options.rounding]);
+
+    // styling
+    const commonTextStyle: React.CSSProperties = {
+        fontFamily: '"Oswald", "Roboto Mono", sans-serif',
+        opacity: 0.8,
+        fontWeight: 500,
+        whiteSpace: 'nowrap',
+        color: (options.thresholdTarget === 'text' && thresholdColor) ? thresholdColor : 'inherit',
+    };
+
+    const unitElement = options.showUnit && unit ? (
+        <div style={{
+            ...commonTextStyle,
+            fontSize: `${options.unitFontSize || 24}px`,
+            transform: options.unitRotation ? 'rotate(-90deg)' : 'none',
+        }}>{unit}</div>
+    ) : null;
+
+    const nameElement = options.showName && name ? (
+        <div style={{
+            ...commonTextStyle,
+            fontSize: `${options.nameFontSize || 18}px`,
+            // Marginesy nie są potrzebne tutaj, bo używamy gap w kontenerze flex
+        }}>{name}</div>
+    ) : null;
+
+    // container for flip and unit
+    const coreContainerStyle: React.CSSProperties = {
+        display: 'flex',
+        flexDirection: (options.unitPos === 'left' || options.unitPos === 'right') ? 'row' : 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '12px' // layout gap accounted in calculations
+    };
+
+    if (options.unitAlign === 'start') coreContainerStyle.alignItems = 'flex-start';
+    if (options.unitAlign === 'end') coreContainerStyle.alignItems = 'flex-end';
+
+    const coreContent = (
+        <div style={coreContainerStyle}>
+            {(options.unitPos === 'top' || options.unitPos === 'left') && unitElement}
+            <flip-sensor-card ref={flipRef} style={{ display: 'block' }} />
+            {(options.unitPos === 'bottom' || options.unitPos === 'right') && unitElement}
+        </div>
+    );
+
+    // main container for name and core
+    const wrapperStyle: React.CSSProperties = {
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: (options.namePos === 'left' || options.namePos === 'right') ? 'row' : 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '12px' // layout gap accounted in calculations
+    };
+
+    if (options.nameAlign === 'start') wrapperStyle.alignItems = 'flex-start';
+    if (options.nameAlign === 'end') wrapperStyle.alignItems = 'flex-end';
+
+    return (
+        <div style={wrapperStyle}>
+             {(options.namePos === 'top' || options.namePos === 'left') && nameElement}
+             {coreContent}
+             {(options.namePos === 'bottom' || options.namePos === 'right') && nameElement}
+        </div>
+    );
+};
+
+
+// main panel component
+interface Props extends PanelProps<FlipOptions> {}
+
+export const FlipBoard: React.FC<Props> = ({ options, data, width, height }) => {
+    
+    const seriesList = data.series;
+    if (!seriesList || seriesList.length === 0) {
+        return <div style={{width, height, display:'flex', alignItems:'center', justifyContent:'center'}}>No Data</div>;
+    }
+
+    const count = seriesList.length;
+    const isVertical = options.layoutDirection !== 'horizontal'; 
+
+    // calculate item dimensions
+    // use floor to avoid fractional pixels that break rendering
+    const itemWidth = isVertical ? width : Math.floor(width / count);
+    const itemHeight = isVertical ? Math.floor(height / count) : height;
+
+    return (
+        <div style={{
+            width,
+            height,
+            display: 'flex',
+            flexDirection: isVertical ? 'column' : 'row',
+            overflow: 'hidden'
+        }}>
+            {seriesList.map((series, i) => {
+                const field = series.fields.find(f => f.type === 'number') || series.fields[0];
+                const rawValue = field.values.get(field.values.length - 1);
+                
+                const displayName = getFieldDisplayName(field, series, data.series);
+                
+                // show --- if no value
+                const valueToSend = (rawValue !== null && rawValue !== undefined) ? rawValue : "---";
+                const unitToSend = options.customUnit || field.config.unit || '';
+
+                const displayValue = field.display ? field.display(valueToSend) : { color: undefined };
+                let itemBg = 'transparent';
+                if (options.thresholdTarget === 'panel' && displayValue.color) {
+                    itemBg = displayValue.color;
+                }
+
+                // separator lines
+                const borderColor = 'rgba(255, 255, 255, 0.1)';
+                const borderStyle: React.CSSProperties = {
+                    width: itemWidth, 
+                    height: itemHeight, 
+                    background: itemBg,
+                    position: 'relative',
+                    // flex center to center content in grid cell
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '4px',
+                    boxSizing: 'border-box',
+                    overflow: 'hidden'
+                };
+
+                if (options.showSeparators) {
+                    if (isVertical && i < count - 1) borderStyle.borderBottom = `1px solid ${borderColor}`;
+                    if (!isVertical && i < count - 1) borderStyle.borderRight = `1px solid ${borderColor}`;
+                }
+
+                return (
+                    <div 
+                        key={i} 
+                        style={borderStyle}
+                        role="meter"
+                        aria-label={`${displayName}: ${valueToSend} ${unitToSend}`}
+                        aria-valuenow={typeof valueToSend === 'number' ? valueToSend : undefined}
+                    >
+                        <FlipItem 
+                            width={itemWidth}
+                            height={itemHeight}
+                            options={options}
+                            value={valueToSend}
+                            unit={unitToSend}
+                            name={displayName}
+                            thresholdColor={displayValue.color}
+                        />
+                    </div>
+                );
+            })}
+        </div>
+    );
+};

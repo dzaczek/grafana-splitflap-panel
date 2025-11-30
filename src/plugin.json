@@ -1,0 +1,37 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "panel",
+  "name": "Split Flap",
+  "id": "dzaczek-splitflap-panel",
+  "info": {
+    "keywords": [
+      "panel",
+      "splitflap",
+      "retro",
+      "iot",
+      "display",
+      "flip"
+    ],
+    "description": "A retro-style Split Flap display panel for Grafana. Perfect for visualizing counters, metrics, and status codes with a classic airport terminal aesthetic.",
+    "author": {
+      "name": "Dzaczek"
+    },
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [
+      {
+        "name": "GitHub",
+        "url": "https://github.com/dzaczek/grafana-splitflap"
+      }
+    ],
+    "screenshots": [],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "dependencies": {
+    "grafanaDependency": ">=10.4.0",
+    "plugins": []
+  }
+}

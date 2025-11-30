@@ -1,0 +1,29 @@
+export interface FlipOptions {
+  theme: string;
+  digitCount: number;
+  autoSize: boolean;
+  cardSize: number;
+  gap: number;
+  rounding: number;
+  speed: number;
+  spinSpeed: number;
+  thresholdTarget: 'none' | 'text' | 'tile' | 'panel';
+
+  // Jednostki
+  showUnit: boolean;
+  unitPos: 'top' | 'bottom' | 'left' | 'right' | 'none'; 
+  unitAlign: 'start' | 'center' | 'end'; 
+  unitRotation: boolean; 
+  customUnit: string; 
+  unitFontSize: number;
+
+  // Nazwy
+  showName: boolean;
+  namePos: 'top' | 'bottom' | 'left' | 'right';
+  nameAlign: 'start' | 'center' | 'end';
+  nameFontSize: number;
+  
+  // UKŁAD (Kluczowe dla Twojego problemu)
+  layoutDirection: 'vertical' | 'horizontal';
+  showSeparators: boolean;  
+}
