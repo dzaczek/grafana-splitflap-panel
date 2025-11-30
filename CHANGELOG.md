@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.28-beta.14 (2025-11-30)
+
+### Maintenance
+- Bump version to retry build process.
+
 ## 1.1.28-beta.13 (2025-11-30)
 
 ### Maintenance
