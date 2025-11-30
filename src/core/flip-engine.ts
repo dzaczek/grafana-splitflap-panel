@@ -17,7 +17,7 @@ export class FlipSensorCard extends HTMLElement {
   private currentDisplayValue: string[] = [];
   // cache value in case data arrives before dom is ready
   private cachedValue: { val: any, unit: string } | null = null;
-  private lastState: string = '';
+  private lastState = '';
   
   // color overrides from react thresholds
   private colorOverrides: { overrideText?: string; overrideTile?: string } = {};
@@ -261,7 +261,7 @@ export class FlipSensorCard extends HTMLElement {
     this.cachedValue = { val: value, unit: unitFromData };
     
     // if dom not ready yet, connectedCallback will handle it
-    if (!this.content) return;
+    if (!this.content) { return; }
 
     this.updateDisplayLogic(value, unitFromData, false);
   }
@@ -291,7 +291,7 @@ export class FlipSensorCard extends HTMLElement {
 
   // apply theme colors and overrides to css variables
   private applyThemeVariables() {
-      if (!this.shadowRoot) return;
+      if (!this.shadowRoot) { return; }
       const themeName = this.config.theme || 'classic';
       const t = this.themes[themeName] || this.themes['classic'];
       
@@ -320,10 +320,10 @@ export class FlipSensorCard extends HTMLElement {
   }
 
   private render() {
-    if (!this.shadowRoot) return;
+    if (!this.shadowRoot) { return; }
     
     // prevent double rendering
-    if (this.shadowRoot.getElementById('display')) return;
+    if (this.shadowRoot.getElementById('display')) { return; }
 
     this.shadowRoot.innerHTML = `
       <style>
@@ -592,7 +592,7 @@ export class FlipSensorCard extends HTMLElement {
 
   // add or remove cards as needed
   private async updateDisplay(inputRaw: string, skipAnimation: boolean) {
-    if (!this.content) return;
+    if (!this.content) { return; }
     const input = String(inputRaw);
     
     // figure out how many cards we need
@@ -629,9 +629,9 @@ export class FlipSensorCard extends HTMLElement {
 
     const promises = targetChars.map((targetChar, index) => {
       const unit = units[index];
-      if (!unit) return Promise.resolve();
+      if (!unit) { return Promise.resolve(); }
       const currentChar = this.currentDisplayValue[index] || ' ';
-      if (currentChar === targetChar) return Promise.resolve();
+      if (currentChar === targetChar) { return Promise.resolve(); }
       return this.spinDigit(unit, currentChar, targetChar, index);
     });
 
@@ -640,14 +640,14 @@ export class FlipSensorCard extends HTMLElement {
 
   private updateStatic(unit: HTMLElement, char: string) {
     // safety check
-    if (!this.isConnected) return;
+    if (!this.isConnected) { return; }
     const setVal = (sel: string) => unit.querySelector(sel)?.setAttribute('data-val', char);
     setVal('.top'); setVal('.bottom'); setVal('.flap.front'); setVal('.flap.back');
   }
 
   private async spinDigit(element: HTMLElement, startChar: string, endChar: string, index: number) {
     // check if card is still in DOM
-    if (!element.isConnected) return;
+    if (!element.isConnected) { return; }
     
     let current = startChar;
     let safety = 0;
@@ -668,11 +668,11 @@ export class FlipSensorCard extends HTMLElement {
         endIndex = activeDrum.indexOf(endChar);
     }
 
-    if (startIndex === -1) startIndex = 0;
-    if (endIndex === -1) endIndex = 0;
+    if (startIndex === -1) { startIndex = 0; }
+    if (endIndex === -1) { endIndex = 0; }
     
     let distance = endIndex - startIndex;
-    if (distance < 0) distance += activeDrum.length;
+    if (distance < 0) { distance += activeDrum.length; }
     
     const isFullDrum = (activeDrum === this.drumChars);
     const stepsTotal = distance;
@@ -703,7 +703,7 @@ export class FlipSensorCard extends HTMLElement {
       }
       
       // force normal speed for single step
-      if (stepsTotal === 1) currentSpeed = this.normalSpeed;
+      if (stepsTotal === 1) { currentSpeed = this.normalSpeed; }
 
       let idx = activeDrum.indexOf(current);
       let nextIdx = (idx + 1) % activeDrum.length;

@@ -4,6 +4,7 @@ import { FlipOptions } from '../types';
 import '../core/flip-engine';
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface IntrinsicElements {
       'flip-sensor-card': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
@@ -39,7 +40,7 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
 
     // auto fit scaling
     useEffect(() => {
-        if (width <= 0 || height <= 0) return;
+        if (width <= 0 || height <= 0) { return; }
 
         if (flipRef.current) {
             let finalSize = options.cardSize;
@@ -100,7 +101,7 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
                 finalSize = Math.floor(Math.min(sizeBasedOnWidth, sizeBasedOnHeight));
                 
                 // absolute minimum so it doesn't disappear
-                if (finalSize < 10) finalSize = 10;
+                if (finalSize < 10) { finalSize = 10; }
             }
 
             // send calculated size to engine
@@ -113,21 +114,21 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
                 }
             });
         }
-    }, [options, width, height, formattedValueStr.length]); // refresh when text length changes
+    }, [options, width, height, formattedValueStr.length, name, unit]); // refresh when text length changes
 
     // send value to engine
     useEffect(() => {
         if (flipRef.current) {
             const overrides: any = {};
-            if (options.thresholdTarget === 'text' && thresholdColor) overrides.overrideText = thresholdColor;
-            if (options.thresholdTarget === 'tile' && thresholdColor) overrides.overrideTile = thresholdColor;
+            if (options.thresholdTarget === 'text' && thresholdColor) { overrides.overrideText = thresholdColor; }
+            if (options.thresholdTarget === 'tile' && thresholdColor) { overrides.overrideTile = thresholdColor; }
 
-            if (flipRef.current.updateColors) flipRef.current.updateColors(overrides);
+            if (flipRef.current.updateColors) { flipRef.current.updateColors(overrides); }
             
             if (flipRef.current.setValue) {
                 requestAnimationFrame(() => {
                     // send raw value, engine will format/round it
-                    if (flipRef.current) flipRef.current.setValue(value, '');
+                    if (flipRef.current) { flipRef.current.setValue(value, ''); }
                 });
             }
         }
@@ -167,8 +168,8 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
         gap: '12px' // layout gap accounted in calculations
     };
 
-    if (options.unitAlign === 'start') coreContainerStyle.alignItems = 'flex-start';
-    if (options.unitAlign === 'end') coreContainerStyle.alignItems = 'flex-end';
+    if (options.unitAlign === 'start') { coreContainerStyle.alignItems = 'flex-start'; }
+    if (options.unitAlign === 'end') { coreContainerStyle.alignItems = 'flex-end'; }
 
     const coreContent = (
         <div style={coreContainerStyle}>
@@ -189,8 +190,8 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
         gap: '12px' // layout gap accounted in calculations
     };
 
-    if (options.nameAlign === 'start') wrapperStyle.alignItems = 'flex-start';
-    if (options.nameAlign === 'end') wrapperStyle.alignItems = 'flex-end';
+    if (options.nameAlign === 'start') { wrapperStyle.alignItems = 'flex-start'; }
+    if (options.nameAlign === 'end') { wrapperStyle.alignItems = 'flex-end'; }
 
     return (
         <div style={wrapperStyle}>
@@ -202,11 +203,11 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
 };
 
 
-// helper to reduce values
-function reduceValues(values: any, aggregation: string): any {
-    if (!values || values.length === 0) return null;
-    
-    // convert vector to array
+    // helper to reduce values
+    function reduceValues(values: any, aggregation: string): any {
+        if (!values || values.length === 0) { return null; }
+        
+        // convert vector to array
     const arr = Array.from(values);
     const validNumbers = arr.filter((v: any) => typeof v === 'number' && !isNaN(v)) as number[];
 
@@ -215,7 +216,7 @@ function reduceValues(values: any, aggregation: string): any {
         case 'firstNotNull': return arr.find((v: any) => v !== null && v !== undefined);
         case 'lastNotNull': 
             for (let i = arr.length - 1; i >= 0; i--) {
-                if (arr[i] !== null && arr[i] !== undefined) return arr[i];
+                if (arr[i] !== null && arr[i] !== undefined) { return arr[i]; }
             }
             return null;
         case 'min': return validNumbers.length ? Math.min(...validNumbers) : null;
@@ -319,8 +320,8 @@ export const FlipBoard: React.FC<Props> = ({ options, data, width, height }) => 
                 };
 
                 if (options.showSeparators) {
-                    if (isVertical && i < count - 1) borderStyle.borderBottom = `1px solid ${borderColor}`;
-                    if (!isVertical && i < count - 1) borderStyle.borderRight = `1px solid ${borderColor}`;
+                    if (isVertical && i < count - 1) { borderStyle.borderBottom = `1px solid ${borderColor}`; }
+                    if (!isVertical && i < count - 1) { borderStyle.borderRight = `1px solid ${borderColor}`; }
                 }
 
                 return (
