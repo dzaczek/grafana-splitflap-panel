@@ -1,0 +1,59 @@
+image: node:20
+
+stages:
+  - test
+  - build
+  - package
+
+# Cache dla szybszego instalowania zależności
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+# Instalacja zależności (wspólna dla wszystkich jobów)
+before_script:
+  - yarn install --frozen-lockfile
+
+test_plugin:
+  stage: test
+  script:
+    - yarn lint
+    - yarn test:ci
+
+build_plugin:
+  stage: build
+  needs: ["test_plugin"]
+  script:
+    - yarn build
+    # Podpisywanie - wymaga zmiennej GRAFANA_API_KEY w Settings -> CI/CD -> Variables
+    # Zmień rootUrls na adres swojego repozytorium lub serwera jeśli plugin jest prywatny
+    - npx @grafana/sign-plugin@latest --rootUrls https://github.com/dzaczek/grafana-splitflap-panel
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 hour
+
+package_plugin:
+  stage: package
+  needs: ["build_plugin"]
+  before_script:
+    - apt-get update && apt-get install -y zip
+  script:
+    # Pobranie ID i Wersji z plików JSON
+    - PLUGIN_ID=$(node -p "require('./src/plugin.json').id")
+    - VERSION=$(node -p "require('./package.json').version")
+    - ZIP_NAME="${PLUGIN_ID}-${VERSION}.zip"
+    
+    # Przygotowanie struktury folderów zgodnie z wymogami Grafany (folder o nazwie ID pluginu)
+    - mv dist $PLUGIN_ID
+    
+    # Pakowanie do ZIP
+    - zip -r $ZIP_NAME $PLUGIN_ID
+    
+    - echo "Plugin packaged successfully: $ZIP_NAME"
+  artifacts:
+    paths:
+      - "*.zip"
+    expire_in: 1 week
+
