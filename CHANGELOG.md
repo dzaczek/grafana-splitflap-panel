@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.28-beta.11 (2025-11-30)
+
+### Maintenance
+- Fixed Github Action reference for `grafana/plugin-actions/build-plugin`.
+
 ## 1.1.28-beta.10 (2025-11-30)
 
 ### Maintenance
