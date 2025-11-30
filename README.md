@@ -35,6 +35,14 @@ Comes with a bunch of built-in styles so you don't have to write CSS:
 | **Main Content** | Choose what goes on the flaps: `Value`, `Name`, `Name + Value`, or `Value + Name`. |
 | **Auto Fit** | Automatically calculates the best card size to fit the panel. Turn off for fixed size. |
 
+## Examples
+
+See the panel in action with different configurations:
+
+### Default View
+![Split Flap Panel Example](src/img/logo.svg)
+*Shows numeric values with the classic airport look.*
+
 ## Usage
 
 1. **Add it**: Find "Split Flap" in the visualization list.
