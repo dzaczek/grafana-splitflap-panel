@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.28-beta.24 (2025-11-30)
+
+### Maintenance
+- Switched to `softprops/action-gh-release` for reliable GitHub Release creation.
+
 ## 1.1.28-beta.23 (2025-11-30)
 
 ### Maintenance

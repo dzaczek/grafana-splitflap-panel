@@ -62,12 +62,15 @@ jobs:
         run: ls -la
 
       - name: Create Release
-        uses: ncipollo/release-action@v1
+        uses: softprops/action-gh-release@v1
         with:
-          allowUpdates: true
-          artifactErrorsFailBuild: true
-          artifacts: '*.zip,*.md5'
-          token: ${{ secrets.GITHUB_TOKEN }}
+          files: |
+            *.zip
+            *.md5
+          draft: false
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Attest build provenance
         uses: actions/attest-build-provenance@v1
