@@ -40,7 +40,7 @@ Comes with a bunch of built-in styles so you don't have to write CSS:
 See the panel in action with different configurations:
 
 ### Default View
-![Split Flap Panel Example](src/img/logo.svg)
+![Split Flap Panel Example](src/img/example_1.jpg)
 *Shows numeric values with the classic airport look.*
 
 ## Usage
