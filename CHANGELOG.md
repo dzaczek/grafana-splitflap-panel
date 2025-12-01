@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.29 (2025-11-30)
+
+### Maintenance
+- Official release (removed `-beta` suffix).
+- Stabilized build workflow with manual signing and packaging steps.
+
 ## 1.1.28-beta.26 (2025-11-30)
 
 ### Maintenance
