@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.30 (2025-11-30)
+
+### Maintenance
+- Reverted to official `grafana/plugin-actions/build-plugin` workflow, now that signing issues are resolved via CLI flags.
+- Kept `softprops/action-gh-release` for artifact publishing.
+
 ## 1.1.29 (2025-11-30)
 
 ### Maintenance

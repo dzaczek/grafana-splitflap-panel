@@ -13,54 +13,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v4
+      - uses: grafana/plugin-actions/build-plugin@v1
         with:
-          node-version: '20'
-          cache: 'yarn'
+          policy_token: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
 
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile --ignore-engines
-
-      - name: Build frontend
-        run: yarn build
-
-      - name: Sign plugin
-        run: yarn sign
-        env:
-          GRAFANA_ACCESS_POLICY_TOKEN: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
-
-      - name: Get plugin metadata
-        id: metadata
-        run: |
-          sudo apt-get install -y jq
-          export GRAFANA_PLUGIN_ID=$(jq -r .id dist/plugin.json)
-          export GRAFANA_PLUGIN_VERSION=$(jq -r .version dist/plugin.json)
-          export GRAFANA_PLUGIN_TYPE=$(jq -r .type dist/plugin.json)
-          export GRAFANA_PLUGIN_ARTIFACT=${GRAFANA_PLUGIN_ID}-${GRAFANA_PLUGIN_VERSION}.zip
-          export GRAFANA_PLUGIN_ARTIFACT_CHECKSUM=${GRAFANA_PLUGIN_ARTIFACT}.md5
-          
-          echo "plugin-id=${GRAFANA_PLUGIN_ID}" >> $GITHUB_OUTPUT
-          echo "plugin-version=${GRAFANA_PLUGIN_VERSION}" >> $GITHUB_OUTPUT
-          echo "plugin-type=${GRAFANA_PLUGIN_TYPE}" >> $GITHUB_OUTPUT
-          echo "archive=${GRAFANA_PLUGIN_ARTIFACT}" >> $GITHUB_OUTPUT
-          echo "archive-checksum=${GRAFANA_PLUGIN_ARTIFACT_CHECKSUM}" >> $GITHUB_OUTPUT
-
-      - name: Package plugin
-        id: package-plugin
-        run: |
-          mv dist dzaczek-splitflap-panel
-          VERSION=${GITHUB_REF_NAME#v}
-          zip -r dzaczek-splitflap-panel-${VERSION}.zip dzaczek-splitflap-panel
-          md5sum dzaczek-splitflap-panel-${VERSION}.zip > dzaczek-splitflap-panel-${VERSION}.zip.md5
-          ls -la
+      - name: List files (Debug)
+        run: ls -R
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            *.zip
-            *.md5
+            **/*.zip
+            **/*.md5
           draft: false
           prerelease: false
         env:
