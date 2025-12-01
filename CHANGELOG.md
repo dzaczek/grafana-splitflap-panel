@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.31 (2025-11-30)
+
+### Maintenance
+- Fixed incorrect path for `grafana/plugin-actions/build-plugin` in release workflow (reverted to explicit tag path).
+
 ## 1.1.30 (2025-11-30)
 
 ### Maintenance
