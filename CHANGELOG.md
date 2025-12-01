@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.28-beta.26 (2025-11-30)
+
+### Maintenance
+- Fixed release artifact naming by using git tag version instead of parsing JSON.
+- Marked release as full release (not prerelease).
+
 ## 1.1.28-beta.25 (2025-11-30)
 
 ### Maintenance
