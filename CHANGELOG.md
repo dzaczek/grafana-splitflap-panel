@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.28-beta.25 (2025-11-30)
+
+### Maintenance
+- Replaced opaque `package-plugin` action with manual `zip` command to ensure artifact creation and correct naming for release upload.
+
 ## 1.1.28-beta.24 (2025-11-30)
 
 ### Maintenance

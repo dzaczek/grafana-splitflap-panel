@@ -48,18 +48,11 @@ jobs:
 
       - name: Package plugin
         id: package-plugin
-        uses: grafana/plugin-actions/package-plugin@package-plugin/v1.0.2
-        with:
-          policy_token: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
-
-      - name: Generate checksum
         run: |
-          for file in *.zip; do
-            md5sum "$file" > "${file}.md5"
-          done
-
-      - name: List files (Debug)
-        run: ls -la
+          mv dist dzaczek-splitflap-panel
+          zip -r dzaczek-splitflap-panel-${{ steps.metadata.outputs.plugin-version }}.zip dzaczek-splitflap-panel
+          md5sum dzaczek-splitflap-panel-${{ steps.metadata.outputs.plugin-version }}.zip > dzaczek-splitflap-panel-${{ steps.metadata.outputs.plugin-version }}.zip.md5
+          ls -la
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
