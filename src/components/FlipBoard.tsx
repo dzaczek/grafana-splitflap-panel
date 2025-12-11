@@ -11,10 +11,11 @@ interface ItemProps {
     value: any;
     unit: string;
     name: string;
+    timezone?: string;
     thresholdColor?: string;
 }
 
-const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, name, thresholdColor }) => {
+const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, name, timezone, thresholdColor }) => {
     // format value same way as engine does
     // need displayed text length not raw number
     const formattedValueStr = useMemo(() => {
@@ -66,6 +67,16 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
                 }
             }
 
+            // subtract space for timezone
+            if (options.showTimezone && timezone) {
+                const timezoneSize = (options.timezoneFontSize || 18);
+                if (options.timezonePos === 'left' || options.timezonePos === 'right') {
+                    availWidth -= (timezoneSize + LAYOUT_GAP);
+                } else {
+                    availHeight -= (timezoneSize + LAYOUT_GAP);
+                }
+            }
+
             // calculate card size
             // how many cards we need
             const realDigitCount = Math.max(options.digitCount, formattedValueStr.length);
@@ -94,7 +105,7 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
         }
 
         return calculatedSize;
-    }, [options, width, height, formattedValueStr.length, name, unit]);
+    }, [options, width, height, formattedValueStr.length, name, unit, timezone]);
 
     // color overrides for thresholds
     const colorOverrides = useMemo(() => {
@@ -139,6 +150,13 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
         }}>{name}</div>
     ) : null;
 
+    const timezoneElement = options.showTimezone && timezone ? (
+        <div style={{
+            ...commonTextStyle,
+            fontSize: `${options.timezoneFontSize || 18}px`,
+        }}>{timezone}</div>
+    ) : null;
+
     // container for flip and unit
     const coreContainerStyle: React.CSSProperties = {
         display: 'flex',
@@ -163,25 +181,62 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
         </div>
     );
 
-    // main container for name and core
+    // main container for name/timezone and core
+    // For clock mode, prioritize timezone if shown, otherwise use name logic
+    const useTimezoneForLayout = options.mode === 'clock' && options.showTimezone && timezone;
+    const useNameForLayout = options.showName && name && !useTimezoneForLayout;
+    
+    const mainDirection = (useNameForLayout && (options.namePos === 'left' || options.namePos === 'right')) ||
+                          (useTimezoneForLayout && (options.timezonePos === 'left' || options.timezonePos === 'right'))
+                          ? 'row' : 'column';
+    
     const wrapperStyle: React.CSSProperties = {
         width: '100%',
         height: '100%',
         display: 'flex',
-        flexDirection: (options.namePos === 'left' || options.namePos === 'right') ? 'row' : 'column',
+        flexDirection: mainDirection,
         justifyContent: 'center',
         alignItems: 'center',
         gap: '12px' // layout gap accounted in calculations
     };
 
-    if (options.nameAlign === 'start') { wrapperStyle.alignItems = 'flex-start'; }
-    if (options.nameAlign === 'end') { wrapperStyle.alignItems = 'flex-end'; }
+    // Alignment - use name alignment if name is shown, otherwise timezone alignment
+    if (useNameForLayout) {
+        if (options.nameAlign === 'start') { wrapperStyle.alignItems = 'flex-start'; }
+        if (options.nameAlign === 'end') { wrapperStyle.alignItems = 'flex-end'; }
+    } else if (useTimezoneForLayout) {
+        if (options.timezoneAlign === 'start') { wrapperStyle.alignItems = 'flex-start'; }
+        if (options.timezoneAlign === 'end') { wrapperStyle.alignItems = 'flex-end'; }
+    }
+
+    // Render order: top/left elements, core, bottom/right elements
+    const renderTopLeft = () => {
+        const elements = [];
+        if (options.showName && name && (options.namePos === 'top' || options.namePos === 'left')) {
+            elements.push(nameElement);
+        }
+        if (options.showTimezone && timezone && (options.timezonePos === 'top' || options.timezonePos === 'left')) {
+            elements.push(timezoneElement);
+        }
+        return elements.length > 0 ? elements : null;
+    };
+
+    const renderBottomRight = () => {
+        const elements = [];
+        if (options.showName && name && (options.namePos === 'bottom' || options.namePos === 'right')) {
+            elements.push(nameElement);
+        }
+        if (options.showTimezone && timezone && (options.timezonePos === 'bottom' || options.timezonePos === 'right')) {
+            elements.push(timezoneElement);
+        }
+        return elements.length > 0 ? elements : null;
+    };
 
     return (
         <div style={wrapperStyle}>
-             {(options.namePos === 'top' || options.namePos === 'left') && nameElement}
+             {renderTopLeft()}
              {coreContent}
-             {(options.namePos === 'bottom' || options.namePos === 'right') && nameElement}
+             {renderBottomRight()}
         </div>
     );
 };
@@ -329,6 +384,38 @@ export const FlipBoard: React.FC<Props> = ({ options, data, width, height }) => 
 
     if (options.mode === 'clock') {
         const clockStr = getClockString(options, currentTime);
+        
+        // Get timezone display name
+        let timezoneDisplay = '';
+        if (options.showTimezone && options.clockTimezone) {
+            // Try to get a readable timezone name
+            try {
+                const timeZone = options.clockTimezone || undefined;
+                const formatter = new Intl.DateTimeFormat('en-US', {
+                    timeZoneName: 'short',
+                    timeZone: timeZone
+                });
+                const parts = formatter.formatToParts(currentTime);
+                const tzPart = parts.find(p => p.type === 'timeZoneName');
+                timezoneDisplay = tzPart ? tzPart.value : options.clockTimezone;
+            } catch (e) {
+                // Fallback to timezone string or find label from TIMEZONES
+                timezoneDisplay = options.clockTimezone;
+            }
+        } else if (options.showTimezone && !options.clockTimezone) {
+            // Browser local timezone
+            try {
+                const formatter = new Intl.DateTimeFormat('en-US', {
+                    timeZoneName: 'short'
+                });
+                const parts = formatter.formatToParts(currentTime);
+                const tzPart = parts.find(p => p.type === 'timeZoneName');
+                timezoneDisplay = tzPart ? tzPart.value : 'Local';
+            } catch (e) {
+                timezoneDisplay = 'Local';
+            }
+        }
+        
         return (
              <div style={{
                 width,
@@ -346,6 +433,7 @@ export const FlipBoard: React.FC<Props> = ({ options, data, width, height }) => 
                     value={clockStr}
                     unit=""
                     name=""
+                    timezone={timezoneDisplay}
                 />
              </div>
         );

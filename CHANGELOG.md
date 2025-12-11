@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.1.37 (2025-12-11)
+## 2.1.37 (2025-12-12)
 
 ### Summary
 This release represents a major evolution of the Split Flap Panel, with significant improvements across security, architecture, themes, and documentation. The journey from 1.1.31 to 2.1.37 has been organized into three main development stages:

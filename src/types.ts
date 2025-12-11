@@ -8,6 +8,10 @@ export interface FlipOptions {
   clockSeparator: string;
   clockDateFormat: string;
   clockDayOfWeek: boolean;
+  showTimezone: boolean;
+  timezonePos: 'top' | 'bottom' | 'left' | 'right';
+  timezoneAlign: 'start' | 'center' | 'end';
+  timezoneFontSize: number;
 
   theme: string;
   digitCount: number;

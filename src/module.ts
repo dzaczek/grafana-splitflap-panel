@@ -508,6 +508,46 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
         defaultValue: false,
         showIf: c => c.mode === 'clock'
     })
+    .addBooleanSwitch({
+        path: 'showTimezone',
+        name: 'Show Timezone',
+        defaultValue: false,
+        showIf: c => c.mode === 'clock'
+    })
+    .addRadio({
+        path: 'timezonePos',
+        name: 'Timezone Position',
+        defaultValue: 'bottom',
+        settings: {
+            options: [
+                { value: 'top', label: 'Top' },
+                { value: 'bottom', label: 'Bottom' },
+                { value: 'left', label: 'Left' },
+                { value: 'right', label: 'Right' },
+            ]
+        },
+        showIf: c => c.mode === 'clock' && c.showTimezone
+    })
+    .addRadio({
+        path: 'timezoneAlign',
+        name: 'Timezone Alignment',
+        defaultValue: 'center',
+        settings: {
+            options: [
+                { value: 'start', label: 'Start' },
+                { value: 'center', label: 'Center' },
+                { value: 'end', label: 'End' },
+            ]
+        },
+        showIf: c => c.mode === 'clock' && c.showTimezone
+    })
+    .addSliderInput({
+        path: 'timezoneFontSize',
+        name: 'Timezone Font Size',
+        defaultValue: 18,
+        settings: { min: 8, max: 100 },
+        showIf: c => c.mode === 'clock' && c.showTimezone
+    })
 
     // DATA OPTIONS (Hidden in Clock Mode)
     .addRadio({

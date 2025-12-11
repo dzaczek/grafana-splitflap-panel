@@ -122,6 +122,10 @@ See the panel in action with different configurations:
 | **12-Hour Format** | Use 12-hour format (AM/PM) instead of 24-hour. | Off |
 | **Show Seconds** | Display seconds in the time. | On |
 | **Timezone** | Select timezone (400+ available) or use browser local time. | Browser Local |
+| **Show Timezone** | Display timezone name (e.g., "EST", "PST", "UTC") outside the clock. | Off |
+| **Timezone Position** | Where to place the timezone: Top, Bottom, Left, or Right. | Bottom |
+| **Timezone Alignment** | How to align the timezone: Start, Center, or End. | Center |
+| **Timezone Font Size** | Font size for the timezone (8-100px). | 18 |
 | **Time Separator** | Character between hours, minutes, seconds: Colon (:), Dot (.), Dash (-), Space ( ), or None. | Colon |
 | **Date Format** | Optional date display format: DD/MM/YYYY, MM/DD/YYYY, YYYY-MM-DD, DD.MM.YYYY, or None. | None |
 | **Show Day of Week** | Display abbreviated day name (Mon, Tue, etc.). | Off |
