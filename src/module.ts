@@ -70,6 +70,7 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
           { value: 'aviation-tarmac', label: 'Aviation: Tarmac (Org/Gry)' },
           { value: 'swiss-sbb-black', label: 'Swiss SBB: Black' },
           { value: 'swiss-sbb-white', label: 'Swiss SBB: White' },
+          { value: 'swiss-sbb-blue', label: 'Swiss SBB: Blue (Red Border)' },
           { value: 'airport', label: 'Retro Airport (Gold/Dark)' },
           { value: 'mechanical', label: 'Mechanical (White/Metal)' },
           { value: 'cyberpunk', label: 'Cyberpunk (Cyan/Black)' },
