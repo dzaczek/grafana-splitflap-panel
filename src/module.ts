@@ -65,6 +65,11 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
         options: [
           { value: 'classic', label: 'Classic (Flat)' },
           { value: 'classic-3d', label: 'Classic 3D' },
+          { value: 'aviation-departure', label: 'Aviation: Departure (Yel/Blk)' },
+          { value: 'aviation-cockpit', label: 'Aviation: Cockpit (Cyan/Gray)' },
+          { value: 'aviation-tarmac', label: 'Aviation: Tarmac (Org/Gry)' },
+          { value: 'swiss-sbb-black', label: 'Swiss SBB: Black' },
+          { value: 'swiss-sbb-white', label: 'Swiss SBB: White' },
           { value: 'airport', label: 'Retro Airport (Gold/Dark)' },
           { value: 'mechanical', label: 'Mechanical (White/Metal)' },
           { value: 'cyberpunk', label: 'Cyberpunk (Cyan/Black)' },

@@ -116,7 +116,7 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
 
     // styling
     const commonTextStyle: React.CSSProperties = {
-        fontFamily: '"Oswald", "Roboto Mono", sans-serif',
+        fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
         opacity: 0.8,
         fontWeight: 500,
         whiteSpace: 'nowrap',
@@ -218,6 +218,18 @@ interface Props extends PanelProps<FlipOptions> {}
 
 export const FlipBoard: React.FC<Props> = ({ options, data, width, height }) => {
     
+    // Inject fonts for Aviation styles
+    const fontImport = useMemo(() => {
+        if (options.theme && options.theme.startsWith('aviation-')) {
+             return (
+                 <style>
+                     {`@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Share+Tech+Mono&display=swap');`}
+                 </style>
+             );
+        }
+        return null;
+    }, [options.theme]);
+
     const seriesList = data.series;
     if (!seriesList || seriesList.length === 0) {
         return <div style={{width, height, display:'flex', alignItems:'center', justifyContent:'center'}}>No Data</div>;
@@ -239,6 +251,7 @@ export const FlipBoard: React.FC<Props> = ({ options, data, width, height }) => 
             flexDirection: isVertical ? 'column' : 'row',
             overflow: 'hidden'
         }}>
+            {fontImport}
             {seriesList.map((series, i) => {
                 // find appropriate field to display
                 // prefer number, then string, but avoid 'time' fields unless nothing else exists

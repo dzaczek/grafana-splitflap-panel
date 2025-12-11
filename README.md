@@ -27,6 +27,15 @@ Comes with a bunch of built-in styles so you don't have to write CSS:
 | **E-Ink** | High contrast, paper-like with vignette. | E-readers look |
 | **Glass** | Frosted glass effect with transparency. | Modern UI |
 
+### 🔤 Fonts
+
+Most themes use standard system fonts for best performance. However, **Aviation** themes automatically load specialized fonts from **Google Fonts** to maintain the authentic look:
+
+- **Oswald**: Used in `Aviation: Departure` (Classic airport board style).
+- **Share Tech Mono**: Used in `Aviation: Cockpit` (Technical instrument style).
+
+*Note: If your Grafana instance is offline (air-gapped), these themes will automatically fallback to standard system fonts (Arial, Consolas) and will still be fully functional.*
+
 ### 📊 Data Options
 
 | Option | What it does |
