@@ -1,16 +1,7 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { PanelProps, getFieldDisplayName } from '@grafana/data';
 import { FlipOptions } from '../types';
-import '../core/flip-engine';
-
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace JSX {
-    interface IntrinsicElements {
-      'flip-sensor-card': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
-    }
-  }
-}
+import { FlipDisplay } from './FlipDisplay';
 
 // single flip item component
 interface ItemProps {
@@ -24,115 +15,104 @@ interface ItemProps {
 }
 
 const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, name, thresholdColor }) => {
-    const flipRef = useRef<any>(null);
-
     // format value same way as engine does
     // need displayed text length not raw number
-    let formattedValueStr = "";
-    if (typeof value === 'number') {
-        const decimals = options.rounding !== undefined ? options.rounding : 1;
-        formattedValueStr = value.toFixed(decimals);
-    } else if (value !== null && value !== undefined) {
-        formattedValueStr = String(value);
-    } else {
-        formattedValueStr = "---";
-    }
+    const formattedValueStr = useMemo(() => {
+        if (typeof value === 'number') {
+            const decimals = options.rounding !== undefined ? options.rounding : 1;
+            return value.toFixed(decimals);
+        } else if (value !== null && value !== undefined) {
+            return String(value);
+        } else {
+            return "---";
+        }
+    }, [value, options.rounding]);
 
     // auto fit scaling
-    useEffect(() => {
-        if (width <= 0 || height <= 0) { return; }
+    const finalSize = useMemo(() => {
+        if (width <= 0 || height <= 0) { return options.cardSize; }
 
-        if (flipRef.current) {
-            let finalSize = options.cardSize;
+        let calculatedSize = options.cardSize;
 
-            if (options.autoSize) {
-                // safety padding inside container
-                const PADDING = 16; 
-                // gap between name, flip, unit elements
-                const LAYOUT_GAP = 12;
+        if (options.autoSize) {
+            // safety padding inside container
+            const PADDING = 16; 
+            // gap between name, flip, unit elements
+            const LAYOUT_GAP = 12;
 
-                let availWidth = width - PADDING;
-                let availHeight = height - PADDING;
+            let availWidth = width - PADDING;
+            let availHeight = height - PADDING;
 
-                // subtract space for unit
-                if (options.showUnit && unit) {
-                    const unitSize = (options.unitFontSize || 24);
-                    // left/right takes width
-                    if (options.unitPos === 'left' || options.unitPos === 'right') {
-                        availWidth -= (unitSize + LAYOUT_GAP); 
-                    } 
-                    // top/bottom takes height
-                    else {
-                        availHeight -= (unitSize + LAYOUT_GAP);
-                    }
+            // subtract space for unit
+            if (options.showUnit && unit) {
+                const unitSize = (options.unitFontSize || 24);
+                // left/right takes width
+                if (options.unitPos === 'left' || options.unitPos === 'right') {
+                    availWidth -= (unitSize + LAYOUT_GAP); 
+                } 
+                // top/bottom takes height
+                else {
+                    availHeight -= (unitSize + LAYOUT_GAP);
                 }
-
-                // subtract space for name
-                if (options.showName && name) {
-                    const nameSize = (options.nameFontSize || 18);
-                    if (options.namePos === 'left' || options.namePos === 'right') {
-                        availWidth -= (nameSize + LAYOUT_GAP);
-                    } else {
-                        availHeight -= (nameSize + LAYOUT_GAP);
-                    }
-                }
-
-                // calculate card size
-                // how many cards we need
-                const realDigitCount = Math.max(options.digitCount, formattedValueStr.length);
-                const gapBetweenCards = (options.gap !== undefined ? options.gap : 2);
-                
-                // card aspect ratio
-                const CARD_ASPECT_RATIO = 0.70; 
-
-                // total width taken by gaps
-                const totalGapWidth = Math.max(0, (realDigitCount - 1) * gapBetweenCards);
-                
-                // max width per card
-                const maxCardWidth = Math.max(0, availWidth - totalGapWidth) / realDigitCount;
-                
-                // convert to height since cardSize is height
-                const sizeBasedOnWidth = maxCardWidth / CARD_ASPECT_RATIO;
-                
-                // check height constraint
-                const sizeBasedOnHeight = Math.max(0, availHeight);
-
-                // pick smaller dimension to fit both axes
-                finalSize = Math.floor(Math.min(sizeBasedOnWidth, sizeBasedOnHeight));
-                
-                // absolute minimum so it doesn't disappear
-                if (finalSize < 10) { finalSize = 10; }
             }
 
-            // send calculated size to engine
-            // unitPos is none since we render unit in react
-            const config = { ...options, cardSize: finalSize, unitPos: 'none' };
-            
-            requestAnimationFrame(() => {
-                if (flipRef.current && flipRef.current.setConfig) {
-                    flipRef.current.setConfig(config);
+            // subtract space for name
+            if (options.showName && name) {
+                const nameSize = (options.nameFontSize || 18);
+                if (options.namePos === 'left' || options.namePos === 'right') {
+                    availWidth -= (nameSize + LAYOUT_GAP);
+                } else {
+                    availHeight -= (nameSize + LAYOUT_GAP);
                 }
-            });
-        }
-    }, [options, width, height, formattedValueStr.length, name, unit]); // refresh when text length changes
-
-    // send value to engine
-    useEffect(() => {
-        if (flipRef.current) {
-            const overrides: any = {};
-            if (options.thresholdTarget === 'text' && thresholdColor) { overrides.overrideText = thresholdColor; }
-            if (options.thresholdTarget === 'tile' && thresholdColor) { overrides.overrideTile = thresholdColor; }
-
-            if (flipRef.current.updateColors) { flipRef.current.updateColors(overrides); }
-            
-            if (flipRef.current.setValue) {
-                requestAnimationFrame(() => {
-                    // send raw value, engine will format/round it
-                    if (flipRef.current) { flipRef.current.setValue(value, ''); }
-                });
             }
+
+            // calculate card size
+            // how many cards we need
+            const realDigitCount = Math.max(options.digitCount, formattedValueStr.length);
+            const gapBetweenCards = (options.gap !== undefined ? options.gap : 2);
+            
+            // card aspect ratio
+            const CARD_ASPECT_RATIO = 0.70; 
+
+            // total width taken by gaps
+            const totalGapWidth = Math.max(0, (realDigitCount - 1) * gapBetweenCards);
+            
+            // max width per card
+            const maxCardWidth = Math.max(0, availWidth - totalGapWidth) / realDigitCount;
+            
+            // convert to height since cardSize is height
+            const sizeBasedOnWidth = maxCardWidth / CARD_ASPECT_RATIO;
+            
+            // check height constraint
+            const sizeBasedOnHeight = Math.max(0, availHeight);
+
+            // pick smaller dimension to fit both axes
+            calculatedSize = Math.floor(Math.min(sizeBasedOnWidth, sizeBasedOnHeight));
+            
+            // absolute minimum so it doesn't disappear
+            if (calculatedSize < 10) { calculatedSize = 10; }
         }
-    }, [value, options.thresholdTarget, thresholdColor, options.rounding]);
+
+        return calculatedSize;
+    }, [options, width, height, formattedValueStr.length, name, unit]);
+
+    // color overrides for thresholds
+    const colorOverrides = useMemo(() => {
+        const overrides: { overrideText?: string; overrideTile?: string } = {};
+        if (options.thresholdTarget === 'text' && thresholdColor) { 
+            overrides.overrideText = thresholdColor; 
+        }
+        if (options.thresholdTarget === 'tile' && thresholdColor) { 
+            overrides.overrideTile = thresholdColor; 
+        }
+        return overrides;
+    }, [options.thresholdTarget, thresholdColor]);
+
+    // config with calculated size
+    const displayConfig = useMemo(() => ({
+        ...options,
+        cardSize: finalSize,
+    }), [options, finalSize]);
 
     // styling
     const commonTextStyle: React.CSSProperties = {
@@ -174,7 +154,11 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
     const coreContent = (
         <div style={coreContainerStyle}>
             {(options.unitPos === 'top' || options.unitPos === 'left') && unitElement}
-            <flip-sensor-card ref={flipRef} style={{ display: 'block' }} />
+            <FlipDisplay 
+                value={value}
+                config={displayConfig}
+                colorOverrides={colorOverrides}
+            />
             {(options.unitPos === 'bottom' || options.unitPos === 'right') && unitElement}
         </div>
     );
