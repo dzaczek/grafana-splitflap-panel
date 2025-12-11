@@ -79,6 +79,16 @@ const themes: Record<string, any> = {
     gradientTop: 'linear-gradient(to bottom, #fff 0%, #f7f7f7 100%)',
     gradientBottom: 'linear-gradient(to bottom, #f7f7f7 0%, #fff 100%)',
   },
+  'swiss-sbb-blue': {
+    bg: '#0B1E3C', // SBB Dark Blue
+    text: '#ffffff',
+    radius: '1px',
+    shadow: '0 1px 3px rgba(0,0,0,0.5)',
+    font: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+    border: '1px solid #EB0000', // SBB Red border
+    gradientTop: 'linear-gradient(to bottom, #152244 0%, #0B1E3C 100%)',
+    gradientBottom: 'linear-gradient(to bottom, #0B1E3C 0%, #152244 100%)',
+  },
   'ios-light': {
     bg: '#ffffff',
     text: '#000000',
