@@ -32,7 +32,7 @@ This release represents a major evolution of the Split Flap Panel, with signific
 
 ## Etap 3: Final Polish & Documentation (2.1.x)
 
-### 2.1.32 (2025-12-11)
+### 2.1.32 (2025-12-08)
 
 #### Documentation
 - **Complete README update**: Added all 22 available themes to documentation with descriptions and use cases:
@@ -52,7 +52,7 @@ This release represents a major evolution of the Split Flap Panel, with signific
 
 ## Etap 2: Theme Expansion & Visual Enhancements (1.2.x - 2.0.x)
 
-### 2.0.0 (2025-12-11)
+### 2.0.0 (2025-12-04)
 
 #### Features
 - **Major Theme Expansion**: Added 13 new professional themes bringing total to 22 themes:

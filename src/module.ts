@@ -526,7 +526,7 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
                 { value: 'right', label: 'Right' },
             ]
         },
-        showIf: c => c.mode === 'clock' && c.showTimezone
+        showIf: c => c.mode === 'clock'
     })
     .addRadio({
         path: 'timezoneAlign',
@@ -539,14 +539,14 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
                 { value: 'end', label: 'End' },
             ]
         },
-        showIf: c => c.mode === 'clock' && c.showTimezone
+        showIf: c => c.mode === 'clock'
     })
     .addSliderInput({
         path: 'timezoneFontSize',
         name: 'Timezone Font Size',
         defaultValue: 18,
         settings: { min: 8, max: 100 },
-        showIf: c => c.mode === 'clock' && c.showTimezone
+        showIf: c => c.mode === 'clock'
     })
 
     // DATA OPTIONS (Hidden in Clock Mode)
@@ -656,5 +656,5 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
     .addNumberInput({ path: 'cardSize', name: 'Size (px)', defaultValue: 50, showIf: c => !c.autoSize })
     .addSliderInput({ path: 'gap', name: 'Gap', defaultValue: 4, settings: { min: 0, max: 20 } })
     .addSliderInput({ path: 'speed', name: 'Speed', defaultValue: 0.6, settings: { min: 0.1, max: 2.0, step: 0.1 } })
-    .addSliderInput({ path: 'spinSpeed', name: 'Fast Speed', defaultValue: 0.1, settings: { min: 0.05, max: 0.5, step: 0.01 } });
+    .addSliderInput({ path: 'spinSpeed', name: 'Fast Speed', defaultValue: 0.08, settings: { min: 0.05, max: 0.5, step: 0.01 } });
 });
