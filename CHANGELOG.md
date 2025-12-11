@@ -1,5 +1,27 @@
 # Changelog
 
+## 1.1.32 (2025-12-11)
+
+### Features
+- **New Themes**: Added Aviation themes (Departure, Cockpit, Tarmac), Swiss SBB themes (Black, White, Blue), iOS themes (Light, Dark), Wood, Red 3D, Blue Glass, Rainbow, and Newspaper themes.
+- **Font Improvements**: Updated logo font to use system fonts for improved compatibility across platforms.
+
+### Security
+- **XSS Protection**: Removed XSS vulnerabilities by replacing `innerHTML` with React rendering.
+- **Character Escaping**: Added character escaping in FlipDigit to only allow safe characters.
+- **CSP Compatibility**: Removed Google Fonts `@import` statements and replaced with system font fallbacks for Content Security Policy compatibility.
+
+### Architecture
+- **React Implementation**: Migrated from custom elements to React components (FlipDigit.tsx, FlipDisplay.tsx).
+- **Styling**: Converted all styles to Emotion CSS-in-JS (Grafana best practice).
+- **Cleanup**: Removed shadow DOM and inline styles, removed deprecated `flip-engine.ts`.
+
+### Documentation
+- **Complete README update**: Added all 22 available themes to documentation.
+- **Configuration options**: Documented all Clock Mode options (time separator, date format, day of week).
+- **Layout options**: Documented name and unit positioning, alignment, rotation, and font size options.
+- **Animation options**: Added Fast Speed option documentation.
+
 ## 1.1.31 (2025-11-30)
 
 ### Maintenance
