@@ -15,14 +15,14 @@
   <text x="25" y="66"
         font-size="50"
         text-anchor="middle"
-        font-family="Inter, sans-serif"
+        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
         font-weight="900"
         fill="#facc15">4</text>
 
   <text x="75" y="66"
         font-size="50"
         text-anchor="middle"
-        font-family="Inter, sans-serif"
+        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
         font-weight="900"
         fill="#facc15">2</text>
 
