@@ -506,7 +506,7 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
             letterSpacing: '6px',
             animation: 'matrix-fall 4.5s linear infinite',
             pointerEvents: 'none',
-            zIndex: 0,
+            zIndex: 10,
           },
           '&::after': {
             content: '""',
@@ -517,7 +517,7 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
             opacity: 0.5,
             animation: 'matrix-pulse 3s ease-in-out infinite',
             pointerEvents: 'none',
-            zIndex: 1,
+            zIndex: 11,
           },
         }),
         ...(theme.specialEffect === 'halftone' && {

@@ -1,4 +1,14 @@
 export interface FlipOptions {
+  mode: 'data' | 'clock';
+
+  // Clock specific
+  clock12h: boolean;
+  clockTimezone: string;
+  clockShowSeconds: boolean;
+  clockSeparator: string;
+  clockDateFormat: string;
+  clockDayOfWeek: boolean;
+
   theme: string;
   digitCount: number;
   autoSize: boolean;

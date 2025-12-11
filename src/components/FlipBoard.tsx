@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { PanelProps, getFieldDisplayName } from '@grafana/data';
 import { FlipOptions } from '../types';
 import { FlipDisplay } from './FlipDisplay';
@@ -213,6 +213,93 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
     }
 }
 
+function getClockString(options: FlipOptions, date: Date): string {
+    const { clock12h, clockTimezone, clockShowSeconds, clockSeparator, clockDateFormat, clockDayOfWeek } = options;
+
+    const timeZone = clockTimezone || undefined; // undefined uses browser default
+
+    // Time Parts
+    const timeParts = new Intl.DateTimeFormat('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        second: clockShowSeconds ? '2-digit' : undefined,
+        hour12: clock12h,
+        timeZone
+    }).formatToParts(date);
+    
+    let hour = '', minute = '', second = '', dayPeriod = '';
+    
+    timeParts.forEach(p => {
+        if (p.type === 'hour') hour = p.value;
+        if (p.type === 'minute') minute = p.value;
+        if (p.type === 'second') second = p.value;
+        if (p.type === 'dayPeriod') dayPeriod = p.value;
+    });
+    
+    // Ensure 2 digits for hour if 24h
+    if (!clock12h && hour.length < 2) hour = '0' + hour;
+    if (clock12h && hour.length < 2) hour = ' ' + hour; 
+
+    // Separator mapping
+    const sepMap: Record<string, string> = {
+        'colon': ':',
+        'dot': '.',
+        'dash': '-',
+        'space': ' ',
+        'none': ''
+    };
+    const sep = sepMap[clockSeparator || 'colon'] || ':';
+    
+    let timeStr = `${hour}${sep}${minute}`;
+    if (clockShowSeconds) {
+        timeStr += `${sep}${second}`;
+    }
+    if (clock12h && dayPeriod) {
+        timeStr += ` ${dayPeriod}`;
+    }
+
+    // Date
+    let dateStr = '';
+    if (clockDateFormat) {
+         const dateParts = new Intl.DateTimeFormat('en-US', {
+             year: 'numeric',
+             month: '2-digit',
+             day: '2-digit',
+             timeZone
+         }).formatToParts(date);
+         
+         let Y = '', M = '', D = '';
+         dateParts.forEach(p => {
+             if (p.type === 'year') Y = p.value;
+             if (p.type === 'month') M = p.value;
+             if (p.type === 'day') D = p.value;
+         });
+         
+         switch (clockDateFormat) {
+             case 'DD/MM/YYYY': dateStr = `${D}/${M}/${Y}`; break;
+             case 'MM/DD/YYYY': dateStr = `${M}/${D}/${Y}`; break;
+             case 'YYYY-MM-DD': dateStr = `${Y}-${M}-${D}`; break;
+             case 'DD.MM.YYYY': dateStr = `${D}.${M}.${Y}`; break;
+         }
+    }
+    
+    // Day of Week
+    let weekdayStr = '';
+    if (clockDayOfWeek) {
+        // Use browser locale for weekday name, or maybe Polish if requested?
+        // Let's use user's browser locale (undefined)
+        weekdayStr = new Intl.DateTimeFormat(undefined, { weekday: 'short', timeZone }).format(date);
+    }
+    
+    // Assemble final string: Date  Weekday  Time
+    const components = [];
+    if (dateStr) components.push(dateStr);
+    if (weekdayStr) components.push(weekdayStr);
+    components.push(timeStr);
+    
+    return components.join('   ');
+}
+
 // main panel component
 interface Props extends PanelProps<FlipOptions> {}
 
@@ -229,6 +316,40 @@ export const FlipBoard: React.FC<Props> = ({ options, data, width, height }) => 
         }
         return null;
     }, [options.theme]);
+
+    // Clock State
+    const [currentTime, setCurrentTime] = useState(new Date());
+
+    useEffect(() => {
+        if (options.mode === 'clock') {
+            const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+            return () => clearInterval(timer);
+        }
+    }, [options.mode]);
+
+    if (options.mode === 'clock') {
+        const clockStr = getClockString(options, currentTime);
+        return (
+             <div style={{
+                width,
+                height,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden'
+            }}>
+                {fontImport}
+                <FlipItem 
+                    width={width}
+                    height={height}
+                    options={options}
+                    value={clockStr}
+                    unit=""
+                    name=""
+                />
+             </div>
+        );
+    }
 
     const seriesList = data.series;
     if (!seriesList || seriesList.length === 0) {
