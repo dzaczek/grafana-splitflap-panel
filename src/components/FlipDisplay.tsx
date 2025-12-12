@@ -10,11 +10,8 @@ interface FlipDisplayProps {
 }
 
 export const FlipDisplay: React.FC<FlipDisplayProps> = ({ value, config, colorOverrides }) => {
-  const [targetString, setTargetString] = useState<string>('');
-  const [isInitialized, setIsInitialized] = useState<boolean>(false);
-
-  // Format value to display string
-  useEffect(() => {
+  // Format value to display string using useMemo instead of useState + useEffect
+  const targetString = useMemo(() => {
     let formatted = '';
     if (typeof value === 'number') {
       const decimals = config.rounding !== undefined ? config.rounding : 1;
@@ -24,10 +21,10 @@ export const FlipDisplay: React.FC<FlipDisplayProps> = ({ value, config, colorOv
     }
 
     const targetLen = Math.max(formatted.length, config.digitCount || 4);
-    const padded = formatted.padStart(targetLen, ' ');
-    setTargetString(padded);
-    setIsInitialized(true);
+    return formatted.padStart(targetLen, ' ');
   }, [value, config.rounding, config.digitCount]);
+
+  const isInitialized = true; // Always initialized since we're using useMemo
 
   const targetLen = useMemo(() => {
     return Math.max(targetString.length, config.digitCount || 4);

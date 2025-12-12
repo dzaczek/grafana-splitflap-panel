@@ -286,7 +286,7 @@ const DRUM_CHARS_NUMERIC = [' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9
 
 // Safe character escaping for React rendering
 const escapeChar = (char: string): string => {
-  if (char === ' ') return ' ';
+  if (char === ' ') { return ' '; }
   // Only allow safe characters - numbers, letters, and specific symbols
   const safeChars = /^[0-9A-Za-z.,:%°\-\/]$/;
   if (safeChars.test(char)) {
@@ -316,8 +316,11 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
     const currentChar = prevCharRef.current;
 
     if (skipAnimation || currentChar === safeTargetChar) {
-      setDisplayChar(safeTargetChar);
-      prevCharRef.current = safeTargetChar;
+      // Use setTimeout to avoid synchronous setState in effect
+      setTimeout(() => {
+        setDisplayChar(safeTargetChar);
+        prevCharRef.current = safeTargetChar;
+      }, 0);
       return;
     }
 
@@ -343,19 +346,22 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
       endIndex = activeDrum.indexOf(safeTargetChar);
     }
 
-    if (startIndex === -1) startIndex = 0;
-    if (endIndex === -1) endIndex = 0;
+    if (startIndex === -1) { startIndex = 0; }
+    if (endIndex === -1) { endIndex = 0; }
 
     let distance = endIndex - startIndex;
-    if (distance < 0) distance += activeDrum.length;
+    if (distance < 0) { distance += activeDrum.length; }
 
     const isFullDrum = activeDrum === DRUM_CHARS;
     const stepsTotal = distance;
 
     if (!activeDrum.includes(safeTargetChar)) {
-      setDisplayChar(safeTargetChar);
-      prevCharRef.current = safeTargetChar;
-      animationActiveRef.current = false;
+      // Use setTimeout to avoid synchronous setState in effect
+      setTimeout(() => {
+        setDisplayChar(safeTargetChar);
+        prevCharRef.current = safeTargetChar;
+        animationActiveRef.current = false;
+      }, 0);
       return;
     }
 
@@ -366,7 +372,7 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
     const animStateRef = { currentChar, stepsTaken: 0 };
 
     const animate = () => {
-      if (!animationActiveRef.current) return;
+      if (!animationActiveRef.current) { return; }
 
       const currentIdx = activeDrum.indexOf(animStateRef.currentChar);
       if (currentIdx === -1 || animStateRef.currentChar === safeTargetChar) {

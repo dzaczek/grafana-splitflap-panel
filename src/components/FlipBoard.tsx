@@ -285,15 +285,15 @@ function getClockString(options: FlipOptions, date: Date): string {
     let hour = '', minute = '', second = '', dayPeriod = '';
     
     timeParts.forEach(p => {
-        if (p.type === 'hour') hour = p.value;
-        if (p.type === 'minute') minute = p.value;
-        if (p.type === 'second') second = p.value;
-        if (p.type === 'dayPeriod') dayPeriod = p.value;
+        if (p.type === 'hour') { hour = p.value; }
+        if (p.type === 'minute') { minute = p.value; }
+        if (p.type === 'second') { second = p.value; }
+        if (p.type === 'dayPeriod') { dayPeriod = p.value; }
     });
     
     // Ensure 2 digits for hour if 24h
-    if (!clock12h && hour.length < 2) hour = '0' + hour;
-    if (clock12h && hour.length < 2) hour = ' ' + hour; 
+    if (!clock12h && hour.length < 2) { hour = '0' + hour; }
+    if (clock12h && hour.length < 2) { hour = ' ' + hour; } 
 
     // Separator mapping
     const sepMap: Record<string, string> = {
@@ -325,9 +325,9 @@ function getClockString(options: FlipOptions, date: Date): string {
          
          let Y = '', M = '', D = '';
          dateParts.forEach(p => {
-             if (p.type === 'year') Y = p.value;
-             if (p.type === 'month') M = p.value;
-             if (p.type === 'day') D = p.value;
+             if (p.type === 'year') { Y = p.value; }
+             if (p.type === 'month') { M = p.value; }
+             if (p.type === 'day') { D = p.value; }
          });
          
          switch (clockDateFormat) {
@@ -348,8 +348,8 @@ function getClockString(options: FlipOptions, date: Date): string {
     
     // Assemble final string: Date  Weekday  Time
     const components = [];
-    if (dateStr) components.push(dateStr);
-    if (weekdayStr) components.push(weekdayStr);
+    if (dateStr) { components.push(dateStr); }
+    if (weekdayStr) { components.push(weekdayStr); }
     components.push(timeStr);
     
     return components.join('   ');
