@@ -380,6 +380,7 @@ export const FlipBoard: React.FC<Props> = ({ options, data, width, height }) => 
             const timer = setInterval(() => setCurrentTime(new Date()), 1000);
             return () => clearInterval(timer);
         }
+        return undefined;
     }, [options.mode]);
 
     if (options.mode === 'clock') {
