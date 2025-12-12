@@ -10,13 +10,19 @@ test('should display "No Data" in case panel data is empty', async ({
 });
 
 test('should display flip cards when data is passed to the panel', async ({
-  panelEditPage,
+  gotoPanelEditPage,
+  readProvisionedDashboard,
   readProvisionedDataSource,
   page,
 }) => {
+  const dashboard = await readProvisionedDashboard({ fileName: 'dashboard.json' });
+  // Use panel id 1 which already has the Split Flap plugin configured with data
+  const panelEditPage = await gotoPanelEditPage({ dashboard, id: '1' });
   const ds = await readProvisionedDataSource({ fileName: 'datasources.yml' });
   await panelEditPage.datasource.set(ds.name);
-  await panelEditPage.setVisualization('Split Flap');
+  
+  // Wait a bit for the panel to render with data
+  await page.waitForTimeout(1000);
   
   // Check if any flip card wrapper is visible (we added role="meter" to the wrapper)
   await expect(page.locator('[role="meter"]').first()).toBeVisible();
