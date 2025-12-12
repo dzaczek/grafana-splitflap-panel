@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { css } from '@emotion/css';
 import { FlipOptions } from '../types';
 import { FlipDigit } from './FlipDigit';
@@ -24,8 +24,6 @@ export const FlipDisplay: React.FC<FlipDisplayProps> = ({ value, config, colorOv
     return formatted.padStart(targetLen, ' ');
   }, [value, config.rounding, config.digitCount]);
 
-  const isInitialized = true; // Always initialized since we're using useMemo
-
   const targetLen = useMemo(() => {
     return Math.max(targetString.length, config.digitCount || 4);
   }, [targetString.length, config.digitCount]);
@@ -37,10 +35,6 @@ export const FlipDisplay: React.FC<FlipDisplayProps> = ({ value, config, colorOv
     perspective: '1000px',
     transformStyle: 'preserve-3d',
   });
-
-  if (!isInitialized) {
-    return <div className={containerStyle} />;
-  }
 
   const paddedString = targetString.padStart(targetLen, ' ');
 
@@ -54,7 +48,7 @@ export const FlipDisplay: React.FC<FlipDisplayProps> = ({ value, config, colorOv
             char={char}
             config={config}
             colorOverrides={colorOverrides}
-            skipAnimation={!isInitialized}
+            skipAnimation={false}
           />
         );
       })}
