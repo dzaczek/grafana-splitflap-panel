@@ -286,7 +286,7 @@ const DRUM_CHARS_NUMERIC = [' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9
 
 // Safe character escaping for React rendering
 const escapeChar = (char: string): string => {
-  if (char === ' ') { return ' '; }
+  if (char === ' ') return ' ';
   // Only allow safe characters - numbers, letters, and specific symbols
   const safeChars = /^[0-9A-Za-z.,:%°\-\/]$/;
   if (safeChars.test(char)) {
@@ -297,6 +297,7 @@ const escapeChar = (char: string): string => {
 
 export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrides, skipAnimation = false }) => {
   const [displayChar, setDisplayChar] = useState<string>(char);
+  const [bottomChar, setBottomChar] = useState<string>(char);
   const [isFlipping, setIsFlipping] = useState(false);
   const prevCharRef = useRef<string>(char);
   const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -319,6 +320,7 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
       // Use setTimeout to avoid synchronous setState in effect
       setTimeout(() => {
         setDisplayChar(safeTargetChar);
+        setBottomChar(safeTargetChar);
         prevCharRef.current = safeTargetChar;
       }, 0);
       return;
@@ -346,11 +348,11 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
       endIndex = activeDrum.indexOf(safeTargetChar);
     }
 
-    if (startIndex === -1) { startIndex = 0; }
-    if (endIndex === -1) { endIndex = 0; }
+    if (startIndex === -1) startIndex = 0;
+    if (endIndex === -1) endIndex = 0;
 
     let distance = endIndex - startIndex;
-    if (distance < 0) { distance += activeDrum.length; }
+    if (distance < 0) distance += activeDrum.length;
 
     const isFullDrum = activeDrum === DRUM_CHARS;
     const stepsTotal = distance;
@@ -359,24 +361,26 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
       // Use setTimeout to avoid synchronous setState in effect
       setTimeout(() => {
         setDisplayChar(safeTargetChar);
+        setBottomChar(safeTargetChar);
         prevCharRef.current = safeTargetChar;
         animationActiveRef.current = false;
       }, 0);
       return;
     }
 
-    const normalSpeed = config.speed !== undefined ? config.speed : 0.6;
+    const normalSpeed = config.speed !== undefined ? config.speed : 0.49;
     const spinSpeed = config.spinSpeed !== undefined ? config.spinSpeed : 0.12;
 
     // Use a ref to track current animation state
     const animStateRef = { currentChar, stepsTaken: 0 };
 
     const animate = () => {
-      if (!animationActiveRef.current) { return; }
+      if (!animationActiveRef.current) return;
 
       const currentIdx = activeDrum.indexOf(animStateRef.currentChar);
       if (currentIdx === -1 || animStateRef.currentChar === safeTargetChar) {
         setDisplayChar(safeTargetChar);
+        setBottomChar(safeTargetChar);
         prevCharRef.current = safeTargetChar;
         setIsFlipping(false);
         animationActiveRef.current = false;
@@ -398,18 +402,25 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
 
       const nextIdx = (currentIdx + 1) % activeDrum.length;
       const nextChar = activeDrum[nextIdx];
+      const charBeforeFlip = animStateRef.currentChar;
 
       setIsFlipping(true);
-      setDisplayChar(nextChar);
+      setBottomChar(charBeforeFlip); // Bottom & FlapFront show old char
+      setDisplayChar(nextChar);      // Top & FlapBack show new char
+      
       animStateRef.currentChar = nextChar;
       animStateRef.stepsTaken++;
 
       animationTimeoutRef.current = setTimeout(() => {
         setIsFlipping(false);
+        // After flip completes, catch up bottomChar
+        // (will be overwritten by next step anyway, but good for safety)
+        
         if (nextChar !== safeTargetChar && animStateRef.stepsTaken < 60) {
           animate();
         } else {
           setDisplayChar(safeTargetChar);
+          setBottomChar(safeTargetChar);
           prevCharRef.current = safeTargetChar;
           animationActiveRef.current = false;
         }
@@ -589,7 +600,7 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
         borderRadius: `0 0 ${theme.radius} ${theme.radius}`,
         zIndex: 0,
         '&::before': {
-          content: `"${escapeChar(displayChar)}"`,
+          content: `"${escapeChar(bottomChar)}"`,
           position: 'absolute',
           left: 0,
           width: '100%',
@@ -624,7 +635,7 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
         borderBottom: '1px solid rgba(0,0,0,0.3)',
         zIndex: 2,
         '&::before': {
-          content: `"${escapeChar(displayChar)}"`,
+          content: `"${escapeChar(bottomChar)}"`,
           position: 'absolute',
           left: 0,
           width: '100%',
@@ -678,14 +689,14 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
         },
       }),
     };
-  }, [config.cardSize, finalBg, finalText, theme, displayChar]);
+  }, [config.cardSize, finalBg, finalText, theme, displayChar, bottomChar]);
 
   return (
     <>
       <style>{styles.keyframes}</style>
       <div
         className={cx(styles.flipUnit, isFlipping && styles.flipping)}
-        style={{ '--flip-duration': `${config.speed || 0.6}s` } as React.CSSProperties}
+        style={{ '--flip-duration': `${config.speed || 0.49}s` } as React.CSSProperties}
       >
         <div className={styles.top} />
         <div className={styles.bottom} />

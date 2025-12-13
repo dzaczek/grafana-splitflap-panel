@@ -2,7 +2,9 @@
 
 ![Split Flap Logo](src/img/logo.svg)
 
-Basically, it's a retro **Split Flap** (or Solari board) display for your Grafana dashboards. Gives you that classic airport terminal vibe, but runs smooth in the browser.
+A retro-style **Split Flap** display panel for Grafana.
+
+It brings the classic mechanical look of airport departure boards (Solari boards) to your dashboards. I built this to offer a high-quality, animated visualization that feels "real"—with proper physics for the flaps and smooth animations. Perfect for status boards, KPIs, or just making your dashboard look awesome.
 
 ## Features
 
@@ -139,7 +141,7 @@ See the panel in action with different configurations:
 | **Auto Fit** | Auto-scale card size to fill the panel. | On |
 | **Size (px)** | Fixed card height (if Auto Fit is off). | 50 |
 | **Gap** | Space between individual cards. | 4 |
-| **Speed** | Animation speed multiplier (0.1-2.0). | 0.6 |
+| **Speed** | Animation speed multiplier (0.1-2.0). | 0.49 |
 | **Fast Speed** | Speed for quick number transitions (0.05-0.5). | 0.1 |
 
 ## Installation

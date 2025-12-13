@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.1.38 (2025-12-12)
+
+### Fixes
+- **Flip Animation Logic**: Fixed a synchronization issue where the bottom half of the digit changed too early (before the flap finished falling). Now implements correct split-flap physics:
+  - Top half reveals the new character immediately.
+  - Bottom half keeps the old character until covered by the falling flap.
+  - Falling flap transitions from old character (front) to new character (back).
+- **Animation Speed**: Adjusted default flip duration from 0.6s to 0.49s for snappier, more realistic mechanical movement.
+
+### Documentation
+- **Intro Rewrite**: Made the README introduction more accessible and developer-friendly.
+
+---
+
 ## 2.1.37 (2025-12-12)
 
 ### Summary
