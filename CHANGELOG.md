@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.2.1 (2026-01-08)
+
+### Fixes
+- **CI/CD**: Fixed dependency installation issues in GitHub Actions by switching `react-data-grid` to HTTPS protocol.
+- **Linting**: Fixed missing dependency in `useEffect` hook in `FlipDigit` component.
+
+---
+
 ## 2.2.0 (2026-01-08)
 
 ### Features
