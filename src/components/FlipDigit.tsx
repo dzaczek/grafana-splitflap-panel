@@ -440,7 +440,7 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
       }
       animationActiveRef.current = false;
     };
-  }, [char, skipAnimation, config.speed, config.spinSpeed]);
+  }, [char, skipAnimation, config.speed, config.spinSpeed, config.mode]);
 
   // Generate styles using Emotion
   const styles = useMemo(() => {
