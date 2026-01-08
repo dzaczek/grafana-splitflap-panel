@@ -456,6 +456,48 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
         defaultValue: false,
         showIf: c => c.mode === 'clock'
     })
+    
+    // AM/PM Options (only if clock12h is true)
+    .addRadio({
+        path: 'amPmPos',
+        name: 'AM/PM Position',
+        defaultValue: 'none',
+        settings: {
+            options: [
+                { value: 'none', label: 'In Text (Default)' },
+                { value: 'left', label: 'Left' },
+                { value: 'right', label: 'Right' },
+            ]
+        },
+        showIf: c => c.mode === 'clock' && c.clock12h
+    })
+    .addRadio({
+        path: 'amPmOrientation',
+        name: 'AM/PM Orientation',
+        defaultValue: 'horizontal',
+        settings: {
+            options: [
+                { value: 'horizontal', label: 'Horizontal' },
+                { value: 'vertical', label: 'Vertical' },
+            ]
+        },
+        showIf: c => c.mode === 'clock' && c.clock12h
+    })
+    .addSliderInput({
+        path: 'amPmFontSize',
+        name: 'AM/PM Font Size',
+        defaultValue: 18,
+        settings: { min: 8, max: 100 },
+        showIf: c => c.mode === 'clock' && c.clock12h
+    })
+    .addSliderInput({
+        path: 'amPmGap',
+        name: 'AM/PM Gap',
+        defaultValue: 12,
+        settings: { min: 0, max: 50 },
+        showIf: c => c.mode === 'clock' && c.clock12h
+    })
+
     .addBooleanSwitch({
         path: 'clockShowSeconds',
         name: 'Show Seconds',

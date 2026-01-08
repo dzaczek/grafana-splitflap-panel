@@ -131,6 +131,10 @@ See the panel in action with different configurations:
 | **Time Separator** | Character between hours, minutes, seconds: Colon (:), Dot (.), Dash (-), Space ( ), or None. | Colon |
 | **Date Format** | Optional date display format: DD/MM/YYYY, MM/DD/YYYY, YYYY-MM-DD, DD.MM.YYYY, or None. | None |
 | **Show Day of Week** | Display abbreviated day name (Mon, Tue, etc.). | Off |
+| **AM/PM Position** | Position of AM/PM indicator: In Text (Default), Left, or Right. | In Text |
+| **AM/PM Orientation** | Orientation of AM/PM: Horizontal or Vertical. | Horizontal |
+| **AM/PM Font Size** | Font size for AM/PM indicator. | 18 |
+| **AM/PM Gap** | Spacing between AM/PM and the clock digits. | 12 |
 
 ### Flip Options
 

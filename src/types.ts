@@ -13,6 +13,12 @@ export interface FlipOptions {
   timezoneAlign: 'start' | 'center' | 'end';
   timezoneFontSize: number;
 
+  // AM/PM (Clock 12h)
+  amPmFontSize: number;
+  amPmPos: 'left' | 'right' | 'none';
+  amPmGap: number;
+  amPmOrientation: 'horizontal' | 'vertical';
+
   theme: string;
   digitCount: number;
   autoSize: boolean;

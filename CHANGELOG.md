@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.2.0 (2026-01-08)
+
+### Features
+- **AM/PM Customization**: Added full control over AM/PM indicator in 12-hour clock mode:
+  - **Position**: Can be placed Left, Right, or Inline (In Text).
+  - **Orientation**: Support for Vertical (stacked characters) or Horizontal layout.
+  - **Styling**: Independent control over font size and gap/spacing.
+  - **Independent Rendering**: AM/PM is now rendered as a separate FlipDisplay component even in "In Text" mode, allowing for consistent styling and animation.
+
+### Improvements
+- **Clock Logic**: Optimized clock animation to use a dedicated 0-9 numeric drum for seconds/minutes, eliminating lag and "scrolling" through special characters during time changes.
+- **Layout**: Improved layout engine for FlipItem to better handle "shrink-wrap" sizing, ensuring the clock stays centered regardless of timezone or AM/PM alignment.
+
+---
+
 ## 2.1.38 (2025-12-12)
 
 ### Fixes

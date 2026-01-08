@@ -13,9 +13,10 @@ interface ItemProps {
     name: string;
     timezone?: string;
     thresholdColor?: string;
+    amPm?: string;
 }
 
-const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, name, timezone, thresholdColor }) => {
+const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, name, timezone, thresholdColor, amPm }) => {
     // format value same way as engine does
     // need displayed text length not raw number
     const formattedValueStr = useMemo(() => {
@@ -77,6 +78,25 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
                 }
             }
 
+            // subtract space for AM/PM
+            if (options.mode === 'clock' && options.clock12h && amPm) {
+                 // Even if 'none' (in text), we render it separately now so we need to account for it.
+                 // Previously 'none' was part of value string length calculation automatically.
+                 // Now formattedValueStr (clockStr) does NOT contain AM/PM.
+                 
+                 const amPmSize = (options.amPmFontSize || 18);
+                 const amPmGap = options.amPmGap !== undefined ? options.amPmGap : 12;
+                 
+                 const charWidth = amPmSize * 0.7; // approx width factor
+                 let estimatedWidth = 0;
+                 if (options.amPmOrientation === 'vertical') {
+                      estimatedWidth = charWidth; 
+                 } else {
+                      estimatedWidth = charWidth * amPm.length; 
+                 }
+                 availWidth -= (estimatedWidth + amPmGap);
+            }
+
             // calculate card size
             // how many cards we need
             const realDigitCount = Math.max(options.digitCount, formattedValueStr.length);
@@ -105,7 +125,7 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
         }
 
         return calculatedSize;
-    }, [options, width, height, formattedValueStr.length, name, unit, timezone]);
+    }, [options, width, height, formattedValueStr.length, name, unit, timezone, amPm]);
 
     // color overrides for thresholds
     const colorOverrides = useMemo(() => {
@@ -157,6 +177,69 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
         }}>{timezone}</div>
     ) : null;
 
+    // AM/PM rendering
+    const renderAmPm = () => {
+        if (!options.mode || options.mode !== 'clock' || !amPm) { return null; }
+        
+        const isVertical = options.amPmOrientation === 'vertical';
+        const fontSize = options.amPmFontSize || 18;
+        
+        // Custom config for AM/PM digits
+        const amPmConfig = {
+            ...displayConfig,
+            cardSize: fontSize,
+        };
+
+        const chars = Array.from(amPm);
+
+        return (
+            <div style={{
+                display: 'flex',
+                flexDirection: isVertical ? 'column' : 'row',
+                gap: '2px',
+                alignItems: 'center',
+                justifyContent: 'center'
+            }}>
+                {chars.map((char, i) => (
+                    <FlipDisplay
+                        key={i}
+                        value={char}
+                        config={{ ...amPmConfig, digitCount: 1 }}
+                        colorOverrides={colorOverrides}
+                    />
+                ))}
+            </div>
+        );
+    };
+
+    const flipWrapperStyle: React.CSSProperties = {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: `${options.amPmGap !== undefined ? options.amPmGap : 12}px`
+    };
+
+    const flipContent = (
+         <div style={flipWrapperStyle}>
+             {/* If pos is Left or None (defaulting to right of text if truly mixed, but here treating 'none' as 'after' for now if stripped?) 
+                 Actually 'none' meant "In Text". If we stripped it, we must decide where to put it. 
+                 Let's assume 'none' puts it at the END (like "12:00 PM"), effectively same as 'right' but maybe different gap logic?
+                 The user asked to manage it "in text" mode too.
+                 So if amPmPos is 'none', we treat it as "attached to right" but we render it as FlipDisplay to allow customization.
+             */}
+             {options.amPmPos === 'left' && renderAmPm()}
+             
+             <FlipDisplay 
+                value={value}
+                config={displayConfig}
+                colorOverrides={colorOverrides}
+            />
+             
+             {(options.amPmPos === 'right' || options.amPmPos === 'none') && renderAmPm()}
+         </div>
+    );
+
     // container for flip and unit
     const coreContainerStyle: React.CSSProperties = {
         display: 'flex',
@@ -172,11 +255,7 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
     const coreContent = (
         <div style={coreContainerStyle}>
             {(options.unitPos === 'top' || options.unitPos === 'left') && unitElement}
-            <FlipDisplay 
-                value={value}
-                config={displayConfig}
-                colorOverrides={colorOverrides}
-            />
+            {flipContent}
             {(options.unitPos === 'bottom' || options.unitPos === 'right') && unitElement}
         </div>
     );
@@ -191,8 +270,8 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
                           ? 'row' : 'column';
     
     const wrapperStyle: React.CSSProperties = {
-        width: '100%',
-        height: '100%',
+        // width: '100%', // REMOVED to prevent pushing content to edges when aligning items
+        // height: '100%', // REMOVED to allow shrink-wrap and center alignment in parent
         display: 'flex',
         flexDirection: mainDirection,
         justifyContent: 'center',
@@ -268,7 +347,7 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
     }
 }
 
-function getClockString(options: FlipOptions, date: Date): string {
+function getClockString(options: FlipOptions, date: Date): { text: string, amPm: string } {
     const { clock12h, clockTimezone, clockShowSeconds, clockSeparator, clockDateFormat, clockDayOfWeek } = options;
 
     const timeZone = clockTimezone || undefined; // undefined uses browser default
@@ -309,8 +388,11 @@ function getClockString(options: FlipOptions, date: Date): string {
     if (clockShowSeconds) {
         timeStr += `${sep}${second}`;
     }
+    
+    let finalAmPm = '';
     if (clock12h && dayPeriod) {
-        timeStr += ` ${dayPeriod}`;
+        // ALWAYS separate AM/PM to allow custom FlipDisplay rendering even for "In Text" mode (which we treat as 'none' pos, appended visually)
+        finalAmPm = dayPeriod;
     }
 
     // Date
@@ -352,7 +434,7 @@ function getClockString(options: FlipOptions, date: Date): string {
     if (weekdayStr) { components.push(weekdayStr); }
     components.push(timeStr);
     
-    return components.join('   ');
+    return { text: components.join('   '), amPm: finalAmPm };
 }
 
 // main panel component
@@ -384,7 +466,7 @@ export const FlipBoard: React.FC<Props> = ({ options, data, width, height }) => 
     }, [options.mode]);
 
     if (options.mode === 'clock') {
-        const clockStr = getClockString(options, currentTime);
+        const { text: clockStr, amPm } = getClockString(options, currentTime);
         
         // Get timezone display name
         let timezoneDisplay = '';
@@ -435,6 +517,7 @@ export const FlipBoard: React.FC<Props> = ({ options, data, width, height }) => 
                     unit=""
                     name=""
                     timezone={timezoneDisplay}
+                    amPm={amPm}
                 />
              </div>
         );
