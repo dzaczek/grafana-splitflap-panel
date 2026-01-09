@@ -442,18 +442,6 @@ interface Props extends PanelProps<FlipOptions> {}
 
 export const FlipBoard: React.FC<Props> = ({ options, data, width, height }) => {
     
-    // Inject fonts for Aviation styles
-    const fontImport = useMemo(() => {
-        if (options.theme && options.theme.startsWith('aviation-')) {
-             return (
-                 <style>
-                     {`@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Share+Tech+Mono&display=swap');`}
-                 </style>
-             );
-        }
-        return null;
-    }, [options.theme]);
-
     // Clock State
     const [currentTime, setCurrentTime] = useState(new Date());
 
@@ -508,7 +496,6 @@ export const FlipBoard: React.FC<Props> = ({ options, data, width, height }) => 
                 justifyContent: 'center',
                 overflow: 'hidden'
             }}>
-                {fontImport}
                 <FlipItem 
                     width={width}
                     height={height}
@@ -544,7 +531,6 @@ export const FlipBoard: React.FC<Props> = ({ options, data, width, height }) => 
             flexDirection: isVertical ? 'column' : 'row',
             overflow: 'hidden'
         }}>
-            {fontImport}
             {seriesList.map((series, i) => {
                 // find appropriate field to display
                 // prefer number, then string, but avoid 'time' fields unless nothing else exists

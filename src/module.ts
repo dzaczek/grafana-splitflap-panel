@@ -458,7 +458,7 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
     })
     
     // AM/PM Options (only if clock12h is true)
-    .addRadio({
+    .addSelect({
         path: 'amPmPos',
         name: 'AM/PM Position',
         defaultValue: 'none',
@@ -471,7 +471,7 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
         },
         showIf: c => c.mode === 'clock' && c.clock12h
     })
-    .addRadio({
+    .addSelect({
         path: 'amPmOrientation',
         name: 'AM/PM Orientation',
         defaultValue: 'horizontal',
@@ -556,7 +556,7 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
         defaultValue: false,
         showIf: c => c.mode === 'clock'
     })
-    .addRadio({
+    .addSelect({
         path: 'timezonePos',
         name: 'Timezone Position',
         defaultValue: 'bottom',
@@ -570,7 +570,7 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
         },
         showIf: c => c.mode === 'clock'
     })
-    .addRadio({
+    .addSelect({
         path: 'timezoneAlign',
         name: 'Timezone Alignment',
         defaultValue: 'center',
@@ -592,7 +592,7 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
     })
 
     // DATA OPTIONS (Hidden in Clock Mode)
-    .addRadio({
+    .addSelect({
         path: 'layoutDirection',
         name: 'Layout',
         defaultValue: 'horizontal',
@@ -604,7 +604,7 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
         },
         showIf: c => c.mode !== 'clock'
     })
-    .addRadio({
+    .addSelect({
         path: 'displayContent',
         name: 'Main Content',
         description: 'What to display inside the flip cards',
@@ -680,17 +680,17 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
     })
     
     .addBooleanSwitch({ path: 'showName', name: 'Show Name', defaultValue: true, showIf: c => c.mode !== 'clock' })
-    .addRadio({ path: 'namePos', name: 'Name Pos', defaultValue: 'top', settings: { options: [{value:'top',label:'Top'},{value:'bottom',label:'Bottom'},{value:'left',label:'Left'},{value:'right',label:'Right'}]}, showIf: c => c.mode !== 'clock' && c.showName })
-    .addRadio({ path: 'nameAlign', name: 'Name Align', defaultValue: 'center', settings: { options: [{value:'start',label:'Start'},{value:'center',label:'Center'},{value:'end',label:'End'}]}, showIf: c => c.mode !== 'clock' && c.showName })
+    .addSelect({ path: 'namePos', name: 'Name Pos', defaultValue: 'top', settings: { options: [{value:'top',label:'Top'},{value:'bottom',label:'Bottom'},{value:'left',label:'Left'},{value:'right',label:'Right'}]}, showIf: c => c.mode !== 'clock' && c.showName })
+    .addSelect({ path: 'nameAlign', name: 'Name Align', defaultValue: 'center', settings: { options: [{value:'start',label:'Start'},{value:'center',label:'Center'},{value:'end',label:'End'}]}, showIf: c => c.mode !== 'clock' && c.showName })
     .addSliderInput({ path: 'nameFontSize', name: 'Name Size', defaultValue: 18, settings: { min: 8, max: 100 }, showIf: c => c.mode !== 'clock' && c.showName })
     
     .addBooleanSwitch({ path: 'showUnit', name: 'Show Unit', defaultValue: true, showIf: c => c.mode !== 'clock' })
     .addTextInput({ path: 'customUnit', name: 'Custom Unit', defaultValue: '', showIf: c => c.mode !== 'clock' && c.showUnit })
-    .addRadio({ path: 'unitPos', name: 'Unit Pos', defaultValue: 'right', settings: { options: [{value:'top',label:'Top'},{value:'bottom',label:'Bottom'},{value:'left',label:'Left'},{value:'right',label:'Right'}]}, showIf: c => c.mode !== 'clock' && c.showUnit })
+    .addSelect({ path: 'unitPos', name: 'Unit Pos', defaultValue: 'right', settings: { options: [{value:'top',label:'Top'},{value:'bottom',label:'Bottom'},{value:'left',label:'Left'},{value:'right',label:'Right'}]}, showIf: c => c.mode !== 'clock' && c.showUnit })
     .addBooleanSwitch({ path: 'unitRotation', name: 'Rotate Unit', defaultValue: false, showIf: c => c.mode !== 'clock' && c.showUnit })
     .addSliderInput({ path: 'unitFontSize', name: 'Unit Size', defaultValue: 24, settings: { min: 8, max: 100 }, showIf: c => c.mode !== 'clock' && c.showUnit })
 
-    .addRadio({ path: 'thresholdTarget', name: 'Threshold Target', defaultValue: 'none', settings: { options: [{value:'none',label:'None'},{value:'text',label:'Text'},{value:'tile',label:'Tile'},{value:'panel',label:'Panel'}]}, showIf: c => c.mode !== 'clock' })
+    .addSelect({ path: 'thresholdTarget', name: 'Threshold Target', defaultValue: 'none', settings: { options: [{value:'none',label:'None'},{value:'text',label:'Text'},{value:'tile',label:'Tile'},{value:'panel',label:'Panel'}]}, showIf: c => c.mode !== 'clock' })
     
     .addNumberInput({ path: 'digitCount', name: 'Digits', defaultValue: 6 })
     .addSliderInput({ path: 'rounding', name: 'Rounding', defaultValue: 1, settings: { min: 0, max: 5 }, showIf: c => c.mode !== 'clock' })

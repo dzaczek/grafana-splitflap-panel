@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { css, cx } from '@emotion/css';
+import { css, cx, keyframes } from '@emotion/css';
 import { FlipOptions } from '../types';
 
 interface FlipDigitProps {
@@ -447,6 +447,28 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
     const cardWidth = config.cardSize * 0.7;
     const fontSize = config.cardSize * 0.85;
 
+    const flipDownFront = keyframes`
+      0% { transform: rotateX(0deg); }
+      100% { transform: rotateX(-180deg); }
+    `;
+
+    const flipDownBack = keyframes`
+      0% { transform: rotateX(180deg); }
+      100% { transform: rotateX(0deg); }
+    `;
+
+    const matrixFall = keyframes`
+      0% { transform: translateY(-5%); opacity: 0.75; }
+      50% { opacity: 0.95; }
+      100% { transform: translateY(40%); opacity: 0.7; }
+    `;
+
+    const matrixPulse = keyframes`
+      0% { opacity: 0.35; }
+      50% { opacity: 0.1; }
+      100% { opacity: 0.35; }
+    `;
+
     return {
       flipUnit: css({
         position: 'relative',
@@ -526,7 +548,7 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
             writingMode: 'vertical-rl',
             textOrientation: 'upright',
             letterSpacing: '6px',
-            animation: 'matrix-fall 4.5s linear infinite',
+            animation: `${matrixFall} 4.5s linear infinite`,
             pointerEvents: 'none',
             zIndex: 10,
           },
@@ -537,7 +559,7 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
             background: 'linear-gradient(180deg, rgba(0, 255, 65, 0.18), rgba(2, 11, 2, 0))',
             mixBlendMode: 'screen',
             opacity: 0.5,
-            animation: 'matrix-pulse 3s ease-in-out infinite',
+            animation: `${matrixPulse} 3s ease-in-out infinite`,
             pointerEvents: 'none',
             zIndex: 11,
           },
@@ -667,30 +689,10 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
       }),
       flipping: css({
         '& .flap-front': {
-          animation: 'flipDownFront var(--flip-duration) ease-in forwards',
+          animation: `${flipDownFront} var(--flip-duration) ease-in forwards`,
         },
         '& .flap-back': {
-          animation: 'flipDownBack var(--flip-duration) ease-out forwards',
-        },
-      }),
-      keyframes: css({
-        '@keyframes flipDownFront': {
-          '0%': { transform: 'rotateX(0deg)' },
-          '100%': { transform: 'rotateX(-180deg)' },
-        },
-        '@keyframes flipDownBack': {
-          '0%': { transform: 'rotateX(180deg)' },
-          '100%': { transform: 'rotateX(0deg)' },
-        },
-        '@keyframes matrix-fall': {
-          '0%': { transform: 'translateY(-5%)', opacity: 0.75 },
-          '50%': { opacity: 0.95 },
-          '100%': { transform: 'translateY(40%)', opacity: 0.7 },
-        },
-        '@keyframes matrix-pulse': {
-          '0%': { opacity: 0.35 },
-          '50%': { opacity: 0.1 },
-          '100%': { opacity: 0.35 },
+          animation: `${flipDownBack} var(--flip-duration) ease-out forwards`,
         },
       }),
     };
@@ -698,7 +700,6 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
 
   return (
     <>
-      <style>{styles.keyframes}</style>
       <div
         className={cx(styles.flipUnit, isFlipping && styles.flipping)}
         style={{ '--flip-duration': `${config.speed || 0.49}s` } as React.CSSProperties}
