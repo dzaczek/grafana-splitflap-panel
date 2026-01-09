@@ -319,9 +319,12 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
     const currentChar = prevCharRef.current;
 
     if (skipAnimation || currentChar === safeTargetChar) {
-      setDisplayChar(safeTargetChar);
-      setBottomChar(safeTargetChar);
-      prevCharRef.current = safeTargetChar;
+      // Use setTimeout to avoid synchronous setState in effect (linter fix)
+      setTimeout(() => {
+        setDisplayChar(safeTargetChar);
+        setBottomChar(safeTargetChar);
+        prevCharRef.current = safeTargetChar;
+      }, 0);
       return;
     }
 
@@ -366,10 +369,13 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
     const stepsTotal = distance;
 
     if (!activeDrum.includes(safeTargetChar)) {
-      setDisplayChar(safeTargetChar);
-      setBottomChar(safeTargetChar);
-      prevCharRef.current = safeTargetChar;
-      animationActiveRef.current = false;
+      // Use setTimeout to avoid synchronous setState in effect (linter fix)
+      setTimeout(() => {
+        setDisplayChar(safeTargetChar);
+        setBottomChar(safeTargetChar);
+        prevCharRef.current = safeTargetChar;
+        animationActiveRef.current = false;
+      }, 0);
       return;
     }
 

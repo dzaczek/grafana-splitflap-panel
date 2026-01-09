@@ -96,7 +96,7 @@
         "unitRotation": false,
         "valueAggregation": "last"
       },
-      "pluginVersion": "2.2.3",
+      "pluginVersion": "2.2.4",
       "targets": [
         {
           "datasource": {
@@ -192,7 +192,7 @@
         "unitRotation": true,
         "valueAggregation": "last"
       },
-      "pluginVersion": "2.2.3",
+      "pluginVersion": "2.2.4",
       "targets": [
         {
           "datasource": {
@@ -288,7 +288,7 @@
         "unitRotation": false,
         "valueAggregation": "last"
       },
-      "pluginVersion": "2.2.3",
+      "pluginVersion": "2.2.4",
       "targets": [
         {
           "datasource": {
@@ -383,7 +383,7 @@
         "unitRotation": false,
         "valueAggregation": "last"
       },
-      "pluginVersion": "2.2.3",
+      "pluginVersion": "2.2.4",
       "targets": [
         {
           "datasource": {
@@ -472,7 +472,7 @@
         "unitRotation": false,
         "valueAggregation": "last"
       },
-      "pluginVersion": "2.2.3",
+      "pluginVersion": "2.2.4",
       "targets": [
         {
           "alias": "",
@@ -561,7 +561,7 @@
         "unitRotation": false,
         "valueAggregation": "last"
       },
-      "pluginVersion": "2.2.3",
+      "pluginVersion": "2.2.4",
       "targets": [
         {
           "alias": "",
@@ -651,7 +651,7 @@
         "unitRotation": false,
         "valueAggregation": "last"
       },
-      "pluginVersion": "2.2.3",
+      "pluginVersion": "2.2.4",
       "targets": [
         {
           "datasource": {
@@ -740,7 +740,7 @@
         "unitRotation": false,
         "valueAggregation": "last"
       },
-      "pluginVersion": "2.2.3",
+      "pluginVersion": "2.2.4",
       "targets": [
         {
           "alias": "",
@@ -830,7 +830,7 @@
         "unitRotation": false,
         "valueAggregation": "last"
       },
-      "pluginVersion": "2.2.3",
+      "pluginVersion": "2.2.4",
       "targets": [
         {
           "datasource": {
@@ -923,7 +923,7 @@
         "unitRotation": false,
         "valueAggregation": "last"
       },
-      "pluginVersion": "2.2.3",
+      "pluginVersion": "2.2.4",
       "targets": [
         {
           "alias": "",
