@@ -692,11 +692,48 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
 
     .addSelect({ path: 'thresholdTarget', name: 'Threshold Target', defaultValue: 'none', settings: { options: [{value:'none',label:'None'},{value:'text',label:'Text'},{value:'tile',label:'Tile'},{value:'panel',label:'Panel'}]}, showIf: c => c.mode !== 'clock' })
     
-    .addNumberInput({ path: 'digitCount', name: 'Digits', defaultValue: 6 })
-    .addSliderInput({ path: 'rounding', name: 'Rounding', defaultValue: 1, settings: { min: 0, max: 5 }, showIf: c => c.mode !== 'clock' })
+    .addNumberInput({ 
+        path: 'digitCount', 
+        name: 'Min Characters', 
+        description: 'Minimum number of characters to display. If the value is shorter, it will be padded with spaces.',
+        defaultValue: 6 
+    })
+    .addSliderInput({ 
+        path: 'rounding', 
+        name: 'Decimal Places', 
+        description: 'Number of decimal places to show for numeric values.',
+        defaultValue: 1, 
+        settings: { min: 0, max: 5 }, 
+        showIf: c => c.mode !== 'clock' 
+    })
+    .addBooleanSwitch({ 
+        path: 'forceNumeric', 
+        name: 'Force Numeric (0-9)', 
+        description: 'Use optimized flip sequence (0-9 and dot only). Recommended for counters to make them flip faster.',
+        defaultValue: false,
+        showIf: c => c.mode !== 'clock'
+    })
     .addBooleanSwitch({ path: 'autoSize', name: 'Auto Fit', defaultValue: true })
     .addNumberInput({ path: 'cardSize', name: 'Size (px)', defaultValue: 50, showIf: c => !c.autoSize })
-    .addSliderInput({ path: 'gap', name: 'Gap', defaultValue: 4, settings: { min: 0, max: 20 } })
-    .addSliderInput({ path: 'speed', name: 'Speed', defaultValue: 0.6, settings: { min: 0.1, max: 2.0, step: 0.1 } })
-    .addSliderInput({ path: 'spinSpeed', name: 'Fast Speed', defaultValue: 0.08, settings: { min: 0.05, max: 0.5, step: 0.01 } });
+    .addSliderInput({ 
+        path: 'gap', 
+        name: 'Gap', 
+        description: 'Space between individual characters (in pixels).',
+        defaultValue: 4, 
+        settings: { min: 0, max: 20 } 
+    })
+    .addSliderInput({ 
+        path: 'speed', 
+        name: 'Anim Speed', 
+        description: 'General animation speed multiplier. Higher values mean slower flips.',
+        defaultValue: 0.6, 
+        settings: { min: 0.1, max: 2.0, step: 0.1 } 
+    })
+    .addSliderInput({ 
+        path: 'spinSpeed', 
+        name: 'Spin Speed', 
+        description: 'Speed for fast spinning sequences (e.g. when value changes significantly). Lower values mean faster spin.',
+        defaultValue: 0.08, 
+        settings: { min: 0.05, max: 0.5, step: 0.01 } 
+    });
 });

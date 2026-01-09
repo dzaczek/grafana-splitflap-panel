@@ -48,4 +48,7 @@ export interface FlipOptions {
   showSeparators: boolean;
   displayContent: 'value' | 'name' | 'name_value' | 'value_name';
   valueAggregation: 'last' | 'lastNotNull' | 'first' | 'firstNotNull' | 'min' | 'max' | 'mean' | 'sum' | 'count';
+  
+  // Nowa opcja
+  forceNumeric: boolean;
 }

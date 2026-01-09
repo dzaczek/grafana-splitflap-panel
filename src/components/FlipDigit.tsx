@@ -283,6 +283,7 @@ const DRUM_CHARS = [
 ];
 
 const DRUM_CHARS_NUMERIC = [' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ',', ':', '%', '°', '-', '/'];
+const DRUM_CHARS_STRICT_NUMERIC = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
 const DRUM_CHARS_CLOCK = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
 // Safe character escaping for React rendering
@@ -318,12 +319,9 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
     const currentChar = prevCharRef.current;
 
     if (skipAnimation || currentChar === safeTargetChar) {
-      // Use setTimeout to avoid synchronous setState in effect
-      setTimeout(() => {
-        setDisplayChar(safeTargetChar);
-        setBottomChar(safeTargetChar);
-        prevCharRef.current = safeTargetChar;
-      }, 0);
+      setDisplayChar(safeTargetChar);
+      setBottomChar(safeTargetChar);
+      prevCharRef.current = safeTargetChar;
       return;
     }
 
@@ -336,9 +334,14 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
     // Choose optimized drum if both chars are numeric
     let activeDrum = DRUM_CHARS;
     
-    // Special optimization for Clock mode (0-9 only loop)
+    // Special optimization for Clock mode (0-9 only loop) OR if forceNumeric is ON
+    const forceNumeric = config.forceNumeric;
+    
     if (config.mode === 'clock' && DRUM_CHARS_CLOCK.includes(currentChar) && DRUM_CHARS_CLOCK.includes(safeTargetChar)) {
       activeDrum = DRUM_CHARS_CLOCK;
+    } else if (forceNumeric) {
+      // STRICT numeric (0-9 and dot only) as requested
+      activeDrum = DRUM_CHARS_STRICT_NUMERIC;
     } else if (DRUM_CHARS_NUMERIC.includes(currentChar) && DRUM_CHARS_NUMERIC.includes(safeTargetChar)) {
       activeDrum = DRUM_CHARS_NUMERIC;
     }
@@ -363,13 +366,10 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
     const stepsTotal = distance;
 
     if (!activeDrum.includes(safeTargetChar)) {
-      // Use setTimeout to avoid synchronous setState in effect
-      setTimeout(() => {
-        setDisplayChar(safeTargetChar);
-        setBottomChar(safeTargetChar);
-        prevCharRef.current = safeTargetChar;
-        animationActiveRef.current = false;
-      }, 0);
+      setDisplayChar(safeTargetChar);
+      setBottomChar(safeTargetChar);
+      prevCharRef.current = safeTargetChar;
+      animationActiveRef.current = false;
       return;
     }
 
@@ -440,7 +440,7 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
       }
       animationActiveRef.current = false;
     };
-  }, [char, skipAnimation, config.speed, config.spinSpeed, config.mode]);
+  }, [char, skipAnimation, config.speed, config.spinSpeed, config.mode, config.forceNumeric]);
 
   // Generate styles using Emotion
   const styles = useMemo(() => {

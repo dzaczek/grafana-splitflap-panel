@@ -20,25 +20,83 @@
   "graphTooltip": 0,
   "id": 1,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "grafana-testdata-datasource",
         "uid": "trlxrdZVk"
       },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
       "gridPos": {
-        "h": 8,
-        "w": 12,
+        "h": 7,
+        "w": 24,
         "x": 0,
         "y": 0
       },
-      "id": 1,
+      "id": 8,
+      "interval": "3s",
       "options": {
+        "amPmFontSize": 18,
+        "amPmGap": 12,
+        "amPmOrientation": "horizontal",
+        "amPmPos": "none",
+        "autoSize": true,
+        "cardSize": 50,
+        "clock12h": false,
+        "clockDateFormat": "",
+        "clockDayOfWeek": false,
+        "clockSeparator": "colon",
+        "clockShowSeconds": true,
+        "clockTimezone": "",
+        "customUnit": "",
+        "digitCount": 8,
+        "displayContent": "value",
+        "forceNumeric": true,
+        "gap": 4,
+        "layoutDirection": "vertical",
+        "mode": "data",
+        "nameAlign": "center",
+        "nameFontSize": 18,
+        "namePos": "left",
+        "rounding": 2,
         "seriesCountSize": "sm",
+        "showName": false,
+        "showSeparators": true,
         "showSeriesCount": false,
-        "text": "Default value of text input option"
+        "showTimezone": false,
+        "showUnit": true,
+        "speed": 0.4,
+        "spinSpeed": 0.05,
+        "text": "Default value of text input option",
+        "theme": "aviation-departure",
+        "thresholdTarget": "none",
+        "timezoneAlign": "center",
+        "timezoneFontSize": 18,
+        "timezonePos": "bottom",
+        "unitFontSize": 24,
+        "unitPos": "right",
+        "unitRotation": false,
+        "valueAggregation": "last"
       },
+      "pluginVersion": "2.2.3",
       "targets": [
         {
           "datasource": {
@@ -46,8 +104,14 @@
             "uid": "db84e60d-b92a-4089-82cb-34842fb1754b"
           },
           "refId": "A",
-          "scenarioId": "raw_frame",
-          "rawFrameContent": "[\n  {\n    \"columns\": [\n      {\n        \"text\": \"Time\",\n        \"type\": \"time\"\n      },\n      {\n        \"text\": \"Label\",\n        \"type\": \"string\"\n      },\n      {\n        \"text\": \"Value\",\n        \"type\": \"number\"\n      }\n    ],\n    \"rows\": [\n      [1609459200000, \"A\", 10],\n      [1609462800000, \"B\", 20],\n      [1609466400000, \"C\", 15],\n      [1609470000000, \"D\", 25],\n      [1609473600000, \"E\", 30]\n    ]\n  },\n{\n    \"columns\": [\n      {\n        \"text\": \"Time\",\n        \"type\": \"time\"\n      },\n      {\n        \"text\": \"Label\",\n        \"type\": \"string\"\n      },\n      {\n        \"text\": \"Value\",\n        \"type\": \"number\"\n      }\n    ],\n    \"rows\": [\n      [1609459200000, \"A\", 40],\n      [1609462800000, \"B\", 50],\n      [1609466400000, \"C\", 45],\n      [1609470000000, \"D\", 55],\n      [1609473600000, \"E\", 60]\n    ]\n  }\n]"
+          "scenarioId": "streaming_client",
+          "stream": {
+            "bands": 4,
+            "noise": 33,
+            "speed": 600,
+            "spread": 44,
+            "type": "signal"
+          }
         }
       ],
       "title": "Sample Panel Title",
@@ -58,18 +122,808 @@
         "type": "grafana-testdata-datasource",
         "uid": "trlxrdZVk"
       },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "id": 9,
+      "interval": "3s",
+      "options": {
+        "amPmFontSize": 18,
+        "amPmGap": 12,
+        "amPmOrientation": "horizontal",
+        "amPmPos": "none",
+        "autoSize": true,
+        "cardSize": 50,
+        "clock12h": false,
+        "clockDateFormat": "",
+        "clockDayOfWeek": false,
+        "clockSeparator": "colon",
+        "clockShowSeconds": true,
+        "clockTimezone": "",
+        "customUnit": "uSrv",
+        "digitCount": 3,
+        "displayContent": "value",
+        "forceNumeric": true,
+        "gap": 4,
+        "layoutDirection": "vertical",
+        "mode": "data",
+        "nameAlign": "center",
+        "nameFontSize": 18,
+        "namePos": "left",
+        "rounding": 0,
+        "seriesCountSize": "sm",
+        "showName": false,
+        "showSeparators": true,
+        "showSeriesCount": false,
+        "showTimezone": false,
+        "showUnit": true,
+        "speed": 1.9,
+        "spinSpeed": 0.2,
+        "text": "Default value of text input option",
+        "theme": "aviation-departure",
+        "thresholdTarget": "none",
+        "timezoneAlign": "center",
+        "timezoneFontSize": 18,
+        "timezonePos": "bottom",
+        "unitFontSize": 24,
+        "unitPos": "right",
+        "unitRotation": true,
+        "valueAggregation": "last"
+      },
+      "pluginVersion": "2.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "db84e60d-b92a-4089-82cb-34842fb1754b"
+          },
+          "refId": "A",
+          "scenarioId": "streaming_client",
+          "stream": {
+            "bands": 1,
+            "noise": 33,
+            "speed": 2000,
+            "spread": 44,
+            "type": "watch"
+          }
+        }
+      ],
+      "title": "Sample Panel Title",
+      "type": "dzaczek-splitflap-panel"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "trlxrdZVk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 15,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
+      "id": 10,
+      "interval": "3s",
+      "options": {
+        "amPmFontSize": 18,
+        "amPmGap": 12,
+        "amPmOrientation": "horizontal",
+        "amPmPos": "none",
+        "autoSize": true,
+        "cardSize": 50,
+        "clock12h": false,
+        "clockDateFormat": "",
+        "clockDayOfWeek": false,
+        "clockSeparator": "colon",
+        "clockShowSeconds": true,
+        "clockTimezone": "",
+        "customUnit": "",
+        "digitCount": 3,
+        "displayContent": "value",
+        "forceNumeric": true,
+        "gap": 4,
+        "layoutDirection": "vertical",
+        "mode": "data",
+        "nameAlign": "center",
+        "nameFontSize": 18,
+        "namePos": "left",
+        "rounding": 0,
+        "seriesCountSize": "sm",
+        "showName": false,
+        "showSeparators": true,
+        "showSeriesCount": false,
+        "showTimezone": false,
+        "showUnit": true,
+        "speed": 1.9,
+        "spinSpeed": 0.09,
+        "text": "Default value of text input option",
+        "theme": "aviation-departure",
+        "thresholdTarget": "none",
+        "timezoneAlign": "center",
+        "timezoneFontSize": 18,
+        "timezonePos": "bottom",
+        "unitFontSize": 24,
+        "unitPos": "right",
+        "unitRotation": false,
+        "valueAggregation": "last"
+      },
+      "pluginVersion": "2.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "db84e60d-b92a-4089-82cb-34842fb1754b"
+          },
+          "refId": "A",
+          "scenarioId": "streaming_client",
+          "stream": {
+            "bands": 1,
+            "noise": 4,
+            "speed": 2000,
+            "spread": 1,
+            "type": "signal"
+          }
+        }
+      ],
+      "title": "Sample Panel Title",
+      "type": "dzaczek-splitflap-panel"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "trlxrdZVk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 8,
         "w": 12,
+        "x": 0,
+        "y": 36
+      },
+      "id": 1,
+      "options": {
+        "amPmFontSize": 18,
+        "amPmGap": 12,
+        "amPmOrientation": "horizontal",
+        "amPmPos": "none",
+        "autoSize": true,
+        "cardSize": 50,
+        "clock12h": false,
+        "clockDateFormat": "",
+        "clockDayOfWeek": false,
+        "clockSeparator": "colon",
+        "clockShowSeconds": true,
+        "clockTimezone": "",
+        "customUnit": "",
+        "digitCount": 6,
+        "displayContent": "value",
+        "forceNumeric": false,
+        "gap": 4,
+        "layoutDirection": "vertical",
+        "mode": "data",
+        "nameAlign": "center",
+        "nameFontSize": 18,
+        "namePos": "top",
+        "rounding": 1,
+        "seriesCountSize": "sm",
+        "showName": true,
+        "showSeparators": false,
+        "showSeriesCount": false,
+        "showTimezone": false,
+        "showUnit": true,
+        "speed": 0.6,
+        "spinSpeed": 0.08,
+        "text": "Default value of text input option",
+        "theme": "classic",
+        "thresholdTarget": "none",
+        "timezoneAlign": "center",
+        "timezoneFontSize": 18,
+        "timezonePos": "bottom",
+        "unitFontSize": 24,
+        "unitPos": "right",
+        "unitRotation": false,
+        "valueAggregation": "last"
+      },
+      "pluginVersion": "2.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "db84e60d-b92a-4089-82cb-34842fb1754b"
+          },
+          "rawFrameContent": "[\n  {\n    \"columns\": [\n      {\n        \"text\": \"Time\",\n        \"type\": \"time\"\n      },\n      {\n        \"text\": \"Label\",\n        \"type\": \"string\"\n      },\n      {\n        \"text\": \"Value\",\n        \"type\": \"number\"\n      }\n    ],\n    \"rows\": [\n      [1609459200000, \"A\", 10],\n      [1609462800000, \"B\", 20],\n      [1609466400000, \"C\", 15],\n      [1609470000000, \"D\", 25],\n      [1609473600000, \"E\", 30]\n    ]\n  },\n{\n    \"columns\": [\n      {\n        \"text\": \"Time\",\n        \"type\": \"time\"\n      },\n      {\n        \"text\": \"Label\",\n        \"type\": \"string\"\n      },\n      {\n        \"text\": \"Value\",\n        \"type\": \"number\"\n      }\n    ],\n    \"rows\": [\n      [1609459200000, \"A\", 40],\n      [1609462800000, \"B\", 50],\n      [1609466400000, \"C\", 45],\n      [1609470000000, \"D\", 55],\n      [1609473600000, \"E\", 60]\n    ]\n  }\n]",
+          "refId": "A",
+          "scenarioId": "raw_frame"
+        }
+      ],
+      "title": "Sample Panel Title",
+      "type": "dzaczek-splitflap-panel"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "trlxrdZVk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
         "x": 12,
-        "y": 0
+        "y": 36
       },
       "id": 2,
       "options": {
+        "amPmFontSize": 18,
+        "amPmGap": 12,
+        "amPmOrientation": "horizontal",
+        "amPmPos": "none",
+        "autoSize": true,
+        "cardSize": 50,
+        "clock12h": false,
+        "clockDateFormat": "",
+        "clockDayOfWeek": false,
+        "clockSeparator": "colon",
+        "clockShowSeconds": true,
+        "clockTimezone": "America/New_York",
+        "customUnit": "",
+        "digitCount": 6,
+        "displayContent": "value",
+        "forceNumeric": false,
+        "gap": 4,
+        "layoutDirection": "horizontal",
+        "mode": "clock",
+        "nameAlign": "center",
+        "nameFontSize": 18,
+        "namePos": "top",
+        "rounding": 1,
         "seriesCountSize": "sm",
+        "showName": true,
+        "showSeparators": false,
         "showSeriesCount": false,
-        "text": "Default value of text input option"
+        "showTimezone": true,
+        "showUnit": true,
+        "speed": 0.6,
+        "spinSpeed": 0.08,
+        "text": "Default value of text input option",
+        "theme": "classic",
+        "thresholdTarget": "none",
+        "timezoneAlign": "center",
+        "timezoneFontSize": 35,
+        "timezonePos": "bottom",
+        "unitFontSize": 24,
+        "unitPos": "right",
+        "unitRotation": false,
+        "valueAggregation": "last"
       },
+      "pluginVersion": "2.2.3",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "db84e60d-b92a-4089-82cb-34842fb1754b"
+          },
+          "refId": "A",
+          "scenarioId": "no_data_points"
+        }
+      ],
+      "title": "Sample Panel Title",
+      "type": "dzaczek-splitflap-panel"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "trlxrdZVk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 12,
+        "y": 42
+      },
+      "id": 5,
+      "options": {
+        "amPmFontSize": 18,
+        "amPmGap": 12,
+        "amPmOrientation": "horizontal",
+        "amPmPos": "none",
+        "autoSize": true,
+        "cardSize": 50,
+        "clock12h": false,
+        "clockDateFormat": "",
+        "clockDayOfWeek": false,
+        "clockSeparator": "colon",
+        "clockShowSeconds": true,
+        "clockTimezone": "",
+        "customUnit": "",
+        "digitCount": 6,
+        "displayContent": "value",
+        "forceNumeric": false,
+        "gap": 4,
+        "layoutDirection": "horizontal",
+        "mode": "clock",
+        "nameAlign": "center",
+        "nameFontSize": 18,
+        "namePos": "top",
+        "rounding": 1,
+        "seriesCountSize": "sm",
+        "showName": true,
+        "showSeparators": false,
+        "showSeriesCount": false,
+        "showTimezone": false,
+        "showUnit": true,
+        "speed": 0.6,
+        "spinSpeed": 0.08,
+        "text": "Default value of text input option",
+        "theme": "mechanical",
+        "thresholdTarget": "none",
+        "timezoneAlign": "center",
+        "timezoneFontSize": 18,
+        "timezonePos": "bottom",
+        "unitFontSize": 24,
+        "unitPos": "right",
+        "unitRotation": false,
+        "valueAggregation": "last"
+      },
+      "pluginVersion": "2.2.3",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "db84e60d-b92a-4089-82cb-34842fb1754b"
+          },
+          "refId": "A",
+          "scenarioId": "no_data_points"
+        }
+      ],
+      "title": "Sample Panel Title",
+      "type": "dzaczek-splitflap-panel"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "trlxrdZVk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 44
+      },
+      "id": 6,
+      "interval": "3s",
+      "options": {
+        "amPmFontSize": 18,
+        "amPmGap": 12,
+        "amPmOrientation": "horizontal",
+        "amPmPos": "none",
+        "autoSize": true,
+        "cardSize": 50,
+        "clock12h": false,
+        "clockDateFormat": "",
+        "clockDayOfWeek": false,
+        "clockSeparator": "colon",
+        "clockShowSeconds": true,
+        "clockTimezone": "",
+        "customUnit": "",
+        "digitCount": 6,
+        "displayContent": "value",
+        "forceNumeric": false,
+        "gap": 4,
+        "layoutDirection": "horizontal",
+        "mode": "data",
+        "nameAlign": "center",
+        "nameFontSize": 18,
+        "namePos": "top",
+        "rounding": 1,
+        "seriesCountSize": "sm",
+        "showName": true,
+        "showSeparators": false,
+        "showSeriesCount": false,
+        "showTimezone": false,
+        "showUnit": true,
+        "speed": 0.6,
+        "spinSpeed": 0.08,
+        "text": "Default value of text input option",
+        "theme": "classic",
+        "thresholdTarget": "none",
+        "timezoneAlign": "center",
+        "timezoneFontSize": 18,
+        "timezonePos": "bottom",
+        "unitFontSize": 24,
+        "unitPos": "right",
+        "unitRotation": false,
+        "valueAggregation": "last"
+      },
+      "pluginVersion": "2.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "db84e60d-b92a-4089-82cb-34842fb1754b"
+          },
+          "refId": "A",
+          "scenarioId": "trace",
+          "spanCount": 2
+        }
+      ],
+      "title": "Sample Panel Title",
+      "type": "dzaczek-splitflap-panel"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "trlxrdZVk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 12,
+        "y": 47
+      },
+      "id": 3,
+      "options": {
+        "amPmFontSize": 28,
+        "amPmGap": 13,
+        "amPmOrientation": "vertical",
+        "amPmPos": "none",
+        "autoSize": true,
+        "cardSize": 50,
+        "clock12h": true,
+        "clockDateFormat": "",
+        "clockDayOfWeek": false,
+        "clockSeparator": "colon",
+        "clockShowSeconds": true,
+        "clockTimezone": "",
+        "customUnit": "",
+        "digitCount": 6,
+        "displayContent": "value",
+        "forceNumeric": false,
+        "gap": 4,
+        "layoutDirection": "horizontal",
+        "mode": "clock",
+        "nameAlign": "center",
+        "nameFontSize": 18,
+        "namePos": "top",
+        "rounding": 1,
+        "seriesCountSize": "sm",
+        "showName": true,
+        "showSeparators": false,
+        "showSeriesCount": false,
+        "showTimezone": false,
+        "showUnit": true,
+        "speed": 0.6,
+        "spinSpeed": 0.08,
+        "text": "Default value of text input option",
+        "theme": "swiss-sbb-black",
+        "thresholdTarget": "none",
+        "timezoneAlign": "center",
+        "timezoneFontSize": 18,
+        "timezonePos": "bottom",
+        "unitFontSize": 24,
+        "unitPos": "right",
+        "unitRotation": false,
+        "valueAggregation": "last"
+      },
+      "pluginVersion": "2.2.3",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "db84e60d-b92a-4089-82cb-34842fb1754b"
+          },
+          "refId": "A",
+          "scenarioId": "no_data_points"
+        }
+      ],
+      "title": "Sample Panel Title",
+      "type": "dzaczek-splitflap-panel"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "trlxrdZVk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 49
+      },
+      "id": 7,
+      "interval": "3s",
+      "options": {
+        "amPmFontSize": 18,
+        "amPmGap": 12,
+        "amPmOrientation": "horizontal",
+        "amPmPos": "none",
+        "autoSize": true,
+        "cardSize": 50,
+        "clock12h": false,
+        "clockDateFormat": "",
+        "clockDayOfWeek": false,
+        "clockSeparator": "colon",
+        "clockShowSeconds": true,
+        "clockTimezone": "",
+        "customUnit": "",
+        "digitCount": 6,
+        "displayContent": "value",
+        "forceNumeric": false,
+        "gap": 4,
+        "layoutDirection": "vertical",
+        "mode": "data",
+        "nameAlign": "center",
+        "nameFontSize": 18,
+        "namePos": "left",
+        "rounding": 1,
+        "seriesCountSize": "sm",
+        "showName": true,
+        "showSeparators": true,
+        "showSeriesCount": false,
+        "showTimezone": false,
+        "showUnit": true,
+        "speed": 0.6,
+        "spinSpeed": 0.08,
+        "text": "Default value of text input option",
+        "theme": "airport",
+        "thresholdTarget": "none",
+        "timezoneAlign": "center",
+        "timezoneFontSize": 18,
+        "timezonePos": "bottom",
+        "unitFontSize": 24,
+        "unitPos": "right",
+        "unitRotation": false,
+        "valueAggregation": "last"
+      },
+      "pluginVersion": "2.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "db84e60d-b92a-4089-82cb-34842fb1754b"
+          },
+          "refId": "A",
+          "scenarioId": "usa",
+          "usa": {
+            "mode": "values-as-fields",
+            "period": "4m",
+            "states": []
+          }
+        }
+      ],
+      "title": "Sample Panel Title",
+      "type": "dzaczek-splitflap-panel"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "trlxrdZVk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 12,
+        "y": 52
+      },
+      "id": 4,
+      "options": {
+        "amPmFontSize": 28,
+        "amPmGap": 13,
+        "amPmOrientation": "vertical",
+        "amPmPos": "none",
+        "autoSize": true,
+        "cardSize": 50,
+        "clock12h": true,
+        "clockDateFormat": "",
+        "clockDayOfWeek": false,
+        "clockSeparator": "colon",
+        "clockShowSeconds": true,
+        "clockTimezone": "America/New_York",
+        "customUnit": "",
+        "digitCount": 6,
+        "displayContent": "value",
+        "forceNumeric": false,
+        "gap": 4,
+        "layoutDirection": "horizontal",
+        "mode": "clock",
+        "nameAlign": "center",
+        "nameFontSize": 18,
+        "namePos": "top",
+        "rounding": 1,
+        "seriesCountSize": "sm",
+        "showName": true,
+        "showSeparators": false,
+        "showSeriesCount": false,
+        "showTimezone": true,
+        "showUnit": true,
+        "speed": 0.6,
+        "spinSpeed": 0.08,
+        "text": "Default value of text input option",
+        "theme": "classic",
+        "thresholdTarget": "none",
+        "timezoneAlign": "center",
+        "timezoneFontSize": 40,
+        "timezonePos": "top",
+        "unitFontSize": 24,
+        "unitPos": "right",
+        "unitRotation": false,
+        "valueAggregation": "last"
+      },
+      "pluginVersion": "2.2.3",
       "targets": [
         {
           "alias": "",
@@ -85,8 +939,9 @@
       "type": "dzaczek-splitflap-panel"
     }
   ],
+  "preload": false,
   "refresh": "",
-  "schemaVersion": 39,
+  "schemaVersion": 42,
   "tags": [],
   "templating": {
     "list": []
@@ -99,6 +954,5 @@
   "timezone": "",
   "title": "Provisioned Split Flap dashboard",
   "uid": "a538aeff-5a8a-42a5-901c-938d896fdd6f",
-  "version": 1,
-  "weekStart": ""
+  "version": 3
 }
