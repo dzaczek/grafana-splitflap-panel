@@ -603,7 +603,7 @@ export const FlipBoard: React.FC<Props> = ({ options, data, width, height }) => 
 
                 return (
                     <div 
-                        key={i} 
+                        key={series.refId || i} 
                         style={borderStyle}
                         role="meter"
                         aria-label={`${displayName}: ${valueToSend} ${unitToSend}`}
