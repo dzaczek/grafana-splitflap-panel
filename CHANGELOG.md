@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.2.7 (2026-01-09)
+
+### Fixes
+- **Provisioning**: Fixed Docker Compose configuration to use correct plugin ID (`dzaczek-splitflap-panel`), enabling proper provisioning and testing of the plugin.
+
+---
+
 ## 2.2.1 (2026-01-08)
 
 ### Fixes

@@ -79,22 +79,23 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
             }
 
             // subtract space for AM/PM
+            let amPmEquivalentChars = 0;
+            
             if (options.mode === 'clock' && options.clock12h && amPm) {
-                 // Even if 'none' (in text), we render it separately now so we need to account for it.
-                 // Previously 'none' was part of value string length calculation automatically.
-                 // Now formattedValueStr (clockStr) does NOT contain AM/PM.
-                 
-                 const amPmSize = (options.amPmFontSize || 18);
                  const amPmGap = options.amPmGap !== undefined ? options.amPmGap : 12;
+                 availWidth -= amPmGap;
+
+                 const amPmCharCount = (options.amPmOrientation === 'vertical') ? 1 : amPm.length;
+                 const baseAmPmSize = (options.amPmFontSize || 18);
+                 const baseCardSize = (options.cardSize || 50);
                  
-                 const charWidth = amPmSize * 0.7; // approx width factor
-                 let estimatedWidth = 0;
-                 if (options.amPmOrientation === 'vertical') {
-                      estimatedWidth = charWidth; 
-                 } else {
-                      estimatedWidth = charWidth * amPm.length; 
-                 }
-                 availWidth -= (estimatedWidth + amPmGap);
+                 // ratio of AM/PM size to Clock size
+                 const ratio = baseAmPmSize / baseCardSize;
+                 amPmEquivalentChars = amPmCharCount * ratio;
+                 
+                 // internal gaps for AM/PM (2px hardcoded in renderAmPm)
+                 const amPmInternalGaps = Math.max(0, amPmCharCount - 1) * 2;
+                 availWidth -= amPmInternalGaps;
             }
 
             // calculate card size
@@ -109,7 +110,9 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
             const totalGapWidth = Math.max(0, (realDigitCount - 1) * gapBetweenCards);
             
             // max width per card
-            const maxCardWidth = Math.max(0, availWidth - totalGapWidth) / realDigitCount;
+            // Effective count includes the fractional equivalent of AM/PM cards
+            const effectiveDigitCount = realDigitCount + amPmEquivalentChars;
+            const maxCardWidth = Math.max(0, availWidth - totalGapWidth) / effectiveDigitCount;
             
             // convert to height since cardSize is height
             const sizeBasedOnWidth = maxCardWidth / CARD_ASPECT_RATIO;
@@ -182,7 +185,16 @@ const FlipItem: React.FC<ItemProps> = ({ width, height, options, value, unit, na
         if (!options.mode || options.mode !== 'clock' || !amPm) { return null; }
         
         const isVertical = options.amPmOrientation === 'vertical';
-        const fontSize = options.amPmFontSize || 18;
+        
+        let fontSize = options.amPmFontSize || 18;
+        
+        // If autoSize is enabled, scale AM/PM proportionally to the calculated finalSize
+        // maintaining the ratio defined by (amPmFontSize / cardSize)
+        if (options.autoSize) {
+             const baseCardSize = options.cardSize || 50;
+             const ratio = (options.amPmFontSize || 18) / baseCardSize;
+             fontSize = finalSize * ratio;
+        }
         
         // Custom config for AM/PM digits
         const amPmConfig = {
