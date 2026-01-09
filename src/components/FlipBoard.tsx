@@ -434,7 +434,8 @@ function getClockString(options: FlipOptions, date: Date): { text: string, amPm:
     if (weekdayStr) { components.push(weekdayStr); }
     components.push(timeStr);
     
-    return { text: components.join('   '), amPm: finalAmPm };
+    // Using 2 spaces instead of 3 for better spacing
+    return { text: components.join('  '), amPm: finalAmPm };
 }
 
 // main panel component
