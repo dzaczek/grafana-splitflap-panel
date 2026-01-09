@@ -448,7 +448,7 @@
         "forceNumeric": false,
         "gap": 4,
         "layoutDirection": "horizontal",
-        "mode": "clock",
+        "mode": "data",
         "nameAlign": "center",
         "nameFontSize": 18,
         "namePos": "top",
