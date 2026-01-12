@@ -471,32 +471,42 @@ export const FlipBoard: React.FC<Props> = ({ options, data, width, height }) => 
         
         // Get timezone display name
         let timezoneDisplay = '';
-        if (options.showTimezone && options.clockTimezone) {
-            // Try to get a readable timezone name
-            try {
-                const timeZone = options.clockTimezone || undefined;
-                const formatter = new Intl.DateTimeFormat('en-US', {
-                    timeZoneName: 'short',
-                    timeZone: timeZone
-                });
-                const parts = formatter.formatToParts(currentTime);
-                const tzPart = parts.find(p => p.type === 'timeZoneName');
-                timezoneDisplay = tzPart ? tzPart.value : options.clockTimezone;
-            } catch (e) {
-                // Fallback to timezone string or find label from TIMEZONES
-                timezoneDisplay = options.clockTimezone;
-            }
-        } else if (options.showTimezone && !options.clockTimezone) {
-            // Browser local timezone
-            try {
-                const formatter = new Intl.DateTimeFormat('en-US', {
-                    timeZoneName: 'short'
-                });
-                const parts = formatter.formatToParts(currentTime);
-                const tzPart = parts.find(p => p.type === 'timeZoneName');
-                timezoneDisplay = tzPart ? tzPart.value : 'Local';
-            } catch (e) {
-                timezoneDisplay = 'Local';
+        if (options.showTimezone) {
+            const displayMode = options.timezoneDisplayMode || 'standard';
+            const timeZone = options.clockTimezone || undefined; // undefined = local
+
+            if (displayMode === 'custom') {
+                 timezoneDisplay = options.timezoneCustomName || '';
+            } else if (displayMode === 'region') {
+                 let tzId = options.clockTimezone;
+                 if (!tzId) {
+                     // Try to resolve local timezone ID
+                     try {
+                         tzId = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                     } catch {
+                         tzId = 'Local';
+                     }
+                 }
+                 
+                 if (tzId && tzId.includes('/')) {
+                     const parts = tzId.split('/');
+                     timezoneDisplay = parts[parts.length - 1].replace(/_/g, ' ');
+                 } else {
+                     timezoneDisplay = tzId || 'Local';
+                 }
+            } else {
+                // Standard behavior (short code e.g. EST, CET, GMT+1)
+                try {
+                    const formatter = new Intl.DateTimeFormat('en-US', {
+                        timeZoneName: 'short',
+                        timeZone: timeZone
+                    });
+                    const parts = formatter.formatToParts(currentTime);
+                    const tzPart = parts.find(p => p.type === 'timeZoneName');
+                    timezoneDisplay = tzPart ? tzPart.value : (timeZone || 'Local');
+                } catch (e) {
+                    timezoneDisplay = timeZone || 'Local';
+                }
             }
         }
         

@@ -12,6 +12,8 @@ export interface FlipOptions {
   timezonePos: 'top' | 'bottom' | 'left' | 'right';
   timezoneAlign: 'start' | 'center' | 'end';
   timezoneFontSize: number;
+  timezoneDisplayMode: 'standard' | 'region' | 'custom';
+  timezoneCustomName: string;
 
   // AM/PM (Clock 12h)
   amPmFontSize: number;

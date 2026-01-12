@@ -179,6 +179,7 @@ const themes: Record<string, any> = {
     gradientTop: 'none',
     gradientBottom: 'none',
     specialEffect: 'vignette',
+    verticalOffset: '-5%', // Pull text up slightly for this font
   },
   'blue-glass': {
     bg: 'rgba(0, 60, 255, 0.8)',
@@ -492,6 +493,11 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
         fontFamily: theme.font,
         transformStyle: 'preserve-3d',
         transition: 'background-color 0.3s ease, color 0.3s ease',
+        ...(theme.verticalOffset && {
+            '&::before, &::after, & div::before': {
+                transform: `translateY(${theme.verticalOffset})`
+            }
+        }),
         ...(theme.specialEffect === 'glass' && {
           backdropFilter: 'blur(10px)',
           WebkitBackdropFilter: 'blur(10px)',
@@ -597,13 +603,13 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
         top: 0,
         overflow: 'hidden',
         backfaceVisibility: 'hidden',
-        background: theme.gradientTop || finalBg,
-        backgroundImage: theme.gradientTop,
+        backgroundColor: finalBg, // Ensure solid color is applied
+        backgroundImage: theme.gradientTop, // Gradient sits on top
         borderRadius: `${theme.radius} ${theme.radius} 0 0`,
         borderBottom: '1px solid rgba(0,0,0,0.3)',
         zIndex: 1,
         '&::before': {
-          content: `"${escapeChar(displayChar)}"`,
+          content: 'attr(data-char)',
           position: 'absolute',
           left: 0,
           width: '100%',
@@ -628,12 +634,12 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
         bottom: 0,
         overflow: 'hidden',
         backfaceVisibility: 'hidden',
-        background: theme.gradientBottom || finalBg,
-        backgroundImage: theme.gradientBottom,
+        backgroundColor: finalBg, // Ensure solid color is applied
+        backgroundImage: theme.gradientBottom, // Gradient sits on top
         borderRadius: `0 0 ${theme.radius} ${theme.radius}`,
         zIndex: 0,
         '&::before': {
-          content: `"${escapeChar(bottomChar)}"`,
+          content: 'attr(data-char)',
           position: 'absolute',
           left: 0,
           width: '100%',
@@ -658,17 +664,22 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
         overflow: 'hidden',
         backfaceVisibility: 'hidden',
         willChange: 'transform',
+        // Add backdrop-filter to blur content behind flaps for glass themes
+        ...( (theme.specialEffect === 'glass' || theme.specialEffect === 'blue-glass') && {
+            backdropFilter: 'blur(4px)',
+            WebkitBackdropFilter: 'blur(4px)',
+        }),
       }),
       flapFront: css({
         top: 0,
         transformOrigin: 'bottom',
-        background: theme.gradientTop || finalBg,
-        backgroundImage: theme.gradientTop,
+        backgroundColor: finalBg, // Ensure solid color is applied
+        backgroundImage: theme.gradientTop, // Gradient sits on top
         borderRadius: `${theme.radius} ${theme.radius} 0 0`,
         borderBottom: '1px solid rgba(0,0,0,0.3)',
         zIndex: 2,
         '&::before': {
-          content: `"${escapeChar(bottomChar)}"`,
+          content: 'attr(data-char)',
           position: 'absolute',
           left: 0,
           width: '100%',
@@ -680,12 +691,12 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
         top: '50%',
         transformOrigin: 'top',
         transform: 'rotateX(180deg)',
-        background: theme.gradientBottom || finalBg,
-        backgroundImage: theme.gradientBottom,
+        backgroundColor: finalBg, // Ensure solid color is applied
+        backgroundImage: theme.gradientBottom, // Gradient sits on top
         borderRadius: `0 0 ${theme.radius} ${theme.radius}`,
         zIndex: 3,
         '&::before': {
-          content: `"${escapeChar(displayChar)}"`,
+          content: 'attr(data-char)',
           position: 'absolute',
           left: 0,
           width: '100%',
@@ -702,7 +713,7 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
         },
       }),
     };
-  }, [config.cardSize, finalBg, finalText, theme, displayChar, bottomChar]);
+  }, [config.cardSize, finalBg, finalText, theme]);
 
   return (
     <>
@@ -710,10 +721,10 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
         className={cx(styles.flipUnit, isFlipping && styles.flipping)}
         style={{ '--flip-duration': `${config.speed || 0.49}s` } as React.CSSProperties}
       >
-        <div className={styles.top} />
-        <div className={styles.bottom} />
-        <div className={cx(styles.flap, styles.flapFront, 'flap-front')} />
-        <div className={cx(styles.flap, styles.flapBack, 'flap-back')} />
+        <div className={styles.top} data-char={escapeChar(displayChar)} />
+        <div className={styles.bottom} data-char={escapeChar(bottomChar)} />
+        <div className={cx(styles.flap, styles.flapFront, 'flap-front')} data-char={escapeChar(bottomChar)} />
+        <div className={cx(styles.flap, styles.flapBack, 'flap-back')} data-char={escapeChar(displayChar)} />
       </div>
     </>
   );
