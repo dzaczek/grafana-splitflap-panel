@@ -32,7 +32,7 @@
         "path": "img/logo.svg"
       }
     ],
-    "version": "%VERSION%",
+    "version": "2.2.11",
     "updated": "%TODAY%"
   },
   "dependencies": {
