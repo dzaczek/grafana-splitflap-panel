@@ -1,6 +1,6 @@
 # Split Flap Panel for Grafana
 
-![Split Flap Logo](src/img/logo.svg)
+![Split Flap Logo](https://raw.githubusercontent.com/dzaczek/grafana-splitflap-panel/main/src/img/logo.svg)
 
 A retro-style **Split Flap** display panel for Grafana.
 
@@ -72,7 +72,7 @@ Comes with a bunch of built-in styles so you don't have to write CSS:
 See the panel in action with different configurations:
 
 ### Default View
-![Split Flap Panel Example](src/img/example_1.jpg)
+![Split Flap Panel Example](https://raw.githubusercontent.com/dzaczek/grafana-splitflap-panel/main/src/img/example_1.jpg)
 *Shows numeric values with the classic airport look.*
 
 ## Usage
