@@ -492,6 +492,7 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
         border: theme.border,
         fontFamily: theme.font,
         transformStyle: 'preserve-3d',
+        WebkitTransformStyle: 'preserve-3d',
         transition: 'background-color 0.3s ease, color 0.3s ease',
         ...(theme.verticalOffset && {
             '&::before, &::after, & div::before': {
@@ -603,6 +604,7 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
         top: 0,
         overflow: 'hidden',
         backfaceVisibility: 'hidden',
+        WebkitBackfaceVisibility: 'hidden',
         backgroundColor: finalBg, // Ensure solid color is applied
         backgroundImage: theme.gradientTop, // Gradient sits on top
         borderRadius: `${theme.radius} ${theme.radius} 0 0`,
@@ -634,6 +636,7 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
         bottom: 0,
         overflow: 'hidden',
         backfaceVisibility: 'hidden',
+        WebkitBackfaceVisibility: 'hidden',
         backgroundColor: finalBg, // Ensure solid color is applied
         backgroundImage: theme.gradientBottom, // Gradient sits on top
         borderRadius: `0 0 ${theme.radius} ${theme.radius}`,
@@ -663,6 +666,7 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
         height: '50%',
         overflow: 'hidden',
         backfaceVisibility: 'hidden',
+        WebkitBackfaceVisibility: 'hidden',
         willChange: 'transform',
         // Add backdrop-filter to blur content behind flaps for glass themes
         ...( (theme.specialEffect === 'glass' || theme.specialEffect === 'blue-glass') && {
