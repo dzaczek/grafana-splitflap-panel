@@ -33,7 +33,9 @@ export const FlipDisplay: React.FC<FlipDisplayProps> = ({ value, config, colorOv
     justifyContent: 'center',
     gap: `${config.gap || 4}px`,
     perspective: '1000px',
+    WebkitPerspective: '1000px',
     transformStyle: 'preserve-3d',
+    WebkitTransformStyle: 'preserve-3d',
   });
 
   const paddedString = targetString.padStart(targetLen, ' ');
