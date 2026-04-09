@@ -301,10 +301,11 @@ const escapeChar = (char: string): string => {
 export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrides, skipAnimation = false }) => {
   const [displayChar, setDisplayChar] = useState<string>(char);
   const [bottomChar, setBottomChar] = useState<string>(char);
-  const [isFlipping, setIsFlipping] = useState(false);
+  const [flipKey, setFlipKey] = useState(0); // 0=idle, >0=flipping (odd/even alternates animation)
   const prevCharRef = useRef<string>(char);
   const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const animationActiveRef = useRef<boolean>(false);
+  const flipKeyRef = useRef(0);
 
   const theme = useMemo(() => {
     const themeName = config.theme || 'classic';
@@ -394,7 +395,7 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
         setDisplayChar(safeTargetChar);
         setBottomChar(safeTargetChar);
         prevCharRef.current = safeTargetChar;
-        setIsFlipping(false);
+        setFlipKey(0);
         animationActiveRef.current = false;
         return;
       }
@@ -416,24 +417,28 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
       const nextChar = activeDrum[nextIdx];
       const charBeforeFlip = animStateRef.currentChar;
 
-      setIsFlipping(true);
+      // Increment flipKey to alternate animation name (A/B) — forces browser
+      // to restart CSS animation without a "no animation" frame in between
+      flipKeyRef.current++;
+      setFlipKey(flipKeyRef.current);
       setBottomChar(charBeforeFlip); // Bottom & FlapFront show old char
       setDisplayChar(nextChar);      // Top & FlapBack show new char
-      
+
       animStateRef.currentChar = nextChar;
       animStateRef.stepsTaken++;
 
       animationTimeoutRef.current = setTimeout(() => {
-        setIsFlipping(false);
-        // After flip completes, catch up bottomChar
-        // (will be overwritten by next step anyway, but good for safety)
-        
+        // Sync bottomChar to landed char before next step
+        setBottomChar(nextChar);
+
         if (nextChar !== safeTargetChar && animStateRef.stepsTaken < 60) {
           animate();
         } else {
           setDisplayChar(safeTargetChar);
           setBottomChar(safeTargetChar);
           prevCharRef.current = safeTargetChar;
+          setFlipKey(0);
+          flipKeyRef.current = 0;
           animationActiveRef.current = false;
         }
       }, currentSpeed * 1000);
@@ -454,14 +459,24 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
     const cardWidth = config.cardSize * 0.7;
     const fontSize = config.cardSize * 0.85;
 
-    const flipDownFront = keyframes`
-      0% { transform: rotateX(0deg); }
-      100% { transform: rotateX(-180deg); }
+    // Two identical animation sets (A/B) with different names.
+    // Alternating between them forces the browser to restart the CSS
+    // animation on every flip step — no "idle" frame in between.
+    const flipDownFrontA = keyframes`
+      from { transform: rotateX(0deg); -webkit-transform: rotateX(0deg); }
+      to   { transform: rotateX(-180deg); -webkit-transform: rotateX(-180deg); }
     `;
-
-    const flipDownBack = keyframes`
-      0% { transform: rotateX(180deg); }
-      100% { transform: rotateX(0deg); }
+    const flipDownFrontB = keyframes`
+      from { transform: rotateX(0deg); -webkit-transform: rotateX(0deg); }
+      to   { transform: rotateX(-180.001deg); -webkit-transform: rotateX(-180.001deg); }
+    `;
+    const flipDownBackA = keyframes`
+      from { transform: rotateX(180deg); -webkit-transform: rotateX(180deg); }
+      to   { transform: rotateX(0deg); -webkit-transform: rotateX(0deg); }
+    `;
+    const flipDownBackB = keyframes`
+      from { transform: rotateX(180deg); -webkit-transform: rotateX(180deg); }
+      to   { transform: rotateX(0.001deg); -webkit-transform: rotateX(0.001deg); }
     `;
 
     const matrixFall = keyframes`
@@ -492,6 +507,7 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
         border: theme.border,
         fontFamily: theme.font,
         transformStyle: 'preserve-3d',
+        WebkitTransformStyle: 'preserve-3d',
         transition: 'background-color 0.3s ease, color 0.3s ease',
         ...(theme.verticalOffset && {
             '&::before, &::after, & div::before': {
@@ -602,9 +618,8 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
         height: '50%',
         top: 0,
         overflow: 'hidden',
-        backfaceVisibility: 'hidden',
-        backgroundColor: finalBg, // Ensure solid color is applied
-        backgroundImage: theme.gradientTop, // Gradient sits on top
+        backgroundColor: finalBg,
+        backgroundImage: theme.gradientTop,
         borderRadius: `${theme.radius} ${theme.radius} 0 0`,
         borderBottom: '1px solid rgba(0,0,0,0.3)',
         zIndex: 1,
@@ -633,9 +648,8 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
         height: '50%',
         bottom: 0,
         overflow: 'hidden',
-        backfaceVisibility: 'hidden',
-        backgroundColor: finalBg, // Ensure solid color is applied
-        backgroundImage: theme.gradientBottom, // Gradient sits on top
+        backgroundColor: finalBg,
+        backgroundImage: theme.gradientBottom,
         borderRadius: `0 0 ${theme.radius} ${theme.radius}`,
         zIndex: 0,
         '&::before': {
@@ -663,6 +677,7 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
         height: '50%',
         overflow: 'hidden',
         backfaceVisibility: 'hidden',
+        WebkitBackfaceVisibility: 'hidden',
         willChange: 'transform',
         // Add backdrop-filter to blur content behind flaps for glass themes
         ...( (theme.specialEffect === 'glass' || theme.specialEffect === 'blue-glass') && {
@@ -673,8 +688,8 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
       flapFront: css({
         top: 0,
         transformOrigin: 'bottom',
-        backgroundColor: finalBg, // Ensure solid color is applied
-        backgroundImage: theme.gradientTop, // Gradient sits on top
+        backgroundColor: finalBg,
+        backgroundImage: theme.gradientTop,
         borderRadius: `${theme.radius} ${theme.radius} 0 0`,
         borderBottom: '1px solid rgba(0,0,0,0.3)',
         zIndex: 2,
@@ -691,8 +706,9 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
         top: '50%',
         transformOrigin: 'top',
         transform: 'rotateX(180deg)',
-        backgroundColor: finalBg, // Ensure solid color is applied
-        backgroundImage: theme.gradientBottom, // Gradient sits on top
+        WebkitTransform: 'rotateX(180deg)',
+        backgroundColor: finalBg,
+        backgroundImage: theme.gradientBottom,
         borderRadius: `0 0 ${theme.radius} ${theme.radius}`,
         zIndex: 3,
         '&::before': {
@@ -704,12 +720,20 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
           top: '-100%',
         },
       }),
-      flipping: css({
+      flippingA: css({
         '& .flap-front': {
-          animation: `${flipDownFront} var(--flip-duration) ease-in forwards`,
+          animation: `${flipDownFrontA} var(--flip-duration) ease-in forwards`,
         },
         '& .flap-back': {
-          animation: `${flipDownBack} var(--flip-duration) ease-out forwards`,
+          animation: `${flipDownBackA} var(--flip-duration) ease-out forwards`,
+        },
+      }),
+      flippingB: css({
+        '& .flap-front': {
+          animation: `${flipDownFrontB} var(--flip-duration) ease-in forwards`,
+        },
+        '& .flap-back': {
+          animation: `${flipDownBackB} var(--flip-duration) ease-out forwards`,
         },
       }),
     };
@@ -718,7 +742,10 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
   return (
     <>
       <div
-        className={cx(styles.flipUnit, isFlipping && styles.flipping)}
+        className={cx(
+          styles.flipUnit,
+          flipKey > 0 && (flipKey % 2 === 1 ? styles.flippingA : styles.flippingB)
+        )}
         style={{ '--flip-duration': `${config.speed || 0.49}s` } as React.CSSProperties}
       >
         <div className={styles.top} data-char={escapeChar(displayChar)} />
