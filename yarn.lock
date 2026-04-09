@@ -572,7 +572,7 @@
   dependencies:
     tslib "^2.8.0"
 
-"@grafana/data@12.3.2", "@grafana/data@^12.3.2":
+"@grafana/data@12.3.2":
   version "12.3.2"
   resolved "https://registry.npmjs.org/@grafana/data/-/data-12.3.2.tgz"
   integrity sha512-rWTsyBnoIHGEmCP4WZ15HXP8Z+zp+aw+CtmR+gDmypCS6IDSRWIsakuQmu5ZbWqrmQhE50jYpe2KQLae7IMS5Q==
@@ -604,6 +604,41 @@
     tslib "2.8.1"
     uplot "1.6.32"
     xss "^1.0.14"
+
+"@grafana/data@^12.4.2":
+  version "12.4.2"
+  resolved "https://registry.npmjs.org/@grafana/data/-/data-12.4.2.tgz#6e21ade9a9cc634bd4bba1f2b2c27d52a79743d1"
+  integrity sha512-VjvxJFYnENiuYlSDSzfh5AqB5foET+MUq4HQMZQmCa3Svm+anECzsN0rRF8Yn/uA8Lx+9z5d77hESgEUpyBKcQ==
+  dependencies:
+    "@braintree/sanitize-url" "7.0.1"
+    "@grafana/i18n" "12.4.2"
+    "@grafana/schema" "12.4.2"
+    "@leeoniya/ufuzzy" "1.0.19"
+    "@types/d3-interpolate" "^3.0.0"
+    "@types/string-hash" "1.1.3"
+    "@types/systemjs" "6.15.3"
+    d3-interpolate "3.0.1"
+    d3-scale-chromatic "3.1.0"
+    date-fns "4.1.0"
+    dompurify "3.3.0"
+    eventemitter3 "5.0.1"
+    fast_array_intersect "1.1.0"
+    history "4.10.1"
+    lodash "^4.17.23"
+    marked "16.3.0"
+    marked-mangle "1.1.12"
+    moment "2.30.1"
+    moment-timezone "0.5.47"
+    ol "10.7.0"
+    papaparse "5.5.3"
+    react-use "17.6.0"
+    rxjs "7.8.2"
+    string-hash "^1.1.3"
+    tinycolor2 "1.6.0"
+    tslib "2.8.1"
+    uplot "1.6.32"
+    xss "^1.0.14"
+    zod "^4.3.0"
 
 "@grafana/e2e-selectors@12.3.2":
   version "12.3.2"
@@ -645,10 +680,24 @@
     ua-parser-js "^1.0.32"
     web-vitals "^4.0.1"
 
-"@grafana/i18n@12.3.2", "@grafana/i18n@^12.3.0":
+"@grafana/i18n@12.3.2":
   version "12.3.2"
   resolved "https://registry.npmjs.org/@grafana/i18n/-/i18n-12.3.2.tgz"
   integrity sha512-1H/iVe52ipd4Vj3lFvMpH266tn8QibfTDEaDoNMHgR/TP68233035Z71Tgv1GZai72k3R4gEeSF+03pMAilaOg==
+  dependencies:
+    "@formatjs/intl-durationformat" "^0.7.0"
+    "@typescript-eslint/utils" "^8.33.1"
+    fast-deep-equal "^3.1.3"
+    i18next "^25.0.0"
+    i18next-browser-languagedetector "^8.0.0"
+    i18next-pseudo "^2.2.1"
+    micro-memoize "^4.1.2"
+    react-i18next "^15.0.0"
+
+"@grafana/i18n@12.4.2", "@grafana/i18n@^12.3.0":
+  version "12.4.2"
+  resolved "https://registry.npmjs.org/@grafana/i18n/-/i18n-12.4.2.tgz#1d36b914a081626caa3afc2fe0ebd79d4d7aa85b"
+  integrity sha512-PcT0oI0xE7bl/nLqnLKawQGDC6TT/uADmegHRf+JP/mE7VeJKwloj3MWVzi5T4r7JE5s2VlG7nQiEWn5qdHhUw==
   dependencies:
     "@formatjs/intl-durationformat" "^0.7.0"
     "@typescript-eslint/utils" "^8.33.1"
@@ -690,10 +739,17 @@
     rxjs "7.8.2"
     tslib "2.8.1"
 
-"@grafana/schema@12.3.2", "@grafana/schema@^12.3.0":
+"@grafana/schema@12.3.2":
   version "12.3.2"
   resolved "https://registry.npmjs.org/@grafana/schema/-/schema-12.3.2.tgz"
   integrity sha512-X3ExqXvKg5zWV8WNimczM0wbhQoehdj05K/YRA/rD00Fuo8y0OuECFSsG/VhdLoIUM4VCqsHStaQymsYDFundg==
+  dependencies:
+    tslib "2.8.1"
+
+"@grafana/schema@12.4.2", "@grafana/schema@^12.3.0":
+  version "12.4.2"
+  resolved "https://registry.npmjs.org/@grafana/schema/-/schema-12.4.2.tgz#1986824745f3ac2c9a2ce8e01224b79eb14b96b1"
+  integrity sha512-dkIEvcqTMitGO1qQcg4Hd2RoLK/YcQCNZQusX4sINvWH64u3uryBn3TS6TTPItvkiccWULYuZSWcQMV478i9Yg==
   dependencies:
     tslib "2.8.1"
 
@@ -3097,7 +3153,7 @@ d3-random@3:
   resolved "https://registry.npmjs.org/d3-random/-/d3-random-3.0.1.tgz"
   integrity sha512-FXMe9GfxTxqd5D6jFsQ+DJ8BJS4E/fT5mqqdjovykEB2oFbTMDVdg1MGFxfQW+FBOGoB++k8swBrgwSHT1cUXQ==
 
-d3-scale-chromatic@3:
+d3-scale-chromatic@3, d3-scale-chromatic@3.1.0:
   version "3.1.0"
   resolved "https://registry.npmjs.org/d3-scale-chromatic/-/d3-scale-chromatic-3.1.0.tgz"
   integrity sha512-A3s5PWiZ9YCXFye1o246KoscMWqf8BsD9eRiJ3He7C9OBaxKhAd5TFCdEx/7VbKtxxTsu//1mMJFrEt572cEyQ==
@@ -5511,7 +5567,7 @@ lodash.merge@^4.6.2:
   resolved "https://registry.npmjs.org/lodash.merge/-/lodash.merge-4.6.2.tgz"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
-lodash@4.17.21, lodash@^4.1.1, lodash@^4.17.15, lodash@^4.17.21, lodash@^4.17.4:
+lodash@4.17.21, lodash@^4.1.1, lodash@^4.17.15, lodash@^4.17.21, lodash@^4.17.23, lodash@^4.17.4:
   version "4.18.1"
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.18.1.tgz#ff2b66c1f6326d59513de2407bf881439812771c"
   integrity sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==
@@ -5568,6 +5624,11 @@ marked-mangle@1.1.11:
   version "1.1.11"
   resolved "https://registry.npmjs.org/marked-mangle/-/marked-mangle-1.1.11.tgz"
   integrity sha512-BUZiRqPooKZZhC7e8aDlzqkZt4MKkbJ/VY22b8iqrI3fJdnWmSyc7/uujDkrMszZrKURrXsYVUfgdWG6gEspcA==
+
+marked-mangle@1.1.12:
+  version "1.1.12"
+  resolved "https://registry.npmjs.org/marked-mangle/-/marked-mangle-1.1.12.tgz#7ecc1dab1e03695f3b8b9d606e8becfba8277496"
+  integrity sha512-bRrqNcfU9v3iRECb7YPvA+/xKZMjHojd9R92YwHbFjdPQ+Wc7vozkbGKAv4U8AUl798mNUuY3DTBQkedsV3TeQ==
 
 marked@16.3.0:
   version "16.3.0"
@@ -5822,6 +5883,17 @@ ol@10.6.1:
   version "10.6.1"
   resolved "https://registry.npmjs.org/ol/-/ol-10.6.1.tgz"
   integrity sha512-xp174YOwPeLj7c7/8TCIEHQ4d41tgTDDhdv6SqNdySsql5/MaFJEJkjlsYcvOPt7xA6vrum/QG4UdJ0iCGT1cg==
+  dependencies:
+    "@types/rbush" "4.0.0"
+    earcut "^3.0.0"
+    geotiff "^2.1.3"
+    pbf "4.0.1"
+    rbush "^4.0.0"
+
+ol@10.7.0:
+  version "10.7.0"
+  resolved "https://registry.npmjs.org/ol/-/ol-10.7.0.tgz#6a072a602cab3a5d9b35356de8b837221d78379b"
+  integrity sha512-122U5gamPqNgLpLOkogFJhgpywvd/5en2kETIDW+Ubfi9lPnZ0G9HWRdG+CX0oP8od2d6u6ky3eewIYYlrVczw==
   dependencies:
     "@types/rbush" "4.0.0"
     earcut "^3.0.0"
@@ -8083,7 +8155,7 @@ yocto-queue@^0.1.0:
   resolved "https://registry.npmjs.org/zod-validation-error/-/zod-validation-error-4.0.2.tgz"
   integrity sha512-Q6/nZLe6jxuU80qb/4uJ4t5v2VEZ44lzQjPDhYJNztRQ4wyWc6VF3D3Kb/fAuPetZQnhS3hnajCf9CsWesghLQ==
 
-"zod@^3.25.0 || ^4.0.0":
+"zod@^3.25.0 || ^4.0.0", zod@^4.3.0:
   version "4.3.6"
   resolved "https://registry.npmjs.org/zod/-/zod-4.3.6.tgz"
   integrity sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==
