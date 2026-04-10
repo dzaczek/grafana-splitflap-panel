@@ -491,6 +491,8 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
       100% { opacity: 0.35; }
     `;
 
+    const isTrueWallDigit = !!(config as any)._trueWallDigit;
+
     return {
       flipUnit: css({
         position: 'relative',
@@ -503,8 +505,12 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
         fontSize: `${fontSize}px`,
         lineHeight: `${config.cardSize}px`,
         textAlign: 'center',
-        boxShadow: theme.shadow,
-        border: theme.border,
+        boxShadow: isTrueWallDigit
+          ? `inset 0 1px 3px rgba(0,0,0,0.7), inset 0 -1px 2px rgba(0,0,0,0.3), ${theme.shadow || '0 0 0 transparent'}`
+          : theme.shadow,
+        border: isTrueWallDigit
+          ? '1px solid rgba(0,0,0,0.5)'
+          : theme.border,
         fontFamily: theme.font,
         transformStyle: 'preserve-3d',
         WebkitTransformStyle: 'preserve-3d',

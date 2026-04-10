@@ -76,4 +76,7 @@ export interface FlipOptions {
   boardAutoColumnNames: boolean;
   boardScrollable: boolean;
   boardTrueWall: boolean;
+
+  // Internal flag passed to FlipDigit for per-digit recess styling
+  _trueWallDigit?: boolean;
 }
