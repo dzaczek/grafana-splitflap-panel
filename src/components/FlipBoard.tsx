@@ -686,7 +686,11 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
                 overflow: scrollable ? 'auto' : 'hidden',
             }}>
                 {rows.map((cols, rowIdx) => {
-                    const rowBg = rowIdx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)';
+                    // Panel-level threshold: use first column's color as row background
+                    let rowBg = rowIdx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)';
+                    if (options.thresholdTarget === 'panel' && cols.length > 0 && cols[0].color) {
+                        rowBg = cols[0].color;
+                    }
                     const availRowWidth = innerWidth - ROW_NUMBER_WIDTH;
 
                     return (
