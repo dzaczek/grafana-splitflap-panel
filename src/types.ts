@@ -68,4 +68,11 @@ export interface FlipOptions {
   boardHeaderTextColor: string;
   boardRowSeparator: boolean;
   boardColumnAlign: 'left' | 'center' | 'right';
+  boardHeaderFontSize: number;
+  boardColumnHeaderFontSize: number;
+  boardFrameWidth: number;
+  boardShowRowNumbers: boolean;
+  boardCompact: boolean;
+  boardAutoColumnNames: boolean;
+  boardScrollable: boolean;
 }

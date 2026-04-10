@@ -450,6 +450,34 @@ function getClockString(options: FlipOptions, date: Date): { text: string, amPm:
     return { text: components.join('  '), amPm: finalAmPm };
 }
 
+// ======= SCREW DECORATION =======
+const ScrewDot: React.FC<{ size?: number }> = ({ size = 7 }) => (
+    <div style={{
+        width: `${size}px`,
+        height: `${size}px`,
+        borderRadius: '50%',
+        background: 'radial-gradient(circle at 35% 35%, rgba(255,255,255,0.25), rgba(255,255,255,0.08) 40%, rgba(0,0,0,0.2) 100%)',
+        boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.6), 0 0.5px 0 rgba(255,255,255,0.1)',
+    }} />
+);
+
+const ScrewRow: React.FC<{ position: 'top' | 'bottom' }> = ({ position }) => (
+    <div style={{
+        position: 'absolute',
+        [position]: '3px',
+        left: '0',
+        right: '0',
+        display: 'flex',
+        justifyContent: 'space-between',
+        padding: '0 14px',
+        pointerEvents: 'none',
+        zIndex: 10,
+    }}>
+        <ScrewDot />
+        <ScrewDot />
+    </div>
+);
+
 // ======= BOARD VIEW (Solari Display) =======
 interface BoardViewProps {
     width: number;
@@ -466,19 +494,23 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
     const showHeader = options.boardShowHeader !== false;
     const title = options.boardTitle || 'DEPARTURES';
     const splitToColumns = options.boardSplitToColumns || false;
+    const autoColumnNames = options.boardAutoColumnNames !== false;
     const columnNamesRaw = options.boardColumnNames || '';
-    const columnNames = columnNamesRaw ? columnNamesRaw.split(',').map(s => s.trim()) : [];
+    const manualColumnNames = columnNamesRaw ? columnNamesRaw.split(',').map(s => s.trim()) : [];
     const columnAlign = options.boardColumnAlign || 'left';
     const rowSeparator = options.boardRowSeparator !== false;
+    const compact = options.boardCompact || false;
+    const scrollable = options.boardScrollable || false;
+    const showRowNumbers = options.boardShowRowNumbers || false;
+    const headerFontSize = options.boardHeaderFontSize || 18;
+    const colHeaderFontSize = options.boardColumnHeaderFontSize || 11;
 
-    const FRAME_WIDTH = 8;
-    const HEADER_HEIGHT = showHeader ? 44 : 0;
-    const COLUMN_HEADER_HEIGHT = (splitToColumns && columnNames.length > 0) ? 28 : 0;
+    const FRAME_WIDTH = options.boardFrameWidth !== undefined ? options.boardFrameWidth : 8;
+    const HEADER_HEIGHT = showHeader ? Math.max(headerFontSize + (compact ? 12 : 26), 32) : 0;
+    const ROW_NUMBER_WIDTH = showRowNumbers ? 32 : 0;
+
     const innerWidth = width - FRAME_WIDTH * 2;
     const innerHeight = height - FRAME_WIDTH * 2;
-    const contentHeight = innerHeight - HEADER_HEIGHT - COLUMN_HEADER_HEIGHT;
-    const rowCount = seriesList.length;
-    const rowHeight = rowCount > 0 ? Math.floor(contentHeight / rowCount) : contentHeight;
 
     // alignment mapping
     const alignMap: Record<string, string> = { left: 'flex-start', center: 'center', right: 'flex-end' };
@@ -487,7 +519,6 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
     const rows = useMemo(() => {
         return seriesList.map((series) => {
             if (splitToColumns) {
-                // Each field (except time) becomes a column
                 const fields = series.fields.filter((f: any) => f.type !== 'time');
                 return fields.map((field: any) => {
                     const rawValue = reduceValues(field.values, options.valueAggregation);
@@ -501,7 +532,6 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
                     return { value: val, name: displayName, color: displayValue.color, field };
                 });
             } else {
-                // Single value per row (existing logic)
                 const field = series.fields.find((f: any) => f.type === 'number')
                     || series.fields.find((f: any) => f.type === 'string')
                     || series.fields.find((f: any) => f.type !== 'time')
@@ -532,6 +562,29 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
     // Max columns across all rows
     const maxCols = Math.max(1, ...rows.map(r => r.length));
 
+    // Resolve column names: auto from field names or manual
+    const resolvedColumnNames = useMemo(() => {
+        if (!splitToColumns) { return []; }
+        if (!autoColumnNames && manualColumnNames.length > 0) {
+            return manualColumnNames;
+        }
+        // Auto: derive from first row's field display names
+        if (rows.length > 0 && rows[0].length > 0) {
+            return rows[0].map(col => col.name);
+        }
+        return [];
+    }, [splitToColumns, autoColumnNames, manualColumnNames, rows]);
+
+    const hasColumnHeaders = splitToColumns && resolvedColumnNames.length > 0;
+    const COLUMN_HEADER_HEIGHT = hasColumnHeaders ? Math.max(colHeaderFontSize + (compact ? 8 : 16), 22) : 0;
+
+    const contentHeight = innerHeight - HEADER_HEIGHT - COLUMN_HEADER_HEIGHT;
+    const rowCount = seriesList.length;
+    const rowPadV = compact ? 1 : 4;
+    const rowHeight = scrollable
+        ? Math.max(compact ? 28 : 40, Math.floor(contentHeight / Math.max(rowCount, 1)))
+        : rowCount > 0 ? Math.floor(contentHeight / rowCount) : contentHeight;
+
     return (
         <div style={{
             width,
@@ -540,27 +593,32 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
             flexDirection: 'column',
             position: 'relative',
             backgroundColor: frameColor,
-            borderRadius: '8px',
-            border: `${FRAME_WIDTH}px solid ${frameColor}`,
-            boxShadow: 'inset 0 2px 10px rgba(0,0,0,0.5), 0 4px 20px rgba(0,0,0,0.6)',
+            borderRadius: FRAME_WIDTH > 0 ? '8px' : '0',
+            border: FRAME_WIDTH > 0 ? `${FRAME_WIDTH}px solid ${frameColor}` : 'none',
+            boxShadow: FRAME_WIDTH > 0
+                ? 'inset 0 2px 10px rgba(0,0,0,0.5), 0 4px 20px rgba(0,0,0,0.6)'
+                : 'none',
             overflow: 'hidden',
             boxSizing: 'border-box',
         }}>
-            {/* Board frame top screws decoration */}
-            <div style={{
-                position: 'absolute',
-                top: '2px',
-                left: '0',
-                right: '0',
-                display: 'flex',
-                justifyContent: 'space-between',
-                padding: '0 12px',
-                pointerEvents: 'none',
-                zIndex: 10,
-            }}>
-                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'rgba(255,255,255,0.15)', boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.5)' }} />
-                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'rgba(255,255,255,0.15)', boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.5)' }} />
-            </div>
+            {/* Metallic shine on frame */}
+            {FRAME_WIDTH > 2 && (
+                <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: `${FRAME_WIDTH}px`,
+                    background: 'linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 100%)',
+                    pointerEvents: 'none',
+                    zIndex: 5,
+                    borderRadius: 'inherit',
+                }} />
+            )}
+
+            {/* Screws */}
+            {FRAME_WIDTH >= 6 && <ScrewRow position="top" />}
+            {FRAME_WIDTH >= 6 && <ScrewRow position="bottom" />}
 
             {/* Title Header */}
             {showHeader && (
@@ -575,7 +633,7 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
                 }}>
                     <span style={{
                         color: headerTextColor,
-                        fontSize: '18px',
+                        fontSize: `${headerFontSize}px`,
                         fontWeight: 700,
                         fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
                         letterSpacing: '3px',
@@ -585,23 +643,26 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
             )}
 
             {/* Column Headers */}
-            {splitToColumns && columnNames.length > 0 && (
+            {hasColumnHeaders && (
                 <div style={{
                     height: `${COLUMN_HEADER_HEIGHT}px`,
                     display: 'flex',
                     flexDirection: 'row',
                     alignItems: 'center',
                     background: 'rgba(255,255,255,0.05)',
-                    borderBottom: `1px solid rgba(255,255,255,0.1)`,
+                    borderBottom: '1px solid rgba(255,255,255,0.1)',
                     flexShrink: 0,
-                    padding: '0 8px',
+                    padding: compact ? '0 4px' : '0 8px',
                 }}>
+                    {showRowNumbers && (
+                        <div style={{ width: `${ROW_NUMBER_WIDTH}px`, flexShrink: 0 }} />
+                    )}
                     {Array.from({ length: maxCols }, (_, ci) => (
                         <div key={ci} style={{
                             flex: 1,
                             textAlign: columnAlign,
                             color: 'rgba(255,255,255,0.6)',
-                            fontSize: '11px',
+                            fontSize: `${colHeaderFontSize}px`,
                             fontWeight: 600,
                             fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
                             letterSpacing: '1px',
@@ -611,7 +672,7 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
                             whiteSpace: 'nowrap',
                             textOverflow: 'ellipsis',
                         }}>
-                            {columnNames[ci] || ''}
+                            {resolvedColumnNames[ci] || ''}
                         </div>
                     ))}
                 </div>
@@ -622,95 +683,99 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
                 flex: 1,
                 display: 'flex',
                 flexDirection: 'column',
-                overflow: 'hidden',
+                overflow: scrollable ? 'auto' : 'hidden',
             }}>
-                {rows.map((cols, rowIdx) => (
-                    <div key={rowIdx} style={{
-                        height: `${rowHeight}px`,
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        borderBottom: rowSeparator && rowIdx < rowCount - 1
-                            ? '1px solid rgba(255,255,255,0.08)'
-                            : 'none',
-                        background: rowIdx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)',
-                        padding: '0 4px',
-                        boxSizing: 'border-box',
-                        overflow: 'hidden',
-                    }}>
-                        {splitToColumns ? (
-                            // Columns mode
-                            Array.from({ length: maxCols }, (_, ci) => {
-                                const col = cols[ci];
-                                if (!col) {
-                                    return <div key={ci} style={{ flex: 1 }} />;
-                                }
-                                const colWidth = Math.floor(innerWidth / maxCols);
-                                const unitToSend = options.customUnit || col.field?.config?.unit || '';
-                                let thresholdColor = col.color;
-                                return (
-                                    <div key={ci} style={{
-                                        flex: 1,
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: alignMap[columnAlign] || 'flex-start',
-                                        overflow: 'hidden',
-                                        padding: '0 2px',
-                                    }}>
-                                        <FlipItem
-                                            width={colWidth - 8}
-                                            height={rowHeight - 4}
-                                            options={{
-                                                ...options,
-                                                showName: false,
-                                                showUnit: false,
-                                            }}
-                                            value={col.value}
-                                            unit={unitToSend}
-                                            name={col.name}
-                                            thresholdColor={thresholdColor}
-                                        />
-                                    </div>
-                                );
-                            })
-                        ) : (
-                            // Single value per row
-                            <div style={{
-                                flex: 1,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: alignMap[options.textAlign || 'center'] || 'center',
-                                overflow: 'hidden',
-                            }}>
-                                <FlipItem
-                                    width={innerWidth - 8}
-                                    height={rowHeight - 4}
-                                    options={options}
-                                    value={cols[0].value}
-                                    unit={options.customUnit || cols[0].field?.config?.unit || ''}
-                                    name={cols[0].name}
-                                    thresholdColor={cols[0].color}
-                                />
-                            </div>
-                        )}
-                    </div>
-                ))}
-            </div>
+                {rows.map((cols, rowIdx) => {
+                    const rowBg = rowIdx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)';
+                    const availRowWidth = innerWidth - ROW_NUMBER_WIDTH;
 
-            {/* Bottom screws */}
-            <div style={{
-                position: 'absolute',
-                bottom: '2px',
-                left: '0',
-                right: '0',
-                display: 'flex',
-                justifyContent: 'space-between',
-                padding: '0 12px',
-                pointerEvents: 'none',
-                zIndex: 10,
-            }}>
-                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'rgba(255,255,255,0.15)', boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.5)' }} />
-                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'rgba(255,255,255,0.15)', boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.5)' }} />
+                    return (
+                        <div key={rowIdx} style={{
+                            minHeight: `${rowHeight}px`,
+                            height: scrollable ? `${rowHeight}px` : `${rowHeight}px`,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            flexShrink: scrollable ? 0 : 1,
+                            borderBottom: rowSeparator && rowIdx < rowCount - 1
+                                ? '1px solid rgba(255,255,255,0.08)'
+                                : 'none',
+                            background: rowBg,
+                            padding: compact ? `0 2px` : `0 4px`,
+                            boxSizing: 'border-box',
+                            overflow: 'hidden',
+                        }}>
+                            {/* Row number */}
+                            {showRowNumbers && (
+                                <div style={{
+                                    width: `${ROW_NUMBER_WIDTH}px`,
+                                    flexShrink: 0,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    color: 'rgba(255,255,255,0.3)',
+                                    fontSize: '12px',
+                                    fontWeight: 600,
+                                    fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+                                }}>
+                                    {rowIdx + 1}
+                                </div>
+                            )}
+
+                            {splitToColumns ? (
+                                Array.from({ length: maxCols }, (_, ci) => {
+                                    const col = cols[ci];
+                                    if (!col) {
+                                        return <div key={ci} style={{ flex: 1 }} />;
+                                    }
+                                    const colWidth = Math.floor(availRowWidth / maxCols);
+                                    return (
+                                        <div key={ci} style={{
+                                            flex: 1,
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: alignMap[columnAlign] || 'flex-start',
+                                            overflow: 'hidden',
+                                            padding: compact ? '0 1px' : '0 2px',
+                                        }}>
+                                            <FlipItem
+                                                width={colWidth - (compact ? 4 : 8)}
+                                                height={rowHeight - rowPadV * 2}
+                                                options={{
+                                                    ...options,
+                                                    showName: false,
+                                                    showUnit: false,
+                                                }}
+                                                value={col.value}
+                                                unit={options.customUnit || col.field?.config?.unit || ''}
+                                                name={col.name}
+                                                thresholdColor={col.color}
+                                            />
+                                        </div>
+                                    );
+                                })
+                            ) : (
+                                <div style={{
+                                    flex: 1,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: alignMap[options.textAlign || 'center'] || 'center',
+                                    overflow: 'hidden',
+                                }}>
+                                    <FlipItem
+                                        width={availRowWidth - (compact ? 4 : 8)}
+                                        height={rowHeight - rowPadV * 2}
+                                        options={options}
+                                        value={cols[0].value}
+                                        unit={options.customUnit || cols[0].field?.config?.unit || ''}
+                                        name={cols[0].name}
+                                        thresholdColor={cols[0].color}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );

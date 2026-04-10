@@ -227,6 +227,13 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
         defaultValue: 'DEPARTURES',
         showIf: c => c.mode !== 'clock' && c.displayMode === 'board' && c.boardShowHeader
     })
+    .addSliderInput({
+        path: 'boardHeaderFontSize',
+        name: 'Header Font Size',
+        defaultValue: 18,
+        settings: { min: 10, max: 48 },
+        showIf: c => c.mode !== 'clock' && c.displayMode === 'board' && c.boardShowHeader
+    })
     .addBooleanSwitch({
         path: 'boardSplitToColumns',
         name: 'Split to Columns',
@@ -234,11 +241,25 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
         defaultValue: false,
         showIf: c => c.mode !== 'clock' && c.displayMode === 'board'
     })
+    .addBooleanSwitch({
+        path: 'boardAutoColumnNames',
+        name: 'Auto Column Names',
+        description: 'Automatically use field names as column headers',
+        defaultValue: true,
+        showIf: c => c.mode !== 'clock' && c.displayMode === 'board' && c.boardSplitToColumns
+    })
     .addTextInput({
         path: 'boardColumnNames',
         name: 'Column Names',
-        description: 'Comma-separated column header names (e.g. "Flight,Destination,Time,Status")',
+        description: 'Comma-separated column header names (e.g. "Flight,Destination,Time,Status"). Overrides auto names.',
         defaultValue: '',
+        showIf: c => c.mode !== 'clock' && c.displayMode === 'board' && c.boardSplitToColumns && !c.boardAutoColumnNames
+    })
+    .addSliderInput({
+        path: 'boardColumnHeaderFontSize',
+        name: 'Column Header Font Size',
+        defaultValue: 11,
+        settings: { min: 8, max: 24 },
         showIf: c => c.mode !== 'clock' && c.displayMode === 'board' && c.boardSplitToColumns
     })
     .addSelect({
@@ -253,6 +274,40 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
             ]
         },
         showIf: c => c.mode !== 'clock' && c.displayMode === 'board' && c.boardSplitToColumns
+    })
+    .addBooleanSwitch({
+        path: 'boardShowRowNumbers',
+        name: 'Show Row Numbers',
+        description: 'Display row index on the left side',
+        defaultValue: false,
+        showIf: c => c.mode !== 'clock' && c.displayMode === 'board'
+    })
+    .addBooleanSwitch({
+        path: 'boardRowSeparator',
+        name: 'Row Separators',
+        defaultValue: true,
+        showIf: c => c.mode !== 'clock' && c.displayMode === 'board'
+    })
+    .addBooleanSwitch({
+        path: 'boardCompact',
+        name: 'Compact Mode',
+        description: 'Reduce padding for denser display',
+        defaultValue: false,
+        showIf: c => c.mode !== 'clock' && c.displayMode === 'board'
+    })
+    .addBooleanSwitch({
+        path: 'boardScrollable',
+        name: 'Scrollable Rows',
+        description: 'Enable scrolling when rows overflow the panel height',
+        defaultValue: false,
+        showIf: c => c.mode !== 'clock' && c.displayMode === 'board'
+    })
+    .addSliderInput({
+        path: 'boardFrameWidth',
+        name: 'Frame Width',
+        defaultValue: 8,
+        settings: { min: 0, max: 24 },
+        showIf: c => c.mode !== 'clock' && c.displayMode === 'board'
     })
     .addColorPicker({
         path: 'boardFrameColor',
@@ -271,12 +326,6 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
         name: 'Header Text Color',
         defaultValue: '#f7d100',
         showIf: c => c.mode !== 'clock' && c.displayMode === 'board' && c.boardShowHeader
-    })
-    .addBooleanSwitch({
-        path: 'boardRowSeparator',
-        name: 'Row Separators',
-        defaultValue: true,
-        showIf: c => c.mode !== 'clock' && c.displayMode === 'board'
     })
 
     // DEFAULT MODE OPTIONS
