@@ -286,8 +286,32 @@
         {
           "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
           "refId": "A",
-          "scenarioId": "raw_frame",
-          "rawFrameContent": "[\n  {\n    \"columns\": [\n      { \"text\": \"Time\", \"type\": \"time\" },\n      { \"text\": \"Flight\", \"type\": \"string\" },\n      { \"text\": \"Gate\", \"type\": \"string\" },\n      { \"text\": \"Delay\", \"type\": \"number\" }\n    ],\n    \"rows\": [\n      [1609459200000, \"LO 327\", \"A12\", 5]\n    ]\n  },\n  {\n    \"columns\": [\n      { \"text\": \"Time\", \"type\": \"time\" },\n      { \"text\": \"Flight\", \"type\": \"string\" },\n      { \"text\": \"Gate\", \"type\": \"string\" },\n      { \"text\": \"Delay\", \"type\": \"number\" }\n    ],\n    \"rows\": [\n      [1609459200000, \"BA 882\", \"B07\", 0]\n    ]\n  },\n  {\n    \"columns\": [\n      { \"text\": \"Time\", \"type\": \"time\" },\n      { \"text\": \"Flight\", \"type\": \"string\" },\n      { \"text\": \"Gate\", \"type\": \"string\" },\n      { \"text\": \"Delay\", \"type\": \"number\" }\n    ],\n    \"rows\": [\n      [1609459200000, \"LH 1010\", \"C22\", 95]\n    ]\n  },\n  {\n    \"columns\": [\n      { \"text\": \"Time\", \"type\": \"time\" },\n      { \"text\": \"Flight\", \"type\": \"string\" },\n      { \"text\": \"Gate\", \"type\": \"string\" },\n      { \"text\": \"Delay\", \"type\": \"number\" }\n    ],\n    \"rows\": [\n      [1609459200000, \"FR 4455\", \"D01\", 25]\n    ]\n  },\n  {\n    \"columns\": [\n      { \"text\": \"Time\", \"type\": \"time\" },\n      { \"text\": \"Flight\", \"type\": \"string\" },\n      { \"text\": \"Gate\", \"type\": \"string\" },\n      { \"text\": \"Delay\", \"type\": \"number\" }\n    ],\n    \"rows\": [\n      [1609459200000, \"KL 1234\", \"E15\", 0]\n    ]\n  }\n]"
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Flight,Gate,Delay\n2021-01-01T00:00:00Z,LO 327,A12,5"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "B",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Flight,Gate,Delay\n2021-01-01T00:00:00Z,BA 882,B07,0"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "C",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Flight,Gate,Delay\n2021-01-01T00:00:00Z,LH 1010,C22,95"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "D",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Flight,Gate,Delay\n2021-01-01T00:00:00Z,FR 4455,D01,25"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "E",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Flight,Gate,Delay\n2021-01-01T00:00:00Z,KL 1234,E15,0"
         }
       ]
     },
@@ -378,8 +402,38 @@
         {
           "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
           "refId": "A",
-          "scenarioId": "raw_frame",
-          "rawFrameContent": "[\n  {\n    \"columns\": [\n      { \"text\": \"Time\", \"type\": \"time\" },\n      { \"text\": \"Flight\", \"type\": \"string\" },\n      { \"text\": \"Gate\", \"type\": \"string\" },\n      { \"text\": \"Delay\", \"type\": \"number\" }\n    ],\n    \"rows\": [\n      [1609459200000, \"LO 327\", \"A12\", 5]\n    ]\n  },\n  {\n    \"columns\": [\n      { \"text\": \"Time\", \"type\": \"time\" },\n      { \"text\": \"Flight\", \"type\": \"string\" },\n      { \"text\": \"Gate\", \"type\": \"string\" },\n      { \"text\": \"Delay\", \"type\": \"number\" }\n    ],\n    \"rows\": [\n      [1609459200000, \"BA 882\", \"B07\", 0]\n    ]\n  },\n  {\n    \"columns\": [\n      { \"text\": \"Time\", \"type\": \"time\" },\n      { \"text\": \"Flight\", \"type\": \"string\" },\n      { \"text\": \"Gate\", \"type\": \"string\" },\n      { \"text\": \"Delay\", \"type\": \"number\" }\n    ],\n    \"rows\": [\n      [1609459200000, \"LH 1010\", \"C22\", 95]\n    ]\n  },\n  {\n    \"columns\": [\n      { \"text\": \"Time\", \"type\": \"time\" },\n      { \"text\": \"Flight\", \"type\": \"string\" },\n      { \"text\": \"Gate\", \"type\": \"string\" },\n      { \"text\": \"Delay\", \"type\": \"number\" }\n    ],\n    \"rows\": [\n      [1609459200000, \"FR 4455\", \"D01\", 25]\n    ]\n  },\n  {\n    \"columns\": [\n      { \"text\": \"Time\", \"type\": \"time\" },\n      { \"text\": \"Flight\", \"type\": \"string\" },\n      { \"text\": \"Gate\", \"type\": \"string\" },\n      { \"text\": \"Delay\", \"type\": \"number\" }\n    ],\n    \"rows\": [\n      [1609459200000, \"KL 1234\", \"E15\", 0]\n    ]\n  },\n  {\n    \"columns\": [\n      { \"text\": \"Time\", \"type\": \"time\" },\n      { \"text\": \"Flight\", \"type\": \"string\" },\n      { \"text\": \"Gate\", \"type\": \"string\" },\n      { \"text\": \"Delay\", \"type\": \"number\" }\n    ],\n    \"rows\": [\n      [1609459200000, \"AF 1680\", \"F03\", 120]\n    ]\n  }\n]"
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Flight,Gate,Delay\n2021-01-01T00:00:00Z,LO 327,A12,5"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "B",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Flight,Gate,Delay\n2021-01-01T00:00:00Z,BA 882,B07,0"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "C",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Flight,Gate,Delay\n2021-01-01T00:00:00Z,LH 1010,C22,95"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "D",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Flight,Gate,Delay\n2021-01-01T00:00:00Z,FR 4455,D01,25"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "E",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Flight,Gate,Delay\n2021-01-01T00:00:00Z,KL 1234,E15,0"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "F",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Flight,Gate,Delay\n2021-01-01T00:00:00Z,AF 1680,F03,120"
         }
       ]
     },
@@ -682,14 +736,14 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "#0B1E3C", "value": null },
+              { "color": "green", "value": null },
               { "color": "#EB0000", "value": 80 }
             ]
           }
         },
         "overrides": []
       },
-      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 32 },
+      "gridPos": { "h": 12, "w": 24, "x": 0, "y": 32 },
       "id": 8,
       "interval": "3s",
       "title": "Board - Full Width True Wall + Split Columns (swiss-sbb-blue)",
@@ -728,7 +782,7 @@
         "showUnit": false,
         "displayContent": "value",
         "valueAggregation": "last",
-        "thresholdTarget": "text",
+        "thresholdTarget": "none",
         "layoutDirection": "vertical",
         "showSeparators": false,
         "amPmFontSize": 18,
@@ -757,8 +811,38 @@
         {
           "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
           "refId": "A",
-          "scenarioId": "raw_frame",
-          "rawFrameContent": "[\n  {\n    \"columns\": [\n      { \"text\": \"Time\", \"type\": \"time\" },\n      { \"text\": \"Destination\", \"type\": \"string\" },\n      { \"text\": \"Platform\", \"type\": \"string\" },\n      { \"text\": \"Delay\", \"type\": \"number\" }\n    ],\n    \"rows\": [\n      [1609459200000, \"ZURICH HB\", \"3\", 0]\n    ]\n  },\n  {\n    \"columns\": [\n      { \"text\": \"Time\", \"type\": \"time\" },\n      { \"text\": \"Destination\", \"type\": \"string\" },\n      { \"text\": \"Platform\", \"type\": \"string\" },\n      { \"text\": \"Delay\", \"type\": \"number\" }\n    ],\n    \"rows\": [\n      [1609459200000, \"BERN\", \"7\", 5]\n    ]\n  },\n  {\n    \"columns\": [\n      { \"text\": \"Time\", \"type\": \"time\" },\n      { \"text\": \"Destination\", \"type\": \"string\" },\n      { \"text\": \"Platform\", \"type\": \"string\" },\n      { \"text\": \"Delay\", \"type\": \"number\" }\n    ],\n    \"rows\": [\n      [1609459200000, \"BASEL SBB\", \"12\", 0]\n    ]\n  },\n  {\n    \"columns\": [\n      { \"text\": \"Time\", \"type\": \"time\" },\n      { \"text\": \"Destination\", \"type\": \"string\" },\n      { \"text\": \"Platform\", \"type\": \"string\" },\n      { \"text\": \"Delay\", \"type\": \"number\" }\n    ],\n    \"rows\": [\n      [1609459200000, \"GENEVE\", \"5\", 90]\n    ]\n  },\n  {\n    \"columns\": [\n      { \"text\": \"Time\", \"type\": \"time\" },\n      { \"text\": \"Destination\", \"type\": \"string\" },\n      { \"text\": \"Platform\", \"type\": \"string\" },\n      { \"text\": \"Delay\", \"type\": \"number\" }\n    ],\n    \"rows\": [\n      [1609459200000, \"LUZERN\", \"1\", 0]\n    ]\n  },\n  {\n    \"columns\": [\n      { \"text\": \"Time\", \"type\": \"time\" },\n      { \"text\": \"Destination\", \"type\": \"string\" },\n      { \"text\": \"Platform\", \"type\": \"string\" },\n      { \"text\": \"Delay\", \"type\": \"number\" }\n    ],\n    \"rows\": [\n      [1609459200000, \"LUGANO\", \"9\", 15]\n    ]\n  }\n]"
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Destination,Platform,Delay\n2021-01-01T00:00:00Z,ZURICH HB,3,0"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "B",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Destination,Platform,Delay\n2021-01-01T00:00:00Z,BERN,7,5"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "C",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Destination,Platform,Delay\n2021-01-01T00:00:00Z,BASEL SBB,12,0"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "D",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Destination,Platform,Delay\n2021-01-01T00:00:00Z,GENEVE,5,90"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "E",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Destination,Platform,Delay\n2021-01-01T00:00:00Z,LUZERN,1,0"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "F",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Destination,Platform,Delay\n2021-01-01T00:00:00Z,LUGANO,9,15"
         }
       ]
     }
