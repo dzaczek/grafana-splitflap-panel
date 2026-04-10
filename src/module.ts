@@ -289,6 +289,13 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
         showIf: c => c.mode !== 'clock' && c.displayMode === 'board'
     })
     .addBooleanSwitch({
+        path: 'boardTrueWall',
+        name: 'True Wall Display',
+        description: 'Realistic recessed cells with depth shadows — like a real Solari board where flip mechanisms sit inside wall cavities',
+        defaultValue: false,
+        showIf: c => c.mode !== 'clock' && c.displayMode === 'board'
+    })
+    .addBooleanSwitch({
         path: 'boardCompact',
         name: 'Compact Mode',
         description: 'Reduce padding for denser display',

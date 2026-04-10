@@ -75,4 +75,5 @@ export interface FlipOptions {
   boardCompact: boolean;
   boardAutoColumnNames: boolean;
   boardScrollable: boolean;
+  boardTrueWall: boolean;
 }

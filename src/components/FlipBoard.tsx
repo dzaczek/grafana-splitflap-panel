@@ -505,6 +505,8 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
     const headerFontSize = options.boardHeaderFontSize || 18;
     const colHeaderFontSize = options.boardColumnHeaderFontSize || 11;
 
+    const trueWall = options.boardTrueWall || false;
+
     const FRAME_WIDTH = options.boardFrameWidth !== undefined ? options.boardFrameWidth : 8;
     const HEADER_HEIGHT = showHeader ? Math.max(headerFontSize + (compact ? 12 : 26), 32) : 0;
     const ROW_NUMBER_WIDTH = showRowNumbers ? 32 : 0;
@@ -649,10 +651,11 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
                     display: 'flex',
                     flexDirection: 'row',
                     alignItems: 'center',
-                    background: 'rgba(255,255,255,0.05)',
-                    borderBottom: '1px solid rgba(255,255,255,0.1)',
+                    background: trueWall ? frameColor : 'rgba(255,255,255,0.05)',
+                    borderBottom: trueWall ? 'none' : '1px solid rgba(255,255,255,0.1)',
                     flexShrink: 0,
                     padding: compact ? '0 4px' : '0 8px',
+                    gap: trueWall ? (compact ? '2px' : '4px') : '0',
                 }}>
                     {showRowNumbers && (
                         <div style={{ width: `${ROW_NUMBER_WIDTH}px`, flexShrink: 0 }} />
@@ -661,7 +664,7 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
                         <div key={ci} style={{
                             flex: 1,
                             textAlign: columnAlign,
-                            color: 'rgba(255,255,255,0.6)',
+                            color: trueWall ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.6)',
                             fontSize: `${colHeaderFontSize}px`,
                             fontWeight: 600,
                             fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
@@ -671,6 +674,7 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
                             overflow: 'hidden',
                             whiteSpace: 'nowrap',
                             textOverflow: 'ellipsis',
+                            ...(trueWall ? { textShadow: '0 1px 2px rgba(0,0,0,0.5)' } : {}),
                         }}>
                             {resolvedColumnNames[ci] || ''}
                         </div>
@@ -684,6 +688,8 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
                 display: 'flex',
                 flexDirection: 'column',
                 overflow: scrollable ? 'auto' : 'hidden',
+                padding: trueWall ? (compact ? '2px' : '4px') : '0',
+                gap: trueWall ? (compact ? '2px' : '4px') : '0',
             }}>
                 {rows.map((cols, rowIdx) => {
                     // Panel-level threshold: use first column's color as row background
@@ -691,7 +697,9 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
                     if (options.thresholdTarget === 'panel' && cols.length > 0 && cols[0].color) {
                         rowBg = cols[0].color;
                     }
-                    const availRowWidth = innerWidth - ROW_NUMBER_WIDTH;
+                    const availRowWidth = innerWidth - ROW_NUMBER_WIDTH - (trueWall ? (compact ? 8 : 12) : 0);
+                    const cellGap = trueWall ? (compact ? 2 : 4) : 0;
+                    const cellInset = trueWall ? (compact ? 2 : 3) : 0;
 
                     return (
                         <div key={rowIdx} style={{
@@ -701,13 +709,14 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
                             flexDirection: 'row',
                             alignItems: 'center',
                             flexShrink: scrollable ? 0 : 1,
-                            borderBottom: rowSeparator && rowIdx < rowCount - 1
+                            borderBottom: (!trueWall && rowSeparator && rowIdx < rowCount - 1)
                                 ? '1px solid rgba(255,255,255,0.08)'
                                 : 'none',
-                            background: rowBg,
-                            padding: compact ? `0 2px` : `0 4px`,
+                            background: trueWall ? 'transparent' : rowBg,
+                            padding: compact ? '0 2px' : '0 4px',
                             boxSizing: 'border-box',
                             overflow: 'hidden',
+                            gap: `${cellGap}px`,
                         }}>
                             {/* Row number */}
                             {showRowNumbers && (
@@ -732,9 +741,22 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
                                     if (!col) {
                                         return <div key={ci} style={{ flex: 1 }} />;
                                     }
-                                    const colWidth = Math.floor(availRowWidth / maxCols);
+                                    const totalCellGaps = (maxCols - 1) * cellGap;
+                                    const colWidth = Math.floor((availRowWidth - totalCellGaps) / maxCols);
+                                    const cellHeight = rowHeight - rowPadV * 2 - (trueWall ? cellGap * 2 : 0);
                                     return (
-                                        <div key={ci} style={{
+                                        <div key={ci} style={trueWall ? {
+                                            flex: 1,
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: alignMap[columnAlign] || 'flex-start',
+                                            overflow: 'hidden',
+                                            background: '#0a0a0a',
+                                            borderRadius: '3px',
+                                            boxShadow: `inset 0 2px 6px rgba(0,0,0,0.8), inset 0 -1px 3px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.05)`,
+                                            border: '1px solid rgba(0,0,0,0.6)',
+                                            padding: `${cellInset}px`,
+                                        } : {
                                             flex: 1,
                                             display: 'flex',
                                             alignItems: 'center',
@@ -743,8 +765,8 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
                                             padding: compact ? '0 1px' : '0 2px',
                                         }}>
                                             <FlipItem
-                                                width={colWidth - (compact ? 4 : 8)}
-                                                height={rowHeight - rowPadV * 2}
+                                                width={colWidth - (compact ? 4 : 8) - cellInset * 2}
+                                                height={cellHeight - cellInset * 2}
                                                 options={{
                                                     ...options,
                                                     showName: false,
@@ -759,7 +781,19 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
                                     );
                                 })
                             ) : (
-                                <div style={{
+                                <div style={trueWall ? {
+                                    flex: 1,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: alignMap[options.textAlign || 'center'] || 'center',
+                                    overflow: 'hidden',
+                                    background: '#0a0a0a',
+                                    borderRadius: '3px',
+                                    boxShadow: `inset 0 2px 6px rgba(0,0,0,0.8), inset 0 -1px 3px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.05)`,
+                                    border: '1px solid rgba(0,0,0,0.6)',
+                                    padding: `${cellInset}px`,
+                                    height: `${rowHeight - rowPadV * 2 - (trueWall ? cellGap * 2 : 0)}px`,
+                                } : {
                                     flex: 1,
                                     display: 'flex',
                                     alignItems: 'center',
@@ -767,8 +801,8 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
                                     overflow: 'hidden',
                                 }}>
                                     <FlipItem
-                                        width={availRowWidth - (compact ? 4 : 8)}
-                                        height={rowHeight - rowPadV * 2}
+                                        width={availRowWidth - (compact ? 4 : 8) - cellInset * 2}
+                                        height={rowHeight - rowPadV * 2 - (trueWall ? cellGap * 2 : 0) - cellInset * 2}
                                         options={options}
                                         value={cols[0].value}
                                         unit={options.customUnit || cols[0].field?.config?.unit || ''}
