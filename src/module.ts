@@ -187,6 +187,99 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
     })
 
     // DATA OPTIONS (Hidden in Clock Mode)
+    .addRadio({
+        path: 'displayMode',
+        name: 'Display Mode',
+        defaultValue: 'default',
+        settings: {
+            options: [
+                { value: 'default', label: 'Default' },
+                { value: 'board', label: 'Board (Solari)' },
+            ]
+        },
+        showIf: c => c.mode !== 'clock'
+    })
+    .addSelect({
+        path: 'textAlign',
+        name: 'Text Alignment',
+        description: 'Align flip characters within the display',
+        defaultValue: 'center',
+        settings: {
+            options: [
+                { value: 'left', label: 'Left' },
+                { value: 'center', label: 'Center' },
+                { value: 'right', label: 'Right' },
+            ]
+        },
+        showIf: c => c.mode !== 'clock'
+    })
+
+    // BOARD OPTIONS
+    .addBooleanSwitch({
+        path: 'boardShowHeader',
+        name: 'Show Board Header',
+        defaultValue: true,
+        showIf: c => c.mode !== 'clock' && c.displayMode === 'board'
+    })
+    .addTextInput({
+        path: 'boardTitle',
+        name: 'Board Title',
+        defaultValue: 'DEPARTURES',
+        showIf: c => c.mode !== 'clock' && c.displayMode === 'board' && c.boardShowHeader
+    })
+    .addBooleanSwitch({
+        path: 'boardSplitToColumns',
+        name: 'Split to Columns',
+        description: 'Split each data series into separate columns on the board',
+        defaultValue: false,
+        showIf: c => c.mode !== 'clock' && c.displayMode === 'board'
+    })
+    .addTextInput({
+        path: 'boardColumnNames',
+        name: 'Column Names',
+        description: 'Comma-separated column header names (e.g. "Flight,Destination,Time,Status")',
+        defaultValue: '',
+        showIf: c => c.mode !== 'clock' && c.displayMode === 'board' && c.boardSplitToColumns
+    })
+    .addSelect({
+        path: 'boardColumnAlign',
+        name: 'Column Alignment',
+        defaultValue: 'left',
+        settings: {
+            options: [
+                { value: 'left', label: 'Left' },
+                { value: 'center', label: 'Center' },
+                { value: 'right', label: 'Right' },
+            ]
+        },
+        showIf: c => c.mode !== 'clock' && c.displayMode === 'board' && c.boardSplitToColumns
+    })
+    .addColorPicker({
+        path: 'boardFrameColor',
+        name: 'Frame Color',
+        defaultValue: '#1a1a1a',
+        showIf: c => c.mode !== 'clock' && c.displayMode === 'board'
+    })
+    .addColorPicker({
+        path: 'boardHeaderBg',
+        name: 'Header Background',
+        defaultValue: '#2a2a2a',
+        showIf: c => c.mode !== 'clock' && c.displayMode === 'board' && c.boardShowHeader
+    })
+    .addColorPicker({
+        path: 'boardHeaderTextColor',
+        name: 'Header Text Color',
+        defaultValue: '#f7d100',
+        showIf: c => c.mode !== 'clock' && c.displayMode === 'board' && c.boardShowHeader
+    })
+    .addBooleanSwitch({
+        path: 'boardRowSeparator',
+        name: 'Row Separators',
+        defaultValue: true,
+        showIf: c => c.mode !== 'clock' && c.displayMode === 'board'
+    })
+
+    // DEFAULT MODE OPTIONS
     .addSelect({
         path: 'layoutDirection',
         name: 'Layout',
@@ -197,7 +290,7 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
                 { value: 'vertical', label: 'Vertical (List)', icon: 'arrow-down' },
             ]
         },
-        showIf: c => c.mode !== 'clock'
+        showIf: c => c.mode !== 'clock' && c.displayMode !== 'board'
     })
     .addSelect({
         path: 'displayContent',
@@ -239,7 +332,7 @@ export const plugin = new PanelPlugin<FlipOptions>(FlipBoard)
         name: 'Show Separators',
         description: 'Show lines separating data series',
         defaultValue: false,
-        showIf: c => c.mode !== 'clock'
+        showIf: c => c.mode !== 'clock' && c.displayMode !== 'board'
     })
 
     .addSelect({

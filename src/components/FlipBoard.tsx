@@ -450,6 +450,272 @@ function getClockString(options: FlipOptions, date: Date): { text: string, amPm:
     return { text: components.join('  '), amPm: finalAmPm };
 }
 
+// ======= BOARD VIEW (Solari Display) =======
+interface BoardViewProps {
+    width: number;
+    height: number;
+    options: FlipOptions;
+    data: any;
+    seriesList: any[];
+}
+
+const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, seriesList }) => {
+    const frameColor = options.boardFrameColor || '#1a1a1a';
+    const headerBg = options.boardHeaderBg || '#2a2a2a';
+    const headerTextColor = options.boardHeaderTextColor || '#f7d100';
+    const showHeader = options.boardShowHeader !== false;
+    const title = options.boardTitle || 'DEPARTURES';
+    const splitToColumns = options.boardSplitToColumns || false;
+    const columnNamesRaw = options.boardColumnNames || '';
+    const columnNames = columnNamesRaw ? columnNamesRaw.split(',').map(s => s.trim()) : [];
+    const columnAlign = options.boardColumnAlign || 'left';
+    const rowSeparator = options.boardRowSeparator !== false;
+
+    const FRAME_WIDTH = 8;
+    const HEADER_HEIGHT = showHeader ? 44 : 0;
+    const COLUMN_HEADER_HEIGHT = (splitToColumns && columnNames.length > 0) ? 28 : 0;
+    const innerWidth = width - FRAME_WIDTH * 2;
+    const innerHeight = height - FRAME_WIDTH * 2;
+    const contentHeight = innerHeight - HEADER_HEIGHT - COLUMN_HEADER_HEIGHT;
+    const rowCount = seriesList.length;
+    const rowHeight = rowCount > 0 ? Math.floor(contentHeight / rowCount) : contentHeight;
+
+    // alignment mapping
+    const alignMap: Record<string, string> = { left: 'flex-start', center: 'center', right: 'flex-end' };
+
+    // Prepare rows data
+    const rows = useMemo(() => {
+        return seriesList.map((series) => {
+            if (splitToColumns) {
+                // Each field (except time) becomes a column
+                const fields = series.fields.filter((f: any) => f.type !== 'time');
+                return fields.map((field: any) => {
+                    const rawValue = reduceValues(field.values, options.valueAggregation);
+                    let val = (rawValue !== null && rawValue !== undefined) ? rawValue : '---';
+                    if (typeof val === 'number') {
+                        const decimals = options.rounding !== undefined ? options.rounding : 1;
+                        val = val.toFixed(decimals);
+                    }
+                    const displayName = getFieldDisplayName(field, series, data.series);
+                    const displayValue = field.display ? field.display(rawValue) : { color: undefined };
+                    return { value: val, name: displayName, color: displayValue.color, field };
+                });
+            } else {
+                // Single value per row (existing logic)
+                const field = series.fields.find((f: any) => f.type === 'number')
+                    || series.fields.find((f: any) => f.type === 'string')
+                    || series.fields.find((f: any) => f.type !== 'time')
+                    || series.fields[0];
+                const rawValue = reduceValues(field.values, options.valueAggregation);
+                let baseValue = (rawValue !== null && rawValue !== undefined) ? rawValue : '---';
+                let displayBaseValue = baseValue;
+                if (typeof baseValue === 'number') {
+                    const decimals = options.rounding !== undefined ? options.rounding : 1;
+                    displayBaseValue = baseValue.toFixed(decimals);
+                }
+                let valueToSend = baseValue;
+                const contentMode = options.displayContent || 'value';
+                const displayName = getFieldDisplayName(field, series, data.series);
+                if (contentMode === 'name') {
+                    valueToSend = displayName;
+                } else if (contentMode === 'name_value') {
+                    valueToSend = `${displayName}   ${displayBaseValue}`;
+                } else if (contentMode === 'value_name') {
+                    valueToSend = `${displayBaseValue}   ${displayName}`;
+                }
+                const displayValue = field.display ? field.display(baseValue) : { color: undefined };
+                return [{ value: valueToSend, name: displayName, color: displayValue.color, field }];
+            }
+        });
+    }, [seriesList, splitToColumns, options.valueAggregation, options.rounding, options.displayContent, data.series]);
+
+    // Max columns across all rows
+    const maxCols = Math.max(1, ...rows.map(r => r.length));
+
+    return (
+        <div style={{
+            width,
+            height,
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative',
+            backgroundColor: frameColor,
+            borderRadius: '8px',
+            border: `${FRAME_WIDTH}px solid ${frameColor}`,
+            boxShadow: 'inset 0 2px 10px rgba(0,0,0,0.5), 0 4px 20px rgba(0,0,0,0.6)',
+            overflow: 'hidden',
+            boxSizing: 'border-box',
+        }}>
+            {/* Board frame top screws decoration */}
+            <div style={{
+                position: 'absolute',
+                top: '2px',
+                left: '0',
+                right: '0',
+                display: 'flex',
+                justifyContent: 'space-between',
+                padding: '0 12px',
+                pointerEvents: 'none',
+                zIndex: 10,
+            }}>
+                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'rgba(255,255,255,0.15)', boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.5)' }} />
+                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'rgba(255,255,255,0.15)', boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.5)' }} />
+            </div>
+
+            {/* Title Header */}
+            {showHeader && (
+                <div style={{
+                    height: `${HEADER_HEIGHT}px`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: headerBg,
+                    borderBottom: `2px solid ${frameColor}`,
+                    flexShrink: 0,
+                }}>
+                    <span style={{
+                        color: headerTextColor,
+                        fontSize: '18px',
+                        fontWeight: 700,
+                        fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+                        letterSpacing: '3px',
+                        textTransform: 'uppercase',
+                    }}>{title}</span>
+                </div>
+            )}
+
+            {/* Column Headers */}
+            {splitToColumns && columnNames.length > 0 && (
+                <div style={{
+                    height: `${COLUMN_HEADER_HEIGHT}px`,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    background: 'rgba(255,255,255,0.05)',
+                    borderBottom: `1px solid rgba(255,255,255,0.1)`,
+                    flexShrink: 0,
+                    padding: '0 8px',
+                }}>
+                    {Array.from({ length: maxCols }, (_, ci) => (
+                        <div key={ci} style={{
+                            flex: 1,
+                            textAlign: columnAlign,
+                            color: 'rgba(255,255,255,0.6)',
+                            fontSize: '11px',
+                            fontWeight: 600,
+                            fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+                            letterSpacing: '1px',
+                            textTransform: 'uppercase',
+                            padding: '0 4px',
+                            overflow: 'hidden',
+                            whiteSpace: 'nowrap',
+                            textOverflow: 'ellipsis',
+                        }}>
+                            {columnNames[ci] || ''}
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {/* Rows */}
+            <div style={{
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                overflow: 'hidden',
+            }}>
+                {rows.map((cols, rowIdx) => (
+                    <div key={rowIdx} style={{
+                        height: `${rowHeight}px`,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        borderBottom: rowSeparator && rowIdx < rowCount - 1
+                            ? '1px solid rgba(255,255,255,0.08)'
+                            : 'none',
+                        background: rowIdx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)',
+                        padding: '0 4px',
+                        boxSizing: 'border-box',
+                        overflow: 'hidden',
+                    }}>
+                        {splitToColumns ? (
+                            // Columns mode
+                            Array.from({ length: maxCols }, (_, ci) => {
+                                const col = cols[ci];
+                                if (!col) {
+                                    return <div key={ci} style={{ flex: 1 }} />;
+                                }
+                                const colWidth = Math.floor(innerWidth / maxCols);
+                                const unitToSend = options.customUnit || col.field?.config?.unit || '';
+                                let thresholdColor = col.color;
+                                return (
+                                    <div key={ci} style={{
+                                        flex: 1,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: alignMap[columnAlign] || 'flex-start',
+                                        overflow: 'hidden',
+                                        padding: '0 2px',
+                                    }}>
+                                        <FlipItem
+                                            width={colWidth - 8}
+                                            height={rowHeight - 4}
+                                            options={{
+                                                ...options,
+                                                showName: false,
+                                                showUnit: false,
+                                            }}
+                                            value={col.value}
+                                            unit={unitToSend}
+                                            name={col.name}
+                                            thresholdColor={thresholdColor}
+                                        />
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            // Single value per row
+                            <div style={{
+                                flex: 1,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: alignMap[options.textAlign || 'center'] || 'center',
+                                overflow: 'hidden',
+                            }}>
+                                <FlipItem
+                                    width={innerWidth - 8}
+                                    height={rowHeight - 4}
+                                    options={options}
+                                    value={cols[0].value}
+                                    unit={options.customUnit || cols[0].field?.config?.unit || ''}
+                                    name={cols[0].name}
+                                    thresholdColor={cols[0].color}
+                                />
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
+
+            {/* Bottom screws */}
+            <div style={{
+                position: 'absolute',
+                bottom: '2px',
+                left: '0',
+                right: '0',
+                display: 'flex',
+                justifyContent: 'space-between',
+                padding: '0 12px',
+                pointerEvents: 'none',
+                zIndex: 10,
+            }}>
+                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'rgba(255,255,255,0.15)', boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.5)' }} />
+                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'rgba(255,255,255,0.15)', boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.5)' }} />
+            </div>
+        </div>
+    );
+};
+
 // main panel component
 interface Props extends PanelProps<FlipOptions> {}
 
@@ -538,13 +804,30 @@ export const FlipBoard: React.FC<Props> = ({ options, data, width, height }) => 
         return <div style={{width, height, display:'flex', alignItems:'center', justifyContent:'center'}}>No Data</div>;
     }
 
+    // ======= BOARD MODE (Solari) =======
+    if (options.displayMode === 'board') {
+        return (
+            <BoardView
+                width={width}
+                height={height}
+                options={options}
+                data={data}
+                seriesList={seriesList}
+            />
+        );
+    }
+
+    // ======= DEFAULT MODE =======
     const count = seriesList.length;
-    const isVertical = options.layoutDirection !== 'horizontal'; 
+    const isVertical = options.layoutDirection !== 'horizontal';
 
     // calculate item dimensions
-    // use floor to avoid fractional pixels that break rendering
     const itemWidth = isVertical ? width : Math.floor(width / count);
     const itemHeight = isVertical ? Math.floor(height / count) : height;
+
+    // alignment mapping for default mode
+    const alignMap: Record<string, string> = { left: 'flex-start', center: 'center', right: 'flex-end' };
+    const justifyAlign = alignMap[options.textAlign || 'center'] || 'center';
 
     return (
         <div style={{
@@ -555,64 +838,51 @@ export const FlipBoard: React.FC<Props> = ({ options, data, width, height }) => 
             overflow: 'hidden'
         }}>
             {seriesList.map((series, i) => {
-                // find appropriate field to display
-                // prefer number, then string, but avoid 'time' fields unless nothing else exists
-                const field = series.fields.find(f => f.type === 'number') 
+                const field = series.fields.find(f => f.type === 'number')
                            || series.fields.find(f => f.type === 'string')
-                           || series.fields.find(f => f.type !== 'time') 
+                           || series.fields.find(f => f.type !== 'time')
                            || series.fields[0];
-                           
-                // reduce values based on selected aggregation
+
                 const rawValue = reduceValues(field.values, options.valueAggregation);
-                
                 const displayName = getFieldDisplayName(field, series, data.series);
-                
-                // calculate base value
+
                 let baseValue = (rawValue !== null && rawValue !== undefined) ? rawValue : "---";
-                
-                // format number if needed before combining with string
+
                 let displayBaseValue = baseValue;
                 if (typeof baseValue === 'number') {
                     const decimals = options.rounding !== undefined ? options.rounding : 1;
                     displayBaseValue = baseValue.toFixed(decimals);
                 }
 
-                // determine what to display based on options
                 let valueToSend = baseValue;
-                const displayMode = options.displayContent || 'value';
+                const contentMode = options.displayContent || 'value';
 
-                if (displayMode === 'value') {
-                    // pass raw number to let engine handle animation logic better if possible,
-                    // though for combined strings we must pass string
-                    valueToSend = baseValue; 
-                } else if (displayMode === 'name') {
+                if (contentMode === 'value') {
+                    valueToSend = baseValue;
+                } else if (contentMode === 'name') {
                     valueToSend = displayName;
-                } else if (displayMode === 'name_value') {
-                    // add extra spaces to visually separate text ending with digit from the value
+                } else if (contentMode === 'name_value') {
                     valueToSend = `${displayName}   ${displayBaseValue}`;
-                } else if (displayMode === 'value_name') {
+                } else if (contentMode === 'value_name') {
                     valueToSend = `${displayBaseValue}   ${displayName}`;
                 }
 
                 const unitToSend = options.customUnit || field.config.unit || '';
-
                 const displayValue = field.display ? field.display(baseValue) : { color: undefined };
                 let itemBg = 'transparent';
                 if (options.thresholdTarget === 'panel' && displayValue.color) {
                     itemBg = displayValue.color;
                 }
 
-                // separator lines
                 const borderColor = 'rgba(255, 255, 255, 0.1)';
                 const borderStyle: React.CSSProperties = {
-                    width: itemWidth, 
-                    height: itemHeight, 
+                    width: itemWidth,
+                    height: itemHeight,
                     background: itemBg,
                     position: 'relative',
-                    // flex center to center content in grid cell
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
+                    justifyContent: justifyAlign,
                     padding: '4px',
                     boxSizing: 'border-box',
                     overflow: 'hidden'
@@ -624,14 +894,14 @@ export const FlipBoard: React.FC<Props> = ({ options, data, width, height }) => 
                 }
 
                 return (
-                    <div 
-                        key={series.refId || i} 
+                    <div
+                        key={series.refId || i}
                         style={borderStyle}
                         role="meter"
                         aria-label={`${displayName}: ${valueToSend} ${unitToSend}`}
                         aria-valuenow={typeof valueToSend === 'number' ? valueToSend : undefined}
                     >
-                        <FlipItem 
+                        <FlipItem
                             width={itemWidth}
                             height={itemHeight}
                             options={options}
