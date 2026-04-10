@@ -564,6 +564,24 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
     // Max columns across all rows
     const maxCols = Math.max(1, ...rows.map(r => r.length));
 
+    // Per-column max value length for consistent digit counts across rows
+    const columnDigitCounts = useMemo(() => {
+        if (!splitToColumns) { return []; }
+        const counts: number[] = new Array(maxCols).fill(options.digitCount || 1);
+        for (let ci = 0; ci < maxCols; ci++) {
+            let max = options.digitCount || 1;
+            for (const row of rows) {
+                const cell = row[ci];
+                if (cell && cell.value !== null && cell.value !== undefined) {
+                    const len = String(cell.value).length;
+                    if (len > max) { max = len; }
+                }
+            }
+            counts[ci] = max;
+        }
+        return counts;
+    }, [rows, maxCols, splitToColumns, options.digitCount]);
+
     // Resolve column names: auto from field names or manual
     const resolvedColumnNames = useMemo(() => {
         if (!splitToColumns) { return []; }
@@ -751,7 +769,10 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
                                     }
                                     const colWidth = Math.floor(availRowWidth / maxCols);
                                     const cellHeight = rowHeight - rowPadV * 2 - (trueWall ? cellGap * 2 : 0);
-                                    const trueWallOpts = trueWall ? { ...options, showName: false, showUnit: false, _trueWallDigit: true } : { ...options, showName: false, showUnit: false };
+                                    const perColDigitCount = columnDigitCounts[ci] || options.digitCount;
+                                    const trueWallOpts = trueWall
+                                        ? { ...options, showName: false, showUnit: false, digitCount: perColDigitCount, _trueWallDigit: true }
+                                        : { ...options, showName: false, showUnit: false, digitCount: perColDigitCount };
                                     return (
                                         <div key={ci} style={trueWall ? {
                                             width: `${colWidth}px`,
