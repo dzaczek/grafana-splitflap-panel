@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.3.1 (2026-04-15)
+
+### Maintenance
+- Merged the pending Dependabot updates for frontend packages and GitHub Actions workflows.
+- Fixed the Grafana compatibility workflow to use the repository's committed Yarn lockfile instead of `npm ci`.
+- Kept the Playwright report publishing job on `actions/checkout@v5` to avoid the `Duplicate header: "Authorization"` failure seen with `v6`.
+
+---
+
 ## 2.2.7 (2026-01-09)
 
 ### Fixes
