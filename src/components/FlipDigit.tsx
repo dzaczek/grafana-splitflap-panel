@@ -306,6 +306,9 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
   const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const animationActiveRef = useRef<boolean>(false);
   const flipKeyRef = useRef(0);
+  const cardSize = config.cardSize;
+  const flipDuration = config.speed || 0.49;
+  const isTrueWallDigit = Boolean((config as FlipOptions & { _trueWallDigit?: boolean })._trueWallDigit);
 
   const theme = useMemo(() => {
     const themeName = config.theme || 'classic';
@@ -456,8 +459,8 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
 
   // Generate styles using Emotion
   const styles = useMemo(() => {
-    const cardWidth = config.cardSize * 0.7;
-    const fontSize = config.cardSize * 0.85;
+    const cardWidth = cardSize * 0.7;
+    const fontSize = cardSize * 0.85;
 
     // Two identical animation sets (A/B) with different names.
     // Alternating between them forces the browser to restart the CSS
@@ -491,19 +494,17 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
       100% { opacity: 0.35; }
     `;
 
-    const isTrueWallDigit = !!(config as any)._trueWallDigit;
-
     return {
       flipUnit: css({
         position: 'relative',
         width: `${cardWidth}px`,
-        height: `${config.cardSize}px`,
+        height: `${cardSize}px`,
         backgroundColor: finalBg,
         color: finalText,
         borderRadius: theme.radius,
         fontWeight: 'bold',
         fontSize: `${fontSize}px`,
-        lineHeight: `${config.cardSize}px`,
+        lineHeight: `${cardSize}px`,
         textAlign: 'center',
         boxShadow: isTrueWallDigit
           ? `inset 0 1px 3px rgba(0,0,0,0.7), inset 0 -1px 2px rgba(0,0,0,0.3), ${theme.shadow || '0 0 0 transparent'}`
@@ -743,7 +744,7 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
         },
       }),
     };
-  }, [config.cardSize, finalBg, finalText, theme]);
+  }, [cardSize, finalBg, finalText, isTrueWallDigit, theme]);
 
   return (
     <>
@@ -752,7 +753,7 @@ export const FlipDigit: React.FC<FlipDigitProps> = ({ char, config, colorOverrid
           styles.flipUnit,
           flipKey > 0 && (flipKey % 2 === 1 ? styles.flippingA : styles.flippingB)
         )}
-        style={{ '--flip-duration': `${config.speed || 0.49}s` } as React.CSSProperties}
+        style={{ '--flip-duration': `${flipDuration}s` } as React.CSSProperties}
       >
         <div className={styles.top} data-char={escapeChar(displayChar)} />
         <div className={styles.bottom} data-char={escapeChar(bottomChar)} />

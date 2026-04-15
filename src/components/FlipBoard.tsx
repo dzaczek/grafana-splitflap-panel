@@ -487,6 +487,13 @@ interface BoardViewProps {
     seriesList: any[];
 }
 
+interface BoardCell {
+    value: string | number;
+    name: string;
+    color?: string;
+    field: any;
+}
+
 const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, seriesList }) => {
     const frameColor = options.boardFrameColor || '#1a1a1a';
     const headerBg = options.boardHeaderBg || '#2a2a2a';
@@ -496,7 +503,10 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
     const splitToColumns = options.boardSplitToColumns || false;
     const autoColumnNames = options.boardAutoColumnNames !== false;
     const columnNamesRaw = options.boardColumnNames || '';
-    const manualColumnNames = columnNamesRaw ? columnNamesRaw.split(',').map(s => s.trim()) : [];
+    const manualColumnNames = useMemo(
+        () => (columnNamesRaw ? columnNamesRaw.split(',').map((s) => s.trim()) : []),
+        [columnNamesRaw]
+    );
     const columnAlign = options.boardColumnAlign || 'left';
     const rowSeparator = options.boardRowSeparator !== false;
     const compact = options.boardCompact || false;
@@ -518,7 +528,7 @@ const BoardView: React.FC<BoardViewProps> = ({ width, height, options, data, ser
     const alignMap: Record<string, string> = { left: 'flex-start', center: 'center', right: 'flex-end' };
 
     // Prepare rows data
-    const rows = useMemo(() => {
+    const rows = useMemo<BoardCell[][]>(() => {
         return seriesList.map((series) => {
             if (splitToColumns) {
                 const fields = series.fields.filter((f: any) => f.type !== 'time');
