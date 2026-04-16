@@ -15,26 +15,31 @@
 
 ### Maintenance
 - **Security Patches**: Updated `yarn` resolutions to address multiple security vulnerabilities:
-  - `dompurify ^3.4.0` (XSS, mutation-XSS, prototype pollution) — GHSA-39q2-94rc-95cp.
-  - `lodash ^4.18.0` (prototype pollution, code injection).
-  - `picomatch ^4.0.4` (method injection, ReDoS).
-  - `serialize-javascript ^7.0.5` (CPU exhaustion, RCE).
-  - `yaml ^2.8.3` (stack overflow).
-  - `immutable ^5.1.5` (prototype pollution).
-  - `ajv ^8.18.0` (ReDoS via $data).
-  - `minimatch ^10.2.3` and `brace-expansion ^5.0.5` (DoS/ReDoS).
-- Updated `@grafana/ui` and `@grafana/i18n` from `12.3.2` to `12.4.2`.
-- Updated `@emotion/css` from `11.10.6` to `11.13.5`.
-- Updated `@testing-library/react` from `14.0.0` to `15.0.7`.
-- Updated `webpack-cli` from `5.1.4` to `7.0.2`.
-- Updated `style-loader` from `3.3.3` to `4.0.0`.
-- Updated `eslint-webpack-plugin` from `5.0.2` to `6.0.0`.
-- Updated `prettier` from `2.8.8` to `3.8.2`.
-- Updated `@swc/helpers` from `0.5.18` to `0.5.21`.
-- Updated `@types/node` from `20.19.30` to `25.6.0`.
-- Updated GitHub Actions: `actions/checkout` v4→v6, `actions/upload-artifact` v5→v7, `softprops/action-gh-release` v1→v3.
-- Updated `grafana/plugin-actions/create-plugin-update` to `v2.0.2` and `grafana/plugin-actions/is-compatible` to `v1.0.3`.
-- Fixed Grafana compatibility workflow to use the repository's committed Yarn lockfile and resolved dependency installation issues for `react-data-grid`.
+  - `dompurify`: 3.2.5 → 3.4.0 (GHSA-39q2-94rc-95cp)
+  - `lodash`: 4.17.21 → 4.18.1
+  - `picomatch`: 4.0.2 → 4.0.4
+  - `serialize-javascript`: 7.0.3 → 7.0.5
+  - `yaml`: 2.7.1 → 2.8.3
+  - `immutable`: 5.0.3 → 5.1.5
+  - `ajv`: ^8.18.0 (new resolution for ReDoS)
+  - `minimatch`: 9.0.6 → 10.2.3
+  - `brace-expansion`: 2.0.3 → 5.0.5
+- **Library Updates**:
+  - `@grafana/ui` and `@grafana/i18n`: 12.3.2 → 12.4.2
+  - `@emotion/css`: 11.10.6 → 11.13.5
+  - `@testing-library/react`: 14.0.0 → 15.0.7
+  - `webpack-cli`: 5.1.4 → 7.0.2
+  - `style-loader`: 3.3.3 → 4.0.0
+  - `eslint-webpack-plugin`: 5.0.2 → 6.0.0
+  - `prettier`: 2.8.8 → 3.8.2
+  - `@swc/helpers`: 0.5.18 → 0.5.21
+  - `@types/node`: 20.19.30 → 25.6.0
+- **Workflow & CI**:
+  - `actions/checkout`: v4 → v6
+  - `actions/upload-artifact`: v5 → v7
+  - `softprops/action-gh-release`: v1 → v3
+  - `grafana/plugin-actions`: updated `create-plugin-update` (v2.0.2) and `is-compatible` (v1.0.3)
+  - Fixed `react-data-grid` installation issues and optimized Grafana compatibility workflow.
 
 ---
 
