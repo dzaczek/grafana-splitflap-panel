@@ -14,7 +14,15 @@
 - **Alignment Options**: Board mode rows support left, center, and right alignment.
 
 ### Maintenance
-- Updated `dompurify` resolution to `^3.4.0` to address security advisory `GHSA-39q2-94rc-95cp`.
+- **Security Patches**: Updated `yarn` resolutions to address multiple security vulnerabilities:
+  - `dompurify ^3.4.0` (XSS, mutation-XSS, prototype pollution) — GHSA-39q2-94rc-95cp.
+  - `lodash ^4.18.0` (prototype pollution, code injection).
+  - `picomatch ^4.0.4` (method injection, ReDoS).
+  - `serialize-javascript ^7.0.5` (CPU exhaustion, RCE).
+  - `yaml ^2.8.3` (stack overflow).
+  - `immutable ^5.1.5` (prototype pollution).
+  - `ajv ^8.18.0` (ReDoS via $data).
+  - `minimatch ^10.2.3` and `brace-expansion ^5.0.5` (DoS/ReDoS).
 - Updated `@grafana/ui` and `@grafana/i18n` from `12.3.2` to `12.4.2`.
 - Updated `@emotion/css` from `11.10.6` to `11.13.5`.
 - Updated `@testing-library/react` from `14.0.0` to `15.0.7`.
@@ -26,7 +34,7 @@
 - Updated `@types/node` from `20.19.30` to `25.6.0`.
 - Updated GitHub Actions: `actions/checkout` v4→v6, `actions/upload-artifact` v5→v7, `softprops/action-gh-release` v1→v3.
 - Updated `grafana/plugin-actions/create-plugin-update` to `v2.0.2` and `grafana/plugin-actions/is-compatible` to `v1.0.3`.
-- Fixed Grafana compatibility workflow to use the repository's committed Yarn lockfile.
+- Fixed Grafana compatibility workflow to use the repository's committed Yarn lockfile and resolved dependency installation issues for `react-data-grid`.
 
 ---
 
