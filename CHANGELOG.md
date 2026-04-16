@@ -1,5 +1,35 @@
 # Changelog
 
+## 2.4.1 (2026-04-16)
+
+### Features
+- **Board (Solari) Display Mode**: Added a new `Board` display mode that renders data as a classic Solari departure-board layout with configurable header, title, column names, row numbers, compact layout, and scrolling support.
+- **True Wall Display**: Added `True Wall` styling variant for the Board mode with fixed column widths and per-digit recess effect for a realistic recessed-cell Solari board appearance.
+- **Uniform Digit Width in Board Split Mode**: Digits per column are now padded to a uniform count so rows stay visually aligned even when values have different lengths.
+- **Threshold Coloring in Board Rows**: Panel-level threshold configuration is now respected when coloring Board mode row values.
+- **Board Demo Dashboard**: Added a provisioned demo dashboard (`board-demo.json`) for easy out-of-the-box testing of the Board mode.
+
+### Improvements
+- **Board Mode UX**: Auto-generated column names, optional row numbers, compact layout toggle, and vertical scrolling for long data sets.
+- **Alignment Options**: Board mode rows support left, center, and right alignment.
+
+### Maintenance
+- Updated `dompurify` resolution to `^3.4.0` to address security advisory `GHSA-39q2-94rc-95cp`.
+- Updated `@grafana/ui` and `@grafana/i18n` from `12.3.2` to `12.4.2`.
+- Updated `@emotion/css` from `11.10.6` to `11.13.5`.
+- Updated `@testing-library/react` from `14.0.0` to `15.0.7`.
+- Updated `webpack-cli` from `5.1.4` to `7.0.2`.
+- Updated `style-loader` from `3.3.3` to `4.0.0`.
+- Updated `eslint-webpack-plugin` from `5.0.2` to `6.0.0`.
+- Updated `prettier` from `2.8.8` to `3.8.2`.
+- Updated `@swc/helpers` from `0.5.18` to `0.5.21`.
+- Updated `@types/node` from `20.19.30` to `25.6.0`.
+- Updated GitHub Actions: `actions/checkout` v4→v6, `actions/upload-artifact` v5→v7, `softprops/action-gh-release` v1→v3.
+- Updated `grafana/plugin-actions/create-plugin-update` to `v2.0.2` and `grafana/plugin-actions/is-compatible` to `v1.0.3`.
+- Fixed Grafana compatibility workflow to use the repository's committed Yarn lockfile.
+
+---
+
 ## 2.4.0-dev.1 (2026-04-16)
 
 ### Features

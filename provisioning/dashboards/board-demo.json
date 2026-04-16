@@ -845,6 +845,362 @@
           "csvContent": "Time,Destination,Platform,Delay\n2021-01-01T00:00:00Z,LUGANO,9,15"
         }
       ]
+    },
+    {
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 30 },
+              { "color": "red", "value": 60 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 12, "w": 12, "x": 0, "y": 44 },
+      "id": 9,
+      "interval": "3s",
+      "title": "Board - True Wall + Split Columns + Compact (ARRIVALS)",
+      "type": "dzaczek-splitflap-panel",
+      "options": {
+        "mode": "data",
+        "displayMode": "board",
+        "textAlign": "left",
+        "boardShowHeader": true,
+        "boardTitle": "ARRIVALS",
+        "boardSplitToColumns": true,
+        "boardAutoColumnNames": false,
+        "boardColumnNames": "FROM,FLIGHT,TERMINAL",
+        "boardColumnAlign": "left",
+        "boardShowRowNumbers": false,
+        "boardRowSeparator": false,
+        "boardCompact": true,
+        "boardScrollable": false,
+        "boardTrueWall": true,
+        "boardFrameWidth": 12,
+        "boardFrameColor": "#1a1a1a",
+        "boardHeaderBg": "#111111",
+        "boardHeaderTextColor": "#f7d100",
+        "boardHeaderFontSize": 16,
+        "boardColumnHeaderFontSize": 10,
+        "theme": "airport",
+        "digitCount": 8,
+        "autoSize": true,
+        "cardSize": 50,
+        "gap": 3,
+        "rounding": 0,
+        "speed": 0.5,
+        "spinSpeed": 0.06,
+        "forceNumeric": false,
+        "showName": false,
+        "showUnit": false,
+        "displayContent": "value",
+        "valueAggregation": "last",
+        "thresholdTarget": "none",
+        "layoutDirection": "vertical",
+        "showSeparators": false,
+        "amPmFontSize": 18,
+        "amPmGap": 12,
+        "amPmOrientation": "horizontal",
+        "amPmPos": "none",
+        "clock12h": false,
+        "clockDateFormat": "",
+        "clockDayOfWeek": false,
+        "clockSeparator": "colon",
+        "clockShowSeconds": true,
+        "clockTimezone": "",
+        "customUnit": "",
+        "nameAlign": "center",
+        "nameFontSize": 18,
+        "namePos": "top",
+        "showTimezone": false,
+        "timezoneAlign": "center",
+        "timezoneFontSize": 18,
+        "timezonePos": "bottom",
+        "unitFontSize": 24,
+        "unitPos": "right",
+        "unitRotation": false
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,From,Flight,Terminal\n2021-01-01T00:00:00Z,NEW YORK,AA 100,T2"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "B",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,From,Flight,Terminal\n2021-01-01T00:00:00Z,LONDON,BA 112,T1"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "C",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,From,Flight,Terminal\n2021-01-01T00:00:00Z,PARIS,AF 0810,T3"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "D",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,From,Flight,Terminal\n2021-01-01T00:00:00Z,TOKYO,JL 0407,T2"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "E",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,From,Flight,Terminal\n2021-01-01T00:00:00Z,DUBAI,EK 0161,T1"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "F",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,From,Flight,Terminal\n2021-01-01T00:00:00Z,SINGAPORE,SQ 0321,T3"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "red", "value": 80 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 12, "w": 12, "x": 12, "y": 44 },
+      "id": 10,
+      "interval": "3s",
+      "title": "Board - True Wall + Split Columns + Compact (BUS TERMINAL)",
+      "type": "dzaczek-splitflap-panel",
+      "options": {
+        "mode": "data",
+        "displayMode": "board",
+        "textAlign": "center",
+        "boardShowHeader": true,
+        "boardTitle": "BUS TERMINAL",
+        "boardSplitToColumns": true,
+        "boardAutoColumnNames": false,
+        "boardColumnNames": "LINE,DESTINATION,BAY,DEPARTS",
+        "boardColumnAlign": "center",
+        "boardShowRowNumbers": false,
+        "boardRowSeparator": false,
+        "boardCompact": true,
+        "boardScrollable": false,
+        "boardTrueWall": true,
+        "boardFrameWidth": 10,
+        "boardFrameColor": "#020b02",
+        "boardHeaderBg": "#020b02",
+        "boardHeaderTextColor": "#00ff41",
+        "boardHeaderFontSize": 16,
+        "boardColumnHeaderFontSize": 10,
+        "theme": "matrix",
+        "digitCount": 8,
+        "autoSize": true,
+        "cardSize": 50,
+        "gap": 3,
+        "rounding": 0,
+        "speed": 0.5,
+        "spinSpeed": 0.06,
+        "forceNumeric": false,
+        "showName": false,
+        "showUnit": false,
+        "displayContent": "value",
+        "valueAggregation": "last",
+        "thresholdTarget": "none",
+        "layoutDirection": "vertical",
+        "showSeparators": false,
+        "amPmFontSize": 18,
+        "amPmGap": 12,
+        "amPmOrientation": "horizontal",
+        "amPmPos": "none",
+        "clock12h": false,
+        "clockDateFormat": "",
+        "clockDayOfWeek": false,
+        "clockSeparator": "colon",
+        "clockShowSeconds": true,
+        "clockTimezone": "",
+        "customUnit": "",
+        "nameAlign": "center",
+        "nameFontSize": 18,
+        "namePos": "top",
+        "showTimezone": false,
+        "timezoneAlign": "center",
+        "timezoneFontSize": 18,
+        "timezonePos": "bottom",
+        "unitFontSize": 24,
+        "unitPos": "right",
+        "unitRotation": false
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Line,Destination,Bay,Departs\n2021-01-01T00:00:00Z,501,CITY CENTER,3,08:15"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "B",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Line,Destination,Bay,Departs\n2021-01-01T00:00:00Z,220,AIRPORT,7,08:22"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "C",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Line,Destination,Bay,Departs\n2021-01-01T00:00:00Z,73X,DOWNTOWN,1,08:30"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "D",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Line,Destination,Bay,Departs\n2021-01-01T00:00:00Z,115,WESTSIDE,5,08:45"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "E",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Line,Destination,Bay,Departs\n2021-01-01T00:00:00Z,402,NORTHGATE,9,09:00"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "F",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Line,Destination,Bay,Departs\n2021-01-01T00:00:00Z,890,EASTPORT,2,09:15"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "#ff6600", "value": 3 },
+              { "color": "red", "value": 8 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 12, "w": 24, "x": 0, "y": 56 },
+      "id": 11,
+      "interval": "3s",
+      "title": "Board - True Wall + Split Columns + Compact (METRO STATUS)",
+      "type": "dzaczek-splitflap-panel",
+      "options": {
+        "mode": "data",
+        "displayMode": "board",
+        "textAlign": "center",
+        "boardShowHeader": true,
+        "boardTitle": "METRO STATUS",
+        "boardSplitToColumns": true,
+        "boardAutoColumnNames": false,
+        "boardColumnNames": "LINE,DIRECTION,NEXT TRAIN,STATUS",
+        "boardColumnAlign": "center",
+        "boardShowRowNumbers": false,
+        "boardRowSeparator": false,
+        "boardCompact": true,
+        "boardScrollable": false,
+        "boardTrueWall": true,
+        "boardFrameWidth": 12,
+        "boardFrameColor": "#050505",
+        "boardHeaderBg": "#050505",
+        "boardHeaderTextColor": "#00ffea",
+        "boardHeaderFontSize": 18,
+        "boardColumnHeaderFontSize": 11,
+        "theme": "cyberpunk",
+        "digitCount": 8,
+        "autoSize": true,
+        "cardSize": 50,
+        "gap": 3,
+        "rounding": 0,
+        "speed": 0.5,
+        "spinSpeed": 0.06,
+        "forceNumeric": false,
+        "showName": false,
+        "showUnit": false,
+        "displayContent": "value",
+        "valueAggregation": "last",
+        "thresholdTarget": "none",
+        "layoutDirection": "vertical",
+        "showSeparators": false,
+        "amPmFontSize": 18,
+        "amPmGap": 12,
+        "amPmOrientation": "horizontal",
+        "amPmPos": "none",
+        "clock12h": false,
+        "clockDateFormat": "",
+        "clockDayOfWeek": false,
+        "clockSeparator": "colon",
+        "clockShowSeconds": true,
+        "clockTimezone": "",
+        "customUnit": "",
+        "nameAlign": "center",
+        "nameFontSize": 18,
+        "namePos": "top",
+        "showTimezone": false,
+        "timezoneAlign": "center",
+        "timezoneFontSize": 18,
+        "timezonePos": "bottom",
+        "unitFontSize": 24,
+        "unitPos": "right",
+        "unitRotation": false
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Line,Direction,Next,Status\n2021-01-01T00:00:00Z,M1,CENTRAL,2 MIN,ON TIME"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "B",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Line,Direction,Next,Status\n2021-01-01T00:00:00Z,M2,AIRPORT,5 MIN,DELAYED"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "C",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Line,Direction,Next,Status\n2021-01-01T00:00:00Z,M3,NORTH,1 MIN,ON TIME"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "D",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Line,Direction,Next,Status\n2021-01-01T00:00:00Z,M4,SOUTH,8 MIN,ON TIME"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "E",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Line,Direction,Next,Status\n2021-01-01T00:00:00Z,M5,EAST,3 MIN,ON TIME"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "F",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Line,Direction,Next,Status\n2021-01-01T00:00:00Z,M6,WEST,6 MIN,DELAYED"
+        }
+      ]
     }
   ],
   "preload": false,
