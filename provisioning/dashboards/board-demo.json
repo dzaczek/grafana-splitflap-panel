@@ -1,0 +1,861 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "trlxrdZVk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 50 },
+              { "color": "red", "value": 80 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 10, "w": 12, "x": 0, "y": 0 },
+      "id": 1,
+      "interval": "3s",
+      "title": "Board - Basic (aviation-departure)",
+      "type": "dzaczek-splitflap-panel",
+      "options": {
+        "mode": "data",
+        "displayMode": "board",
+        "textAlign": "left",
+        "boardShowHeader": true,
+        "boardTitle": "DEPARTURES",
+        "boardSplitToColumns": false,
+        "boardAutoColumnNames": true,
+        "boardColumnNames": "",
+        "boardColumnAlign": "left",
+        "boardShowRowNumbers": true,
+        "boardRowSeparator": true,
+        "boardCompact": false,
+        "boardScrollable": false,
+        "boardTrueWall": false,
+        "boardFrameWidth": 8,
+        "boardFrameColor": "#1a1a1a",
+        "boardHeaderBg": "#2a2a2a",
+        "boardHeaderTextColor": "#f7d100",
+        "boardHeaderFontSize": 18,
+        "boardColumnHeaderFontSize": 11,
+        "theme": "aviation-departure",
+        "digitCount": 8,
+        "autoSize": true,
+        "cardSize": 50,
+        "gap": 4,
+        "rounding": 1,
+        "speed": 0.6,
+        "spinSpeed": 0.08,
+        "forceNumeric": false,
+        "showName": false,
+        "showUnit": false,
+        "displayContent": "name_value",
+        "valueAggregation": "last",
+        "thresholdTarget": "none",
+        "layoutDirection": "vertical",
+        "showSeparators": false,
+        "amPmFontSize": 18,
+        "amPmGap": 12,
+        "amPmOrientation": "horizontal",
+        "amPmPos": "none",
+        "clock12h": false,
+        "clockDateFormat": "",
+        "clockDayOfWeek": false,
+        "clockSeparator": "colon",
+        "clockShowSeconds": true,
+        "clockTimezone": "",
+        "customUnit": "",
+        "nameAlign": "center",
+        "nameFontSize": 18,
+        "namePos": "top",
+        "showTimezone": false,
+        "timezoneAlign": "center",
+        "timezoneFontSize": 18,
+        "timezonePos": "bottom",
+        "unitFontSize": 24,
+        "unitPos": "right",
+        "unitRotation": false
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "A",
+          "scenarioId": "usa",
+          "usa": {
+            "mode": "values-as-fields",
+            "period": "4m",
+            "states": []
+          }
+        }
+      ]
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "trlxrdZVk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 40 },
+              { "color": "red", "value": 70 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 10, "w": 12, "x": 12, "y": 0 },
+      "id": 2,
+      "interval": "3s",
+      "title": "Board - True Wall (airport theme)",
+      "type": "dzaczek-splitflap-panel",
+      "options": {
+        "mode": "data",
+        "displayMode": "board",
+        "textAlign": "left",
+        "boardShowHeader": true,
+        "boardTitle": "ARRIVALS",
+        "boardSplitToColumns": false,
+        "boardAutoColumnNames": true,
+        "boardColumnNames": "",
+        "boardColumnAlign": "left",
+        "boardShowRowNumbers": false,
+        "boardRowSeparator": true,
+        "boardCompact": false,
+        "boardScrollable": false,
+        "boardTrueWall": true,
+        "boardFrameWidth": 10,
+        "boardFrameColor": "#222222",
+        "boardHeaderBg": "#1a1a1a",
+        "boardHeaderTextColor": "#FFD700",
+        "boardHeaderFontSize": 20,
+        "boardColumnHeaderFontSize": 11,
+        "theme": "airport",
+        "digitCount": 8,
+        "autoSize": true,
+        "cardSize": 50,
+        "gap": 4,
+        "rounding": 1,
+        "speed": 0.6,
+        "spinSpeed": 0.08,
+        "forceNumeric": false,
+        "showName": false,
+        "showUnit": false,
+        "displayContent": "name_value",
+        "valueAggregation": "last",
+        "thresholdTarget": "tile",
+        "layoutDirection": "vertical",
+        "showSeparators": false,
+        "amPmFontSize": 18,
+        "amPmGap": 12,
+        "amPmOrientation": "horizontal",
+        "amPmPos": "none",
+        "clock12h": false,
+        "clockDateFormat": "",
+        "clockDayOfWeek": false,
+        "clockSeparator": "colon",
+        "clockShowSeconds": true,
+        "clockTimezone": "",
+        "customUnit": "",
+        "nameAlign": "center",
+        "nameFontSize": 18,
+        "namePos": "top",
+        "showTimezone": false,
+        "timezoneAlign": "center",
+        "timezoneFontSize": 18,
+        "timezonePos": "bottom",
+        "unitFontSize": 24,
+        "unitPos": "right",
+        "unitRotation": false
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "A",
+          "scenarioId": "usa",
+          "usa": {
+            "mode": "values-as-fields",
+            "period": "4m",
+            "states": []
+          }
+        }
+      ]
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "trlxrdZVk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "red", "value": 80 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 12, "w": 12, "x": 0, "y": 10 },
+      "id": 3,
+      "interval": "3s",
+      "title": "Board - Split to Columns + Auto Names (swiss-sbb-black)",
+      "type": "dzaczek-splitflap-panel",
+      "options": {
+        "mode": "data",
+        "displayMode": "board",
+        "textAlign": "left",
+        "boardShowHeader": true,
+        "boardTitle": "SYSTEM STATUS",
+        "boardSplitToColumns": true,
+        "boardAutoColumnNames": true,
+        "boardColumnNames": "",
+        "boardColumnAlign": "left",
+        "boardShowRowNumbers": true,
+        "boardRowSeparator": true,
+        "boardCompact": false,
+        "boardScrollable": false,
+        "boardTrueWall": false,
+        "boardFrameWidth": 8,
+        "boardFrameColor": "#111111",
+        "boardHeaderBg": "#000000",
+        "boardHeaderTextColor": "#ffffff",
+        "boardHeaderFontSize": 16,
+        "boardColumnHeaderFontSize": 10,
+        "theme": "swiss-sbb-black",
+        "digitCount": 6,
+        "autoSize": true,
+        "cardSize": 50,
+        "gap": 3,
+        "rounding": 0,
+        "speed": 0.5,
+        "spinSpeed": 0.06,
+        "forceNumeric": true,
+        "showName": false,
+        "showUnit": false,
+        "displayContent": "value",
+        "valueAggregation": "last",
+        "thresholdTarget": "text",
+        "layoutDirection": "vertical",
+        "showSeparators": false,
+        "amPmFontSize": 18,
+        "amPmGap": 12,
+        "amPmOrientation": "horizontal",
+        "amPmPos": "none",
+        "clock12h": false,
+        "clockDateFormat": "",
+        "clockDayOfWeek": false,
+        "clockSeparator": "colon",
+        "clockShowSeconds": true,
+        "clockTimezone": "",
+        "customUnit": "",
+        "nameAlign": "center",
+        "nameFontSize": 18,
+        "namePos": "top",
+        "showTimezone": false,
+        "timezoneAlign": "center",
+        "timezoneFontSize": 18,
+        "timezonePos": "bottom",
+        "unitFontSize": 24,
+        "unitPos": "right",
+        "unitRotation": false
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Flight,Gate,Delay\n2021-01-01T00:00:00Z,LO 327,A12,5"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "B",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Flight,Gate,Delay\n2021-01-01T00:00:00Z,BA 882,B07,0"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "C",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Flight,Gate,Delay\n2021-01-01T00:00:00Z,LH 1010,C22,95"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "D",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Flight,Gate,Delay\n2021-01-01T00:00:00Z,FR 4455,D01,25"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "E",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Flight,Gate,Delay\n2021-01-01T00:00:00Z,KL 1234,E15,0"
+        }
+      ]
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "trlxrdZVk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "#ff6600", "value": 40 },
+              { "color": "red", "value": 70 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 12, "w": 12, "x": 12, "y": 10 },
+      "id": 4,
+      "interval": "3s",
+      "title": "Board - True Wall + Split Columns + Compact",
+      "type": "dzaczek-splitflap-panel",
+      "options": {
+        "mode": "data",
+        "displayMode": "board",
+        "textAlign": "center",
+        "boardShowHeader": true,
+        "boardTitle": "FLIGHT INFO",
+        "boardSplitToColumns": true,
+        "boardAutoColumnNames": false,
+        "boardColumnNames": "FLIGHT,GATE,DELAY MIN",
+        "boardColumnAlign": "center",
+        "boardShowRowNumbers": false,
+        "boardRowSeparator": false,
+        "boardCompact": true,
+        "boardScrollable": false,
+        "boardTrueWall": true,
+        "boardFrameWidth": 12,
+        "boardFrameColor": "#1a1a1a",
+        "boardHeaderBg": "#111111",
+        "boardHeaderTextColor": "#f7d100",
+        "boardHeaderFontSize": 16,
+        "boardColumnHeaderFontSize": 10,
+        "theme": "aviation-departure",
+        "digitCount": 6,
+        "autoSize": true,
+        "cardSize": 50,
+        "gap": 3,
+        "rounding": 0,
+        "speed": 0.5,
+        "spinSpeed": 0.06,
+        "forceNumeric": false,
+        "showName": false,
+        "showUnit": false,
+        "displayContent": "value",
+        "valueAggregation": "last",
+        "thresholdTarget": "none",
+        "layoutDirection": "vertical",
+        "showSeparators": false,
+        "amPmFontSize": 18,
+        "amPmGap": 12,
+        "amPmOrientation": "horizontal",
+        "amPmPos": "none",
+        "clock12h": false,
+        "clockDateFormat": "",
+        "clockDayOfWeek": false,
+        "clockSeparator": "colon",
+        "clockShowSeconds": true,
+        "clockTimezone": "",
+        "customUnit": "",
+        "nameAlign": "center",
+        "nameFontSize": 18,
+        "namePos": "top",
+        "showTimezone": false,
+        "timezoneAlign": "center",
+        "timezoneFontSize": 18,
+        "timezonePos": "bottom",
+        "unitFontSize": 24,
+        "unitPos": "right",
+        "unitRotation": false
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Flight,Gate,Delay\n2021-01-01T00:00:00Z,LO 327,A12,5"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "B",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Flight,Gate,Delay\n2021-01-01T00:00:00Z,BA 882,B07,0"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "C",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Flight,Gate,Delay\n2021-01-01T00:00:00Z,LH 1010,C22,95"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "D",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Flight,Gate,Delay\n2021-01-01T00:00:00Z,FR 4455,D01,25"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "E",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Flight,Gate,Delay\n2021-01-01T00:00:00Z,KL 1234,E15,0"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "F",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Flight,Gate,Delay\n2021-01-01T00:00:00Z,AF 1680,F03,120"
+        }
+      ]
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "trlxrdZVk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 50 },
+              { "color": "red", "value": 80 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 10, "w": 8, "x": 0, "y": 22 },
+      "id": 5,
+      "interval": "3s",
+      "title": "Board - Panel Threshold (cyberpunk)",
+      "type": "dzaczek-splitflap-panel",
+      "options": {
+        "mode": "data",
+        "displayMode": "board",
+        "textAlign": "center",
+        "boardShowHeader": true,
+        "boardTitle": "METRICS",
+        "boardSplitToColumns": false,
+        "boardAutoColumnNames": true,
+        "boardColumnNames": "",
+        "boardColumnAlign": "left",
+        "boardShowRowNumbers": false,
+        "boardRowSeparator": true,
+        "boardCompact": false,
+        "boardScrollable": false,
+        "boardTrueWall": false,
+        "boardFrameWidth": 6,
+        "boardFrameColor": "#050505",
+        "boardHeaderBg": "#050505",
+        "boardHeaderTextColor": "#00ffea",
+        "boardHeaderFontSize": 16,
+        "boardColumnHeaderFontSize": 11,
+        "theme": "cyberpunk",
+        "digitCount": 6,
+        "autoSize": true,
+        "cardSize": 50,
+        "gap": 4,
+        "rounding": 1,
+        "speed": 0.6,
+        "spinSpeed": 0.08,
+        "forceNumeric": true,
+        "showName": false,
+        "showUnit": false,
+        "displayContent": "name_value",
+        "valueAggregation": "last",
+        "thresholdTarget": "panel",
+        "layoutDirection": "vertical",
+        "showSeparators": false,
+        "amPmFontSize": 18,
+        "amPmGap": 12,
+        "amPmOrientation": "horizontal",
+        "amPmPos": "none",
+        "clock12h": false,
+        "clockDateFormat": "",
+        "clockDayOfWeek": false,
+        "clockSeparator": "colon",
+        "clockShowSeconds": true,
+        "clockTimezone": "",
+        "customUnit": "",
+        "nameAlign": "center",
+        "nameFontSize": 18,
+        "namePos": "top",
+        "showTimezone": false,
+        "timezoneAlign": "center",
+        "timezoneFontSize": 18,
+        "timezonePos": "bottom",
+        "unitFontSize": 24,
+        "unitPos": "right",
+        "unitRotation": false
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "A",
+          "scenarioId": "usa",
+          "usa": {
+            "mode": "values-as-fields",
+            "period": "4m",
+            "states": []
+          }
+        }
+      ]
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "trlxrdZVk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "red", "value": 80 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 10, "w": 8, "x": 8, "y": 22 },
+      "id": 6,
+      "interval": "3s",
+      "title": "Board - True Wall + Streaming (classic-3d)",
+      "type": "dzaczek-splitflap-panel",
+      "options": {
+        "mode": "data",
+        "displayMode": "board",
+        "textAlign": "right",
+        "boardShowHeader": true,
+        "boardTitle": "LIVE DATA",
+        "boardSplitToColumns": false,
+        "boardAutoColumnNames": true,
+        "boardColumnNames": "",
+        "boardColumnAlign": "left",
+        "boardShowRowNumbers": true,
+        "boardRowSeparator": false,
+        "boardCompact": false,
+        "boardScrollable": false,
+        "boardTrueWall": true,
+        "boardFrameWidth": 10,
+        "boardFrameColor": "#2a2a2a",
+        "boardHeaderBg": "#333333",
+        "boardHeaderTextColor": "#f0f0f0",
+        "boardHeaderFontSize": 18,
+        "boardColumnHeaderFontSize": 11,
+        "theme": "classic-3d",
+        "digitCount": 8,
+        "autoSize": true,
+        "cardSize": 50,
+        "gap": 4,
+        "rounding": 2,
+        "speed": 0.4,
+        "spinSpeed": 0.05,
+        "forceNumeric": true,
+        "showName": false,
+        "showUnit": false,
+        "displayContent": "value",
+        "valueAggregation": "last",
+        "thresholdTarget": "none",
+        "layoutDirection": "vertical",
+        "showSeparators": false,
+        "amPmFontSize": 18,
+        "amPmGap": 12,
+        "amPmOrientation": "horizontal",
+        "amPmPos": "none",
+        "clock12h": false,
+        "clockDateFormat": "",
+        "clockDayOfWeek": false,
+        "clockSeparator": "colon",
+        "clockShowSeconds": true,
+        "clockTimezone": "",
+        "customUnit": "",
+        "nameAlign": "center",
+        "nameFontSize": 18,
+        "namePos": "top",
+        "showTimezone": false,
+        "timezoneAlign": "center",
+        "timezoneFontSize": 18,
+        "timezonePos": "bottom",
+        "unitFontSize": 24,
+        "unitPos": "right",
+        "unitRotation": false
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "A",
+          "scenarioId": "streaming_client",
+          "stream": {
+            "bands": 4,
+            "noise": 33,
+            "speed": 600,
+            "spread": 44,
+            "type": "signal"
+          }
+        }
+      ]
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "trlxrdZVk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "red", "value": 80 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 10, "w": 8, "x": 16, "y": 22 },
+      "id": 7,
+      "interval": "3s",
+      "title": "Board - True Wall + Compact + Scrollable (matrix)",
+      "type": "dzaczek-splitflap-panel",
+      "options": {
+        "mode": "data",
+        "displayMode": "board",
+        "textAlign": "center",
+        "boardShowHeader": true,
+        "boardTitle": "NODES",
+        "boardSplitToColumns": false,
+        "boardAutoColumnNames": true,
+        "boardColumnNames": "",
+        "boardColumnAlign": "left",
+        "boardShowRowNumbers": true,
+        "boardRowSeparator": false,
+        "boardCompact": true,
+        "boardScrollable": true,
+        "boardTrueWall": true,
+        "boardFrameWidth": 6,
+        "boardFrameColor": "#020b02",
+        "boardHeaderBg": "#020b02",
+        "boardHeaderTextColor": "#00ff41",
+        "boardHeaderFontSize": 14,
+        "boardColumnHeaderFontSize": 11,
+        "theme": "matrix",
+        "digitCount": 6,
+        "autoSize": true,
+        "cardSize": 50,
+        "gap": 3,
+        "rounding": 1,
+        "speed": 0.5,
+        "spinSpeed": 0.06,
+        "forceNumeric": true,
+        "showName": false,
+        "showUnit": false,
+        "displayContent": "name_value",
+        "valueAggregation": "last",
+        "thresholdTarget": "none",
+        "layoutDirection": "vertical",
+        "showSeparators": false,
+        "amPmFontSize": 18,
+        "amPmGap": 12,
+        "amPmOrientation": "horizontal",
+        "amPmPos": "none",
+        "clock12h": false,
+        "clockDateFormat": "",
+        "clockDayOfWeek": false,
+        "clockSeparator": "colon",
+        "clockShowSeconds": true,
+        "clockTimezone": "",
+        "customUnit": "",
+        "nameAlign": "center",
+        "nameFontSize": 18,
+        "namePos": "top",
+        "showTimezone": false,
+        "timezoneAlign": "center",
+        "timezoneFontSize": 18,
+        "timezonePos": "bottom",
+        "unitFontSize": 24,
+        "unitPos": "right",
+        "unitRotation": false
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "A",
+          "scenarioId": "usa",
+          "usa": {
+            "mode": "values-as-fields",
+            "period": "4m",
+            "states": ["AL","AK","AZ","AR","CA","CO","CT","DE"]
+          }
+        }
+      ]
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "trlxrdZVk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "#EB0000", "value": 80 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 12, "w": 24, "x": 0, "y": 32 },
+      "id": 8,
+      "interval": "3s",
+      "title": "Board - Full Width True Wall + Split Columns (swiss-sbb-blue)",
+      "type": "dzaczek-splitflap-panel",
+      "options": {
+        "mode": "data",
+        "displayMode": "board",
+        "textAlign": "left",
+        "boardShowHeader": true,
+        "boardTitle": "ABFAHRT  /  DEPART",
+        "boardSplitToColumns": true,
+        "boardAutoColumnNames": false,
+        "boardColumnNames": "ZIEL,GLEIS,VERSPATUNG",
+        "boardColumnAlign": "left",
+        "boardShowRowNumbers": true,
+        "boardRowSeparator": false,
+        "boardCompact": false,
+        "boardScrollable": false,
+        "boardTrueWall": true,
+        "boardFrameWidth": 14,
+        "boardFrameColor": "#0B1E3C",
+        "boardHeaderBg": "#0B1E3C",
+        "boardHeaderTextColor": "#ffffff",
+        "boardHeaderFontSize": 22,
+        "boardColumnHeaderFontSize": 12,
+        "theme": "swiss-sbb-blue",
+        "digitCount": 8,
+        "autoSize": true,
+        "cardSize": 50,
+        "gap": 3,
+        "rounding": 0,
+        "speed": 0.5,
+        "spinSpeed": 0.06,
+        "forceNumeric": false,
+        "showName": false,
+        "showUnit": false,
+        "displayContent": "value",
+        "valueAggregation": "last",
+        "thresholdTarget": "none",
+        "layoutDirection": "vertical",
+        "showSeparators": false,
+        "amPmFontSize": 18,
+        "amPmGap": 12,
+        "amPmOrientation": "horizontal",
+        "amPmPos": "none",
+        "clock12h": false,
+        "clockDateFormat": "",
+        "clockDayOfWeek": false,
+        "clockSeparator": "colon",
+        "clockShowSeconds": true,
+        "clockTimezone": "",
+        "customUnit": "",
+        "nameAlign": "center",
+        "nameFontSize": 18,
+        "namePos": "top",
+        "showTimezone": false,
+        "timezoneAlign": "center",
+        "timezoneFontSize": 18,
+        "timezonePos": "bottom",
+        "unitFontSize": 24,
+        "unitPos": "right",
+        "unitRotation": false
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Destination,Platform,Delay\n2021-01-01T00:00:00Z,ZURICH HB,3,0"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "B",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Destination,Platform,Delay\n2021-01-01T00:00:00Z,BERN,7,5"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "C",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Destination,Platform,Delay\n2021-01-01T00:00:00Z,BASEL SBB,12,0"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "D",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Destination,Platform,Delay\n2021-01-01T00:00:00Z,GENEVE,5,90"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "E",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Destination,Platform,Delay\n2021-01-01T00:00:00Z,LUZERN,1,0"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "trlxrdZVk" },
+          "refId": "F",
+          "scenarioId": "csv_content",
+          "csvContent": "Time,Destination,Platform,Delay\n2021-01-01T00:00:00Z,LUGANO,9,15"
+        }
+      ]
+    }
+  ],
+  "preload": false,
+  "refresh": "5s",
+  "schemaVersion": 42,
+  "tags": ["board", "demo"],
+  "templating": { "list": [] },
+  "time": { "from": "now-6h", "to": "now" },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Split Flap - Board Mode Demo",
+  "uid": "splitflap-board-demo",
+  "version": 1
+}

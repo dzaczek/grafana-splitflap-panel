@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.4.0-beta.1 (2026-04-15)
+
+### Features
+- Added the Board (Solari) display mode with alignment controls, compact layout options, scrolling, and threshold-aware row rendering.
+- Added the True Wall board styling and a provisioned demo dashboard for easier testing.
+- Normalized digit widths per column in Board split mode so rows stay visually aligned even when values have different lengths.
+
+### Maintenance
+- Merged the `main` dependency and CI workflow updates into `board` for testing on top of the latest base.
+
+---
+
 ## 2.3.1 (2026-04-15)
 
 ### Maintenance

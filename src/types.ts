@@ -33,10 +33,10 @@ export interface FlipOptions {
 
   // Jednostki
   showUnit: boolean;
-  unitPos: 'top' | 'bottom' | 'left' | 'right' | 'none'; 
-  unitAlign: 'start' | 'center' | 'end'; 
-  unitRotation: boolean; 
-  customUnit: string; 
+  unitPos: 'top' | 'bottom' | 'left' | 'right' | 'none';
+  unitAlign: 'start' | 'center' | 'end';
+  unitRotation: boolean;
+  customUnit: string;
   unitFontSize: number;
 
   // Nazwy
@@ -44,13 +44,39 @@ export interface FlipOptions {
   namePos: 'top' | 'bottom' | 'left' | 'right';
   nameAlign: 'start' | 'center' | 'end';
   nameFontSize: number;
-  
-  // UKŁAD (Kluczowe dla Twojego problemu)
+
+  // UKŁAD
   layoutDirection: 'vertical' | 'horizontal';
   showSeparators: boolean;
   displayContent: 'value' | 'name' | 'name_value' | 'value_name';
   valueAggregation: 'last' | 'lastNotNull' | 'first' | 'firstNotNull' | 'min' | 'max' | 'mean' | 'sum' | 'count';
-  
+
   // Nowa opcja
   forceNumeric: boolean;
+
+  // Alignment (for default and board views)
+  textAlign: 'left' | 'center' | 'right';
+
+  // Board mode (Solari display)
+  displayMode: 'default' | 'board';
+  boardTitle: string;
+  boardShowHeader: boolean;
+  boardColumnNames: string;
+  boardSplitToColumns: boolean;
+  boardFrameColor: string;
+  boardHeaderBg: string;
+  boardHeaderTextColor: string;
+  boardRowSeparator: boolean;
+  boardColumnAlign: 'left' | 'center' | 'right';
+  boardHeaderFontSize: number;
+  boardColumnHeaderFontSize: number;
+  boardFrameWidth: number;
+  boardShowRowNumbers: boolean;
+  boardCompact: boolean;
+  boardAutoColumnNames: boolean;
+  boardScrollable: boolean;
+  boardTrueWall: boolean;
+
+  // Internal flag passed to FlipDigit for per-digit recess styling
+  _trueWallDigit?: boolean;
 }
