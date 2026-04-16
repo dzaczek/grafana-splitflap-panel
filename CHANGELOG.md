@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.4.0-dev.1 (2026-04-16)
+
+### Features
+- Merged the `board` branch into `main` for development testing of the Board (Solari) mode features.
+
+### Maintenance
+- Updated `dompurify` resolution to `^3.4.0` to address Dependabot alert `#41` (`GHSA-39q2-94rc-95cp`).
+
+---
+
 ## 2.4.0-beta.1 (2026-04-15)
 
 ### Features

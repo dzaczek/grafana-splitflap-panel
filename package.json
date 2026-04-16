@@ -1,6 +1,6 @@
 {
   "name": "splitflap",
-  "version": "2.4.0-beta.1",
+  "version": "2.4.0-dev.1",
   "scripts": {
     "build": "webpack -c ./.config/webpack/webpack.config.ts --env production",
     "dev": "webpack -w -c ./.config/webpack/webpack.config.ts --env development",
@@ -69,7 +69,7 @@
     "@remix-run/router": "1.23.2",
     "@tootallnate/once": "^3.0.1",
     "brace-expansion": "^2.0.3",
-    "dompurify": "^3.2.5",
+    "dompurify": "^3.4.0",
     "flatted": "^3.4.2",
     "immutable": "^5.0.3",
     "lodash": "^4.17.21",
