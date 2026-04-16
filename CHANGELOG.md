@@ -21,7 +21,6 @@
   - `serialize-javascript`: 7.0.3 → 7.0.5
   - `yaml`: 2.7.1 → 2.8.3
   - `immutable`: 5.0.3 → 5.1.5
-  - `ajv`: ^8.18.0 (new resolution for ReDoS)
   - `minimatch`: 9.0.6 → 10.2.3
   - `brace-expansion`: 2.0.3 → 5.0.5
 - **Library Updates**:
