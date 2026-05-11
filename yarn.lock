@@ -795,7 +795,7 @@
     rxjs "7.8.2"
     tslib "2.8.1"
 
-"@grafana/schema@12.3.2", "@grafana/schema@^12.3.0":
+"@grafana/schema@12.3.2":
   version "12.3.2"
   resolved "https://registry.npmjs.org/@grafana/schema/-/schema-12.3.2.tgz"
   integrity sha512-X3ExqXvKg5zWV8WNimczM0wbhQoehdj05K/YRA/rD00Fuo8y0OuECFSsG/VhdLoIUM4VCqsHStaQymsYDFundg==
@@ -806,6 +806,13 @@
   version "12.4.2"
   resolved "https://registry.npmjs.org/@grafana/schema/-/schema-12.4.2.tgz"
   integrity sha512-dkIEvcqTMitGO1qQcg4Hd2RoLK/YcQCNZQusX4sINvWH64u3uryBn3TS6TTPItvkiccWULYuZSWcQMV478i9Yg==
+  dependencies:
+    tslib "2.8.1"
+
+"@grafana/schema@^13.0.1":
+  version "13.0.1"
+  resolved "https://registry.npmjs.org/@grafana/schema/-/schema-13.0.1.tgz#b01908df442c3b3f54449234b4c6b4a9db65464f"
+  integrity sha512-1fvrcKniQWBIGK2WGjNORqTR95Y/DiKskewSAzCJ6j8uyaE7vwfcj3/Ec6KwwIcgiQvw4okQ0KJt07t/lI7cTw==
   dependencies:
     tslib "2.8.1"
 
