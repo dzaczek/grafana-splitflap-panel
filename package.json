@@ -86,7 +86,7 @@
     "@grafana/data": "^12.3.2",
     "@grafana/i18n": "^12.4.2",
     "@grafana/runtime": "^12.3.2",
-    "@grafana/schema": "^12.3.0",
+    "@grafana/schema": "^13.0.1",
     "@grafana/ui": "^12.4.2",
     "react": "^18.3.0",
     "react-dom": "^18.3.0"
