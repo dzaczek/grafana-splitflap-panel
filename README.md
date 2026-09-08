@@ -1,5 +1,7 @@
 # Split Flap Panel for Grafana
 
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-support-FFDD00?style=flat&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/dzaczek)
+
 ![Split Flap Logo](https://raw.githubusercontent.com/dzaczek/grafana-splitflap-panel/main/src/img/logo.svg)
 
 A retro-style **Split Flap** display panel for Grafana.
