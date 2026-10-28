@@ -16,6 +16,7 @@ jobs:
       - uses: grafana/plugin-actions/build-plugin@build-plugin/v1.2.0
         with:
           policy_token: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
+          node-version: '22'
 
       - name: List files (Debug)
         run: ls -R
